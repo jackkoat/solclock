@@ -182,14 +182,14 @@ Footer
 7. **src/components/NetworkPulseChart.tsx** - Line chart visualization
 
 ### Preview
-- **PREVIEW_SOLSCAN.html** - Standalone HTML preview with new design
+- **PREVIEW.html** - Standalone HTML preview with professional design
 
 ---
 
 ## 🚀 How to Use
 
 ### View the Preview
-Open `/workspace/solclock/PREVIEW_SOLSCAN.html` in a browser to see the new design in action.
+Open `/workspace/solclock/PREVIEW.html` in a browser to see the design in action.
 
 ### Apply to Your App
 The frontend React components have been updated. To see the changes:
@@ -232,5 +232,5 @@ This redesign follows Solscan's approach:
 ---
 
 **Design implemented on:** 2025-11-11  
-**Preview file:** /workspace/solclock/PREVIEW_SOLSCAN.html  
+**Preview file:** /workspace/solclock/PREVIEW.html  
 **Theme version:** 2.0 (Solscan-Inspired)

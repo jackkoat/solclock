@@ -10,7 +10,7 @@ A professional full-stack crypto analytics dashboard for Solana traders to visua
 - **Live Alerts**: Real-time notifications for degen hours, whale activity, and network events
 - **Whale Tracking**: Monitor large wallet transactions
 - **Watchlist**: Save and track favorite tokens
-- **Responsive Design**: Solana-themed dark UI with teal/purple accents
+- **Responsive Design**: Professional light UI with clean design and teal accents
 - **Dual Data Modes**: Switch between mock data (development) and real Solana blockchain data (production)
 
 ## Tech Stack

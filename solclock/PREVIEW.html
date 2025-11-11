@@ -3,280 +3,549 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolClock - Solana Network Pulse & Meme Coin Dashboard</title>
+    <title>SolClock - Solana Network Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary-teal: #14F195;
+            --primary-teal-dark: #0FD882;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F7F9FB;
+            --bg-tertiary: #FAFBFC;
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B7280;
+            --text-tertiary: #9CA3AF;
+            --border-light: #E5E7EB;
+            --border-medium: #D1D5DB;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0B1020 0%, #1a1f3a 100%);
-            min-height: 100vh;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
         }
         
-        .glow {
-            box-shadow: 0 0 20px rgba(94, 231, 216, 0.3);
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
         
-        .glow-purple {
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        /* Header */
+        .header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
         }
         
-        .gradient-text {
-            background: linear-gradient(135deg, #5EE7D8 0%, #A855F7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-teal);
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
         }
         
-        .pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+        
+        .nav-link.active {
+            color: var(--primary-teal);
+            background: rgba(20, 241, 149, 0.1);
+        }
+        
+        /* Stats Cards */
+        .stat-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--border-medium);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+        
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .stat-change.positive {
+            color: var(--success);
+        }
+        
+        .stat-change.negative {
+            color: var(--error);
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid var(--border-light);
+            transition: background 0.15s;
+        }
+        
+        tbody tr:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        td {
+            padding: 16px;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .badge-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+        
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+        }
+        
+        /* Alert */
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: start;
+            gap: 12px;
+        }
+        
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.05);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+        
+        .alert-error {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+        
+        .alert-info {
+            background: rgba(59, 130, 246, 0.05);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .alert-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .alert-time {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+        
+        /* Token Logo */
+        .token-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-teal), #3B82F6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .rank-badge.top-3 {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+        }
+        
+        /* Search Input */
+        .search-input {
+            padding: 10px 16px;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+            background: var(--bg-primary);
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(20, 241, 149, 0.1);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            background: var(--bg-secondary);
+            border-radius: 999px;
+            height: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-teal), #3B82F6);
+            border-radius: 999px;
+            transition: width 0.3s;
+        }
+        
+        /* Live Indicator */
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s ease-in-out infinite;
         }
         
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
+                transform: scale(1);
             }
             50% {
-                opacity: .7;
+                opacity: 0.7;
+                transform: scale(1.1);
             }
         }
         
-        .stat-card {
-            background: rgba(26, 31, 58, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(94, 231, 216, 0.2);
-            transition: all 0.3s ease;
-        }
+        /* Utility Classes */
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
+        .gap-4 { gap: 16px; }
+        .gap-6 { gap: 24px; }
+        .mt-2 { margin-top: 8px; }
+        .mt-4 { margin-top: 16px; }
+        .mt-6 { margin-top: 24px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-6 { margin-bottom: 24px; }
+        .py-4 { padding-top: 16px; padding-bottom: 16px; }
+        .py-6 { padding-top: 24px; padding-bottom: 24px; }
+        .text-sm { font-size: 13px; }
+        .text-xs { font-size: 11px; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .grid { display: grid; }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
         
-        .stat-card:hover {
-            border-color: rgba(94, 231, 216, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        .token-row {
-            background: rgba(26, 31, 58, 0.4);
-            border: 1px solid rgba(94, 231, 216, 0.1);
-            transition: all 0.2s ease;
-        }
-        
-        .token-row:hover {
-            background: rgba(26, 31, 58, 0.7);
-            border-color: rgba(94, 231, 216, 0.3);
-            transform: translateX(4px);
-        }
-        
-        .alert-badge {
-            animation: slideIn 0.5s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        @media (max-width: 768px) {
+            .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
-<body class="text-white">
+<body>
     <!-- Header -->
-    <header class="border-b border-gray-800 bg-[#0B1020]/90 backdrop-blur-sm sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4">
+    <header class="header">
+        <div class="container py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5EE7D8] to-[#A855F7] flex items-center justify-center glow">
-                        <span class="text-2xl font-bold">⏰</span>
-                    </div>
-                    <h1 class="text-3xl font-bold gradient-text">SolClock</h1>
+                <div class="flex items-center gap-6">
+                    <div class="logo">SOLCLOCK</div>
+                    <nav class="flex items-center gap-2">
+                        <a href="#" class="nav-link active">Dashboard</a>
+                        <a href="#" class="nav-link">Analytics</a>
+                        <a href="#" class="nav-link">Tokens</a>
+                        <a href="#" class="nav-link">Alerts</a>
+                    </nav>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <div class="flex items-center space-x-2 text-sm">
-                        <div class="w-2 h-2 bg-green-500 rounded-full pulse"></div>
-                        <span class="text-gray-400">Live</span>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <div class="live-dot"></div>
+                        <span class="text-sm" style="color: var(--text-secondary);">Live</span>
                     </div>
+                    <button class="search-input" style="cursor: pointer;">🔍 Search</button>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-8 space-y-8">
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="stat-card rounded-xl p-6">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-400 text-sm font-medium">Network TPS</span>
-                    <span class="text-2xl">⚡</span>
-                </div>
-                <div class="text-3xl font-bold text-[#5EE7D8]">3,847</div>
-                <div class="text-xs text-green-400 mt-1">↑ 12.3%</div>
+    <main class="container" style="padding-top: 32px; padding-bottom: 48px;">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+            <div class="stat-card">
+                <div class="stat-label">Network TPS</div>
+                <div class="stat-value">3,847</div>
+                <div class="stat-change positive">↑ 12.3%</div>
             </div>
             
-            <div class="stat-card rounded-xl p-6">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-400 text-sm font-medium">Active Wallets</span>
-                    <span class="text-2xl">👛</span>
-                </div>
-                <div class="text-3xl font-bold text-[#A855F7]">142.8K</div>
-                <div class="text-xs text-green-400 mt-1">↑ 8.7%</div>
+            <div class="stat-card">
+                <div class="stat-label">Active Wallets</div>
+                <div class="stat-value">142.8K</div>
+                <div class="stat-change positive">↑ 8.7%</div>
             </div>
             
-            <div class="stat-card rounded-xl p-6">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-400 text-sm font-medium">Meme Tokens</span>
-                    <span class="text-2xl">🚀</span>
-                </div>
-                <div class="text-3xl font-bold text-[#5EE7D8]">50</div>
-                <div class="text-xs text-gray-400 mt-1">Tracked</div>
+            <div class="stat-card">
+                <div class="stat-label">Tracked Tokens</div>
+                <div class="stat-value">50</div>
+                <div class="stat-change">—</div>
             </div>
             
-            <div class="stat-card rounded-xl p-6">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-400 text-sm font-medium">24h Volume</span>
-                    <span class="text-2xl">💰</span>
-                </div>
-                <div class="text-3xl font-bold text-[#A855F7]">$52.3M</div>
-                <div class="text-xs text-red-400 mt-1">↓ 3.2%</div>
+            <div class="stat-card">
+                <div class="stat-label">24h Volume</div>
+                <div class="stat-value">$52.3M</div>
+                <div class="stat-change negative">↓ 3.2%</div>
             </div>
         </div>
 
         <!-- Network Pulse Chart -->
-        <div class="stat-card rounded-xl p-6 glow">
-            <h2 class="text-xl font-bold mb-4 flex items-center">
-                <span class="text-2xl mr-2">📊</span>
-                Network Pulse - Last 24 Hours
-            </h2>
+        <div class="card mb-6">
+            <h2 class="card-title">📊 Network Pulse - Last 24 Hours</h2>
             <canvas id="networkPulseChart" height="80"></canvas>
         </div>
 
-        <!-- Alerts Panel -->
-        <div class="stat-card rounded-xl p-6 glow-purple">
-            <h2 class="text-xl font-bold mb-4 flex items-center">
-                <span class="text-2xl mr-2">🚨</span>
-                Live Alerts
-            </h2>
-            <div class="space-y-3">
-                <div class="alert-badge flex items-start space-x-3 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-                    <span class="text-2xl">🐋</span>
-                    <div class="flex-1">
-                        <div class="font-semibold text-red-400">Whale Alert: BONK</div>
-                        <div class="text-sm text-gray-400">Large transaction detected: 15.2M tokens moved</div>
-                        <div class="text-xs text-gray-500 mt-1">2 minutes ago</div>
+        <!-- Two Column Layout -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px;">
+            <!-- Top Meme Coins -->
+            <div class="card">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="card-title" style="margin: 0;">🏆 Top 50 Meme Coins</h2>
+                    <input type="text" placeholder="Search tokens..." class="search-input" style="width: 200px;">
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Token</th>
+                                <th>24h Volume</th>
+                                <th>Buyers</th>
+                                <th>Holders</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tokenTable">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Alerts Panel -->
+            <div class="card">
+                <h2 class="card-title">🚨 Live Alerts</h2>
+                
+                <div class="alert alert-error">
+                    <div style="font-size: 20px;">🐋</div>
+                    <div style="flex: 1;">
+                        <div class="alert-title" style="color: var(--error);">Whale Alert: BONK</div>
+                        <div class="alert-desc">Large transaction: 15.2M tokens</div>
+                        <div class="alert-time">2 minutes ago</div>
                     </div>
                 </div>
                 
-                <div class="alert-badge flex items-start space-x-3 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-                    <span class="text-2xl">📈</span>
-                    <div class="flex-1">
-                        <div class="font-semibold text-yellow-400">High Volatility: SAMO</div>
-                        <div class="text-sm text-gray-400">Price swing of 23% in the last hour</div>
-                        <div class="text-xs text-gray-500 mt-1">8 minutes ago</div>
+                <div class="alert alert-warning">
+                    <div style="font-size: 20px;">📈</div>
+                    <div style="flex: 1;">
+                        <div class="alert-title" style="color: var(--warning);">High Volatility: SAMO</div>
+                        <div class="alert-desc">Price swing of 23% in 1 hour</div>
+                        <div class="alert-time">8 minutes ago</div>
                     </div>
                 </div>
                 
-                <div class="alert-badge flex items-start space-x-3 p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
-                    <span class="text-2xl">🌙</span>
-                    <div class="flex-1">
-                        <div class="font-semibold text-purple-400">Degen Hours Active</div>
-                        <div class="text-sm text-gray-400">Network activity 40% above average</div>
-                        <div class="text-xs text-gray-500 mt-1">15 minutes ago</div>
+                <div class="alert alert-info">
+                    <div style="font-size: 20px;">🌙</div>
+                    <div style="flex: 1;">
+                        <div class="alert-title" style="color: var(--info);">Degen Hours Active</div>
+                        <div class="alert-desc">Activity 40% above average</div>
+                        <div class="alert-time">15 minutes ago</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Top 50 Meme Coins -->
-        <div class="stat-card rounded-xl p-6 glow">
-            <h2 class="text-xl font-bold mb-6 flex items-center justify-between">
-                <span class="flex items-center">
-                    <span class="text-2xl mr-2">🏆</span>
-                    Top 50 Meme Coins
-                </span>
-                <input type="text" placeholder="Search tokens..." 
-                    class="px-4 py-2 bg-[#0B1020] border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-[#5EE7D8]">
-            </h2>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="text-left text-gray-400 text-sm border-b border-gray-700">
-                            <th class="pb-3 font-medium">Rank</th>
-                            <th class="pb-3 font-medium">Token</th>
-                            <th class="pb-3 font-medium">24h Volume</th>
-                            <th class="pb-3 font-medium">Buyers</th>
-                            <th class="pb-3 font-medium">Holders</th>
-                            <th class="pb-3 font-medium">Liquidity</th>
-                            <th class="pb-3 font-medium">Score</th>
-                        </tr>
-                    </thead>
-                    <tbody class="space-y-2" id="tokenTable">
-                        <!-- Tokens will be inserted here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Meme Clock Preview -->
-        <div class="stat-card rounded-xl p-6 glow-purple">
-            <h2 class="text-xl font-bold mb-4 flex items-center">
-                <span class="text-2xl mr-2">⏰</span>
-                Meme Clock - Hourly Activity
-            </h2>
+        <!-- Meme Clock Chart -->
+        <div class="card">
+            <h2 class="card-title">⏰ Meme Clock - Hourly Activity Pattern</h2>
             <canvas id="memeClockChart" height="100"></canvas>
         </div>
     </main>
 
-    <footer class="border-t border-gray-800 mt-12 py-6">
-        <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
-            <p>SolClock Dashboard © 2025 | Real-time Solana Network Analytics</p>
-            <p class="mt-2">Built with Next.js, Node.js, PostgreSQL & Redis</p>
+    <footer style="background: var(--bg-primary); border-top: 1px solid var(--border-light); padding: 24px 0; margin-top: 48px;">
+        <div class="container" style="text-align: center; color: var(--text-secondary); font-size: 13px;">
+            <p>SolClock © 2025 | Solana Network Analytics Dashboard</p>
+            <p style="margin-top: 8px;">Powered by Solana Blockchain</p>
         </div>
     </footer>
 
     <script>
-        // Mock data for demonstration
+        // Mock Data
         const tokens = [
-            { rank: 1, symbol: 'BONK', logo: '🐕', volume: 8524000, buyers: 12453, holders: 45623, liquidity: 2340000, score: 94.5 },
-            { rank: 2, symbol: 'SAMO', logo: '🐶', volume: 6234000, buyers: 9876, holders: 38945, liquidity: 1890000, score: 89.2 },
-            { rank: 3, symbol: 'COPE', logo: '😎', volume: 5123000, buyers: 8234, holders: 34567, liquidity: 1560000, score: 85.8 },
-            { rank: 4, symbol: 'WIF', logo: '🎩', volume: 4567000, buyers: 7456, holders: 31234, liquidity: 1340000, score: 82.3 },
-            { rank: 5, symbol: 'MYRO', logo: '🐕', volume: 3890000, buyers: 6543, holders: 28901, liquidity: 1120000, score: 78.9 },
-            { rank: 6, symbol: 'POPCAT', logo: '🐱', volume: 3456000, buyers: 5987, holders: 26543, liquidity: 980000, score: 75.4 },
-            { rank: 7, symbol: 'MEW', logo: '😺', volume: 3123000, buyers: 5432, holders: 24321, liquidity: 890000, score: 72.1 },
-            { rank: 8, symbol: 'WEN', logo: '🗓️', volume: 2876000, buyers: 4987, holders: 22109, liquidity: 780000, score: 68.7 },
-            { rank: 9, symbol: 'SILLY', logo: '🤪', volume: 2543000, buyers: 4543, holders: 20456, liquidity: 690000, score: 65.3 },
-            { rank: 10, symbol: 'GIGA', logo: '💪', volume: 2234000, buyers: 4123, holders: 18765, liquidity: 620000, score: 62.0 }
+            { rank: 1, symbol: 'BONK', logo: '🐕', volume: 8524000, buyers: 12453, holders: 45623, score: 94.5 },
+            { rank: 2, symbol: 'SAMO', logo: '🐶', volume: 6234000, buyers: 9876, holders: 38945, score: 89.2 },
+            { rank: 3, symbol: 'COPE', logo: '😎', volume: 5123000, buyers: 8234, holders: 34567, score: 85.8 },
+            { rank: 4, symbol: 'WIF', logo: '🎩', volume: 4567000, buyers: 7456, holders: 31234, score: 82.3 },
+            { rank: 5, symbol: 'MYRO', logo: '🐕', volume: 3890000, buyers: 6543, holders: 28901, score: 78.9 },
+            { rank: 6, symbol: 'POPCAT', logo: '🐱', volume: 3456000, buyers: 5987, holders: 26543, score: 75.4 },
+            { rank: 7, symbol: 'MEW', logo: '😺', volume: 3123000, buyers: 5432, holders: 24321, score: 72.1 },
+            { rank: 8, symbol: 'WEN', logo: '🗓️', volume: 2876000, buyers: 4987, holders: 22109, score: 68.7 },
+            { rank: 9, symbol: 'SILLY', logo: '🤪', volume: 2543000, buyers: 4543, holders: 20456, score: 65.3 },
+            { rank: 10, symbol: 'GIGA', logo: '💪', volume: 2234000, buyers: 4123, holders: 18765, score: 62.0 }
         ];
 
-        // Populate token table
+        // Populate Token Table
         const tokenTable = document.getElementById('tokenTable');
         tokens.forEach(token => {
             const row = document.createElement('tr');
-            row.className = 'token-row';
+            row.style.cursor = 'pointer';
             row.innerHTML = `
-                <td class="py-4 px-2">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#5EE7D8] to-[#A855F7] text-sm font-bold">
-                        ${token.rank}
-                    </div>
+                <td>
+                    <div class="rank-badge ${token.rank <= 3 ? 'top-3' : ''}">${token.rank}</div>
                 </td>
-                <td class="py-4">
-                    <div class="flex items-center space-x-3">
-                        <span class="text-2xl">${token.logo}</span>
+                <td>
+                    <div class="flex items-center gap-3">
+                        <div class="token-logo">${token.logo}</div>
                         <span class="font-semibold">${token.symbol}</span>
                     </div>
                 </td>
-                <td class="py-4 text-[#5EE7D8] font-semibold">$${(token.volume / 1000000).toFixed(2)}M</td>
-                <td class="py-4 text-gray-300">${token.buyers.toLocaleString()}</td>
-                <td class="py-4 text-gray-300">${token.holders.toLocaleString()}</td>
-                <td class="py-4 text-[#A855F7] font-semibold">$${(token.liquidity / 1000000).toFixed(2)}M</td>
-                <td class="py-4">
-                    <div class="flex items-center space-x-2">
-                        <div class="flex-1 bg-gray-700 rounded-full h-2 w-16">
-                            <div class="bg-gradient-to-r from-[#5EE7D8] to-[#A855F7] h-2 rounded-full" style="width: ${token.score}%"></div>
+                <td class="font-semibold" style="color: var(--primary-teal);">$${(token.volume / 1000000).toFixed(2)}M</td>
+                <td>${token.buyers.toLocaleString()}</td>
+                <td>${token.holders.toLocaleString()}</td>
+                <td>
+                    <div class="flex items-center gap-2">
+                        <div class="progress-bar" style="width: 80px;">
+                            <div class="progress-fill" style="width: ${token.score}%;"></div>
                         </div>
                         <span class="text-sm font-semibold">${token.score}</span>
                     </div>
@@ -292,23 +561,31 @@
 
         const networkCtx = document.getElementById('networkPulseChart').getContext('2d');
         new Chart(networkCtx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: hours,
                 datasets: [
                     {
                         label: 'TPS',
                         data: tpsData,
-                        backgroundColor: 'rgba(94, 231, 216, 0.6)',
-                        borderColor: 'rgba(94, 231, 216, 1)',
-                        borderWidth: 2
+                        backgroundColor: 'rgba(20, 241, 149, 0.1)',
+                        borderColor: '#14F195',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6
                     },
                     {
                         label: 'Active Wallets',
                         data: walletsData,
-                        backgroundColor: 'rgba(168, 85, 247, 0.6)',
-                        borderColor: 'rgba(168, 85, 247, 1)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderColor: '#3B82F6',
                         borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
                         yAxisID: 'y1'
                     }
                 ]
@@ -318,23 +595,39 @@
                 maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        labels: { color: '#9CA3AF' }
+                        labels: {
+                            color: '#6B7280',
+                            font: { family: 'Inter', size: 12, weight: '500' }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#FFFFFF',
+                        titleColor: '#1A1A1A',
+                        bodyColor: '#6B7280',
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: true
                     }
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#9CA3AF' }
+                        grid: { color: '#F7F9FB', drawBorder: false },
+                        ticks: { color: '#9CA3AF', font: { family: 'Inter', size: 11 } }
                     },
                     y: {
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#9CA3AF' }
+                        grid: { color: '#F7F9FB', drawBorder: false },
+                        ticks: { color: '#9CA3AF', font: { family: 'Inter', size: 11 } }
                     },
                     y1: {
                         position: 'right',
                         grid: { display: false },
-                        ticks: { color: '#9CA3AF' }
+                        ticks: { color: '#9CA3AF', font: { family: 'Inter', size: 11 } }
                     }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
                 }
             }
         });
@@ -347,30 +640,45 @@
             data: {
                 labels: hours,
                 datasets: [{
-                    label: 'Transactions',
+                    label: 'Transactions per Hour',
                     data: memeClockData,
-                    backgroundColor: hours.map((_, i) => 
-                        i % 3 === 0 ? 'rgba(94, 231, 216, 0.8)' : 'rgba(168, 85, 247, 0.8)'
-                    ),
-                    borderColor: 'rgba(94, 231, 216, 1)',
-                    borderWidth: 2,
-                    borderRadius: 6
+                    backgroundColor: hours.map((_, i) => {
+                        const max = Math.max(...memeClockData);
+                        const val = memeClockData[i];
+                        return val === max ? '#14F195' : 'rgba(20, 241, 149, 0.3)';
+                    }),
+                    borderColor: '#14F195',
+                    borderWidth: 0,
+                    borderRadius: 4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
                 plugins: {
-                    legend: { labels: { color: '#9CA3AF' } }
+                    legend: {
+                        labels: {
+                            color: '#6B7280',
+                            font: { family: 'Inter', size: 12, weight: '500' }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#FFFFFF',
+                        titleColor: '#1A1A1A',
+                        bodyColor: '#6B7280',
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
+                        padding: 12
+                    }
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#9CA3AF' }
+                        grid: { color: '#F7F9FB', drawBorder: false },
+                        ticks: { color: '#9CA3AF', font: { family: 'Inter', size: 11 } }
                     },
                     y: {
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#9CA3AF' }
+                        grid: { color: '#F7F9FB', drawBorder: false },
+                        ticks: { color: '#9CA3AF', font: { family: 'Inter', size: 11 } }
                     }
                 }
             }
