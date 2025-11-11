@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-solana-bg text-solana-text-primary antialiased;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-solana-card rounded-xl border border-solana-border;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:border-solana-teal/50 hover:shadow-glow-teal;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-solana-teal to-solana-purple text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-glow-purple hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply border border-solana-teal text-solana-teal font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:bg-solana-teal/10 hover:shadow-glow-teal;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-solana-teal to-solana-purple bg-clip-text text-transparent;
+  }
+}
