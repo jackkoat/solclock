@@ -70,3 +70,9 @@
 1. Test with Docker locally
 2. Deploy to production
 3. Run comprehensive testing
+
+### Preview:
+- Created standalone HTML preview: `/workspace/solclock/PREVIEW.html`
+- Shows complete UI with all features (Network Pulse, Top 50 Memes, Alerts, Charts)
+- Interactive charts using Chart.js
+- Solana-themed design with gradient colors
