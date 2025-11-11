@@ -1,22 +1,35 @@
 /**
  * Data Aggregation Job
- * Generates mock data and calculates rankings
- * Run this script to populate the database with test data
+ * Fetches and aggregates Solana network and token data
+ * Can use either mock data or real Solana RPC based on configuration
  */
 
-const MockDataGenerator = require('../services/mockDataGenerator');
+require('dotenv').config();
+const HybridDataService = require('../services/hybridDataService');
 const scoringService = require('../services/scoringService');
+const logger = require('../utils/logger');
 
 async function runDataAggregation() {
   console.log('=== SolClock Data Aggregation Job ===');
   console.log('Starting at:', new Date().toISOString());
   
+  const dataService = new HybridDataService();
+  
   try {
-    // Initialize mock data generator
-    const generator = new MockDataGenerator();
+    // Show current mode
+    const mode = dataService.getMode();
+    console.log(`Data Source Mode: ${mode.description}`);
     
-    // Generate all mock data
-    await generator.generateAll();
+    // Health check (if using real data)
+    if (mode.useRealData) {
+      console.log('\nPerforming health check...');
+      const health = await dataService.healthCheck();
+      console.log('Health status:', health);
+    }
+    
+    // Generate/fetch all data
+    console.log('\nFetching network and token data...');
+    await dataService.updateAll(24);
     
     // Calculate rankings
     console.log('\nCalculating Top 50 rankings...');
@@ -29,6 +42,7 @@ async function runDataAggregation() {
     process.exit(0);
   } catch (error) {
     console.error('Data aggregation failed:', error);
+    logger.error('Data aggregation failed:', error);
     process.exit(1);
   }
 }

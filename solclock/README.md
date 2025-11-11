@@ -11,6 +11,7 @@ A professional full-stack crypto analytics dashboard for Solana traders to visua
 - **Whale Tracking**: Monitor large wallet transactions
 - **Watchlist**: Save and track favorite tokens
 - **Responsive Design**: Solana-themed dark UI with teal/purple accents
+- **Dual Data Modes**: Switch between mock data (development) and real Solana blockchain data (production)
 
 ## Tech Stack
 
@@ -18,7 +19,9 @@ A professional full-stack crypto analytics dashboard for Solana traders to visua
 - **Node.js** + Express.js
 - **PostgreSQL** for data storage
 - **Redis** for caching (5-minute TTL)
+- **@solana/web3.js** for blockchain integration
 - RESTful API architecture
+- Winston logger for monitoring
 
 ### Frontend
 - **Next.js 14** (React framework)
@@ -195,9 +198,12 @@ score = 0.35 * volume + 0.20 * unique_buyers + 0.15 * holders_growth + 0.15 * li
 
 All components are normalized to 0-100 scale before weighting.
 
-## Mock Data Patterns
+## Data Sources
 
-The mock data generator simulates realistic Solana network behavior:
+SolClock supports two data modes:
+
+### Mock Data Mode (Development)
+Perfect for local development and testing without API keys. Generates realistic patterns:
 
 - **Peak Hours** (14:00-22:00 UTC): 0.8-1.5x activity (US trading hours)
 - **Morning** (08:00-14:00 UTC): 0.5-0.8x activity
@@ -205,9 +211,37 @@ The mock data generator simulates realistic Solana network behavior:
 - **Late Night** (22:00-02:00 UTC): 0.4-0.7x activity
 - Random spikes to simulate whale activity and viral moments
 
+**Enable:** Set `USE_REAL_DATA=false` in backend/.env
+
+### Real Data Mode (Production)
+Fetches live data from Solana blockchain via RPC:
+
+- Real network statistics (transactions, blocks, slots)
+- Actual token supply and on-chain metrics
+- Recent transaction signatures and activity
+- Current blockchain state
+
+**Enable:** Set `USE_REAL_DATA=true` in backend/.env
+
+**Supported RPC Providers:**
+- **Free:** Public Solana RPC (5 req/s, limited historical data)
+- **Recommended:** [Helius](https://helius.dev) (100k+ credits/month, enhanced features)
+- **Enterprise:** [Solscan Pro](https://pro.solscan.io) (full historical data, volume tracking)
+
+📖 **Detailed Guide:** See [DATA_SOURCE_GUIDE.md](DATA_SOURCE_GUIDE.md) for complete instructions on switching modes and API integration.
+
+## Mock Data Patterns
+
+*Deprecated - See "Data Sources" section above for current information.*
+
 ## Production Deployment
 
-### Render.com (Recommended)
+### Quick Links
+- **Render.com Guide**: See [DEPLOYMENT_RENDER.md](DEPLOYMENT_RENDER.md) - Easiest, managed services
+- **AWS ECS Guide**: See [DEPLOYMENT_AWS.md](DEPLOYMENT_AWS.md) - Enterprise-grade, scalable
+- **Data Configuration**: See [DATA_SOURCE_GUIDE.md](DATA_SOURCE_GUIDE.md) - Switch to real Solana data
+
+### Render.com (Recommended for Getting Started)
 
 1. **Create PostgreSQL Database**
    - Go to Render Dashboard → New → PostgreSQL
@@ -232,7 +266,7 @@ The mock data generator simulates realistic Solana network behavior:
 
 ### AWS ECS
 
-See detailed deployment guide in `docs/AWS_DEPLOYMENT.md`
+See detailed deployment guide in [DEPLOYMENT_AWS.md](DEPLOYMENT_AWS.md)
 
 ## Environment Variables
 
@@ -248,6 +282,10 @@ See detailed deployment guide in `docs/AWS_DEPLOYMENT.md`
 - `REDIS_PORT` - Redis port (default: 6379)
 - `CACHE_TTL_SECONDS` - Cache duration (default: 300)
 - `CORS_ORIGIN` - Allowed frontend origin
+- `USE_REAL_DATA` - Data mode: `false` (mock) or `true` (real blockchain)
+- `SOLANA_RPC_ENDPOINT` - Solana RPC URL (default: public mainnet)
+- `RPC_RATE_LIMIT` - Max requests per second (default: 5)
+- `LOG_LEVEL` - Logging level: debug, info, warn, error
 
 ### Frontend
 - `NEXT_PUBLIC_API_URL` - Backend API URL
@@ -276,13 +314,15 @@ npm run generate-mock
 
 ## Future Enhancements
 
-- Connect to real Solscan API for live Solana data
 - User authentication and personalized watchlists
 - WebSocket support for real-time updates
 - Advanced charting with technical indicators
 - Mobile app (React Native)
-- Alert webhooks and notifications
-- Historical data analysis
+- Push notifications for alerts
+- Historical data analysis and backtesting
+- Social sentiment tracking integration
+- DEX volume monitoring (Helius/Solscan integration)
+- Portfolio tracking and PnL calculation
 
 ## License
 
@@ -298,4 +338,9 @@ For issues, questions, or feature requests, please open an issue in the reposito
 
 ---
 
-**Note**: This dashboard uses mock data for demonstration. To use real Solana data, integrate with [Solscan API](https://public-api.solscan.io/docs/) or similar services in production.
+**Current Status**: Production-ready with both mock data (development) and real Solana blockchain integration (production).
+
+📖 **Documentation**:
+- [Data Source Configuration](DATA_SOURCE_GUIDE.md)
+- [Render.com Deployment](DEPLOYMENT_RENDER.md)
+- [AWS ECS Deployment](DEPLOYMENT_AWS.md)

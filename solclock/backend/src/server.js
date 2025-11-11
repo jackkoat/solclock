@@ -12,6 +12,7 @@ require('dotenv').config();
 
 const pool = require('./db/pool');
 const cacheService = require('./services/cacheService');
+const HybridDataService = require('./services/hybridDataService');
 
 // Import routes
 const networkRoutes = require('./routes/network');
@@ -63,12 +64,19 @@ app.get('/health', async (req, res) => {
     // Check database connection
     await pool.query('SELECT 1');
     
+    // Check Solana RPC (if using real data)
+    const dataService = new HybridDataService();
+    const mode = dataService.getMode();
+    const rpcHealth = await dataService.healthCheck();
+    
     res.json({
       status: 'healthy',
       timestamp: new Date().toISOString(),
       services: {
         database: 'connected',
-        cache: cacheService.isConnected ? 'connected' : 'disconnected'
+        cache: cacheService.isConnected ? 'connected' : 'disconnected',
+        dataSource: mode.mode,
+        solanaRpc: mode.useRealData ? rpcHealth : { status: 'not_used' }
       }
     });
   } catch (error) {
