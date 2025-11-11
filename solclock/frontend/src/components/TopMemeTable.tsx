@@ -73,9 +73,9 @@ export default function TopMemeTable({ tokens }: Props) {
   const SortIcon = ({ columnKey }: { columnKey: SortKey }) => {
     if (sortKey !== columnKey) return null;
     return sortOrder === 'asc' ? (
-      <ArrowUp className="w-4 h-4 inline ml-1" />
+      <ArrowUp className="w-3 h-3 inline ml-1" />
     ) : (
-      <ArrowDown className="w-4 h-4 inline ml-1" />
+      <ArrowDown className="w-3 h-3 inline ml-1" />
     );
   };
 
@@ -94,121 +94,95 @@ export default function TopMemeTable({ tokens }: Props) {
   return (
     <div>
       {/* Search Bar */}
-      <div className="mb-4 relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-solana-text-secondary" />
+      <div className="mb-5">
         <input
           type="text"
-          placeholder="Search tokens by symbol or name..."
-          className="w-full pl-10 pr-4 py-3 bg-solana-bg border border-solana-border rounded-lg text-white focus:outline-none focus:border-solana-teal transition-colors"
+          placeholder="Search tokens..."
+          className="input w-full md:w-64"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full">
+      <div className="table-container">
+        <table className="data-table">
           <thead>
-            <tr className="border-b border-solana-border text-left">
-              <th
-                className="p-3 cursor-pointer hover:text-solana-teal transition-colors"
+            <tr>
+              <th 
+                className="cursor-pointer hover:text-primary-teal transition-colors"
                 onClick={() => handleSort('rank')}
               >
-                Rank <SortIcon columnKey="rank" />
+                # <SortIcon columnKey="rank" />
               </th>
-              <th className="p-3">Token</th>
-              <th
-                className="p-3 cursor-pointer hover:text-solana-teal transition-colors"
-                onClick={() => handleSort('score')}
-              >
-                Score <SortIcon columnKey="score" />
-              </th>
-              <th
-                className="p-3 cursor-pointer hover:text-solana-teal transition-colors"
+              <th>Token</th>
+              <th 
+                className="cursor-pointer hover:text-primary-teal transition-colors"
                 onClick={() => handleSort('volume')}
               >
-                Volume 24h <SortIcon columnKey="volume" />
+                24h Volume <SortIcon columnKey="volume" />
               </th>
-              <th
-                className="p-3 cursor-pointer hover:text-solana-teal transition-colors"
+              <th 
+                className="cursor-pointer hover:text-primary-teal transition-colors"
                 onClick={() => handleSort('buyers')}
               >
                 Buyers <SortIcon columnKey="buyers" />
               </th>
-              <th
-                className="p-3 cursor-pointer hover:text-solana-teal transition-colors"
+              <th 
+                className="cursor-pointer hover:text-primary-teal transition-colors"
                 onClick={() => handleSort('holders')}
               >
                 Holders <SortIcon columnKey="holders" />
               </th>
-              <th
-                className="p-3 cursor-pointer hover:text-solana-teal transition-colors"
-                onClick={() => handleSort('liquidity')}
+              <th 
+                className="cursor-pointer hover:text-primary-teal transition-colors"
+                onClick={() => handleSort('score')}
               >
-                Liquidity <SortIcon columnKey="liquidity" />
+                Score <SortIcon columnKey="score" />
               </th>
-              <th className="p-3">Peak Hour</th>
             </tr>
           </thead>
           <tbody>
             {sortedAndFilteredTokens.map((token) => (
               <tr
                 key={token.token_address}
-                className="border-b border-solana-border hover:bg-solana-bg cursor-pointer transition-colors"
+                className="cursor-pointer"
                 onClick={() => router.push(`/token/${token.token_address}`)}
               >
-                <td className="p-3">
-                  <span
-                    className={`font-bold ${
-                      token.rank <= 3
-                        ? 'text-solana-teal text-xl'
-                        : token.rank <= 10
-                        ? 'text-solana-purple'
-                        : 'text-white'
-                    }`}
-                  >
-                    #{token.rank}
-                  </span>
+                <td>
+                  <div className={`rank-badge ${token.rank <= 3 ? 'top-3' : ''}`}>
+                    {token.rank}
+                  </div>
                 </td>
-                <td className="p-3">
+                <td>
                   <div className="flex items-center gap-3">
                     <img
                       src={token.logo_url}
                       alt={token.symbol}
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-teal to-info"
                       onError={(e) => {
                         e.currentTarget.src = 'https://via.placeholder.com/32?text=' + token.symbol.charAt(0);
                       }}
                     />
-                    <div>
-                      <p className="font-semibold">{token.symbol}</p>
-                      <p className="text-sm text-solana-text-secondary">{token.name}</p>
+                    <span className="font-semibold">{token.symbol}</span>
+                  </div>
+                </td>
+                <td className="font-semibold text-primary-teal">
+                  {formatNumber(token.metrics.volume_24h_usd)}
+                </td>
+                <td className="text-text-primary">
+                  {formatCount(token.metrics.unique_buyers_24h)}
+                </td>
+                <td className="text-text-primary">
+                  {formatCount(token.metrics.holders)}
+                </td>
+                <td>
+                  <div className="flex items-center gap-2">
+                    <div className="progress-bar w-20">
+                      <div className="progress-fill" style={{ width: `${token.score}%` }}></div>
                     </div>
+                    <span className="text-sm font-semibold">{token.score}</span>
                   </div>
-                </td>
-                <td className="p-3">
-                  <span className="font-bold text-solana-teal">{token.score}</span>
-                </td>
-                <td className="p-3 font-mono">{formatNumber(token.metrics.volume_24h_usd)}</td>
-                <td className="p-3">{formatCount(token.metrics.unique_buyers_24h)}</td>
-                <td className="p-3">
-                  <div>
-                    <p>{formatCount(token.metrics.holders)}</p>
-                    <p
-                      className={`text-xs ${
-                        token.metrics.holders_growth_24h >= 0 ? 'text-green-400' : 'text-red-400'
-                      }`}
-                    >
-                      {token.metrics.holders_growth_24h >= 0 ? '+' : ''}
-                      {token.metrics.holders_growth_24h.toFixed(2)}%
-                    </p>
-                  </div>
-                </td>
-                <td className="p-3 font-mono">{formatNumber(token.metrics.liquidity_usd)}</td>
-                <td className="p-3">
-                  <span className="px-2 py-1 bg-solana-purple/20 text-solana-purple rounded text-sm">
-                    {token.peak_hour || 'N/A'}
-                  </span>
                 </td>
               </tr>
             ))}
@@ -217,7 +191,7 @@ export default function TopMemeTable({ tokens }: Props) {
       </div>
 
       {sortedAndFilteredTokens.length === 0 && (
-        <div className="text-center py-12 text-solana-text-secondary">
+        <div className="text-center py-12 text-text-secondary">
           No tokens found matching your search
         </div>
       )}

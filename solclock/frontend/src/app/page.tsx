@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Activity, TrendingUp, Clock } from 'lucide-react';
+import { Activity, TrendingUp, AlertCircle, Menu } from 'lucide-react';
 import NetworkPulseChart from '@/components/NetworkPulseChart';
 import TopMemeTable from '@/components/TopMemeTable';
 import AlertPanel from '@/components/AlertPanel';
@@ -42,62 +42,101 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen p-6 pb-20">
+    <>
       {/* Header */}
-      <header className="mb-8 animate-fade-in">
-        <div className="flex items-center gap-3 mb-2">
-          <Clock className="w-10 h-10 text-solana-teal" />
-          <h1 className="text-4xl font-bold gradient-text">
-            SolClock
-          </h1>
+      <header className="bg-bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
+        <div className="max-w-[1440px] mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-8">
+              <h1 className="text-2xl font-bold text-primary-teal uppercase tracking-tight">
+                SOLCLOCK
+              </h1>
+              <nav className="hidden md:flex items-center gap-2">
+                <a href="#" className="px-4 py-2 text-sm font-medium text-text-primary bg-primary-teal/10 rounded-lg transition-colors">
+                  Dashboard
+                </a>
+                <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                  Analytics
+                </a>
+                <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                  Tokens
+                </a>
+                <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                  Alerts
+                </a>
+              </nav>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="live-dot"></div>
+                <span className="text-sm text-text-secondary">Live</span>
+              </div>
+              <button className="md:hidden p-2 text-text-secondary hover:text-text-primary">
+                <Menu className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
         </div>
-        <p className="text-solana-text-secondary text-lg">
-          Track Solana&apos;s Degen Hours in Real Time
-        </p>
       </header>
 
-      {/* Network Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 animate-slide-up">
-        <NetworkStatsCard />
-      </div>
+      <main className="max-w-[1440px] mx-auto px-6 py-8 pb-20">
+        {/* Network Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <NetworkStatsCard />
+        </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
-        {/* Left Section: Network Pulse */}
-        <div className="xl:col-span-2 card p-6 animate-slide-up">
-          <div className="flex items-center gap-3 mb-4">
-            <Activity className="w-6 h-6 text-solana-teal" />
-            <h2 className="text-2xl font-bold">Network Pulse</h2>
+        {/* Network Pulse Chart */}
+        <div className="card mb-6">
+          <div className="flex items-center gap-2 mb-5">
+            <Activity className="w-5 h-5 text-primary-teal" />
+            <h2 className="text-lg font-bold">Network Pulse - Last 24 Hours</h2>
           </div>
           {loading ? (
             <div className="h-80 flex items-center justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-solana-teal border-t-transparent"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-teal border-t-transparent"></div>
             </div>
           ) : (
             <NetworkPulseChart data={networkData} />
           )}
         </div>
 
-        {/* Right Section: Alerts */}
-        <div className="card p-6 animate-slide-up">
-          <AlertPanel alerts={alerts} loading={loading} />
-        </div>
-      </div>
-
-      {/* Top Meme Coins Table */}
-      <div className="card p-6 animate-slide-up">
-        <div className="flex items-center gap-3 mb-6">
-          <TrendingUp className="w-6 h-6 text-solana-purple" />
-          <h2 className="text-2xl font-bold">Top 50 Meme Coins</h2>
-        </div>
-        {loading ? (
-          <div className="h-96 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-solana-purple border-t-transparent"></div>
+        {/* Two Column Layout */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+          {/* Top Meme Coins Table */}
+          <div className="xl:col-span-2 card">
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-primary-teal" />
+                <h2 className="text-lg font-bold">Top 50 Meme Coins</h2>
+              </div>
+            </div>
+            {loading ? (
+              <div className="h-96 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-teal border-t-transparent"></div>
+              </div>
+            ) : (
+              <TopMemeTable tokens={topMemeCoins} />
+            )}
           </div>
-        ) : (
-          <TopMemeTable tokens={topMemeCoins} />
-        )}
-      </div>
-    </main>
+
+          {/* Alerts Panel */}
+          <div className="card">
+            <div className="flex items-center gap-2 mb-5">
+              <AlertCircle className="w-5 h-5 text-error" />
+              <h2 className="text-lg font-bold">Live Alerts</h2>
+            </div>
+            <AlertPanel alerts={alerts} loading={loading} />
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-bg-primary border-t border-border-light mt-12 py-6">
+        <div className="max-w-[1440px] mx-auto px-6 text-center text-text-secondary text-sm">
+          <p>SolClock © 2025 | Solana Network Analytics Dashboard</p>
+          <p className="mt-2">Powered by Solana Blockchain</p>
+        </div>
+      </footer>
+    </>
   );
 }

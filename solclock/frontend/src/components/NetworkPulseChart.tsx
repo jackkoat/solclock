@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import type { NetworkPulseData } from '@/types';
 
 interface Props {
@@ -18,7 +18,6 @@ export default function NetworkPulseChart({ data }: Props) {
         return {
           hour: date.getUTCHours() + ':00',
           transactions: Math.round(stat.total_transactions / 1000), // Show in thousands
-          blocks: stat.total_blocks,
           wallets: Math.round(stat.unique_wallets / 1000), // Show in thousands
         };
       });
@@ -28,7 +27,7 @@ export default function NetworkPulseChart({ data }: Props) {
 
   if (!data) {
     return (
-      <div className="h-80 flex items-center justify-center text-solana-text-secondary">
+      <div className="h-80 flex items-center justify-center text-text-secondary">
         No network data available
       </div>
     );
@@ -37,16 +36,13 @@ export default function NetworkPulseChart({ data }: Props) {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="card p-4 shadow-lg">
-          <p className="font-semibold text-solana-teal mb-2">{label}</p>
-          <p className="text-sm text-solana-text-secondary">
-            Transactions: <span className="text-white font-semibold">{payload[0].value}K</span>
+        <div className="bg-bg-primary border border-border-light rounded-lg p-3 shadow-card">
+          <p className="font-semibold text-primary-teal mb-2 text-sm">{label}</p>
+          <p className="text-xs text-text-secondary">
+            TPS: <span className="text-text-primary font-semibold">{payload[0]?.value || 0}K</span>
           </p>
-          <p className="text-sm text-solana-text-secondary">
-            Blocks: <span className="text-white font-semibold">{payload[1].value}</span>
-          </p>
-          <p className="text-sm text-solana-text-secondary">
-            Wallets: <span className="text-white font-semibold">{payload[2].value}K</span>
+          <p className="text-xs text-text-secondary">
+            Wallets: <span className="text-text-primary font-semibold">{payload[1]?.value || 0}K</span>
           </p>
         </div>
       );
@@ -56,69 +52,43 @@ export default function NetworkPulseChart({ data }: Props) {
 
   return (
     <div className="w-full">
-      {/* Summary Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="text-center">
-          <p className="text-sm text-solana-text-secondary mb-1">Total Transactions</p>
-          <p className="text-2xl font-bold text-solana-teal">
-            {(data.summary.total_transactions_24h / 1_000_000).toFixed(1)}M
-          </p>
-        </div>
-        <div className="text-center">
-          <p className="text-sm text-solana-text-secondary mb-1">Total Blocks</p>
-          <p className="text-2xl font-bold text-solana-purple">
-            {(data.summary.total_blocks_24h / 1000).toFixed(1)}K
-          </p>
-        </div>
-        <div className="text-center">
-          <p className="text-sm text-solana-text-secondary mb-1">Avg Wallets/Hour</p>
-          <p className="text-2xl font-bold text-white">
-            {(data.summary.avg_unique_wallets / 1000).toFixed(0)}K
-          </p>
-        </div>
-      </div>
-
       {/* Chart */}
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" />
+      <ResponsiveContainer width="100%" height={320}>
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#F7F9FB" />
           <XAxis 
             dataKey="hour" 
-            stroke="#94A3B8"
-            style={{ fontSize: '12px' }}
+            stroke="#9CA3AF"
+            style={{ fontSize: '11px', fontFamily: 'Inter' }}
           />
           <YAxis 
-            stroke="#94A3B8"
-            style={{ fontSize: '12px' }}
+            stroke="#9CA3AF"
+            style={{ fontSize: '11px', fontFamily: 'Inter' }}
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend 
-            wrapperStyle={{ color: '#94A3B8' }}
+            wrapperStyle={{ color: '#6B7280', fontSize: '12px', fontFamily: 'Inter', fontWeight: '500' }}
           />
-          <Bar 
+          <Line 
+            type="monotone"
             dataKey="transactions" 
-            fill="#5EE7D8" 
-            name="Transactions (K)"
-            radius={[4, 4, 0, 0]}
+            stroke="#14F195" 
+            strokeWidth={2}
+            dot={false}
+            name="TPS (K)"
+            activeDot={{ r: 6 }}
           />
-          <Bar 
-            dataKey="blocks" 
-            fill="#A855F7" 
-            name="Blocks"
-            radius={[4, 4, 0, 0]}
+          <Line 
+            type="monotone"
+            dataKey="wallets" 
+            stroke="#3B82F6" 
+            strokeWidth={2}
+            dot={false}
+            name="Active Wallets (K)"
+            activeDot={{ r: 6 }}
           />
-        </BarChart>
+        </LineChart>
       </ResponsiveContainer>
-
-      {/* Peak Hour Info */}
-      {data.peak_hour && (
-        <div className="mt-4 p-4 bg-solana-bg rounded-lg border border-solana-teal/30">
-          <p className="text-sm text-solana-text-secondary mb-1">Peak Hour</p>
-          <p className="text-lg font-semibold text-solana-teal">
-            {new Date(data.peak_hour.hour).getUTCHours()}:00 UTC - {(data.peak_hour.total_transactions / 1_000_000).toFixed(2)}M transactions
-          </p>
-        </div>
-      )}
     </div>
   );
 }

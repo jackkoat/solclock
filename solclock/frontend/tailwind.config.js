@@ -8,41 +8,44 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        solana: {
-          bg: '#0B1020',
-          card: '#0E1626',
-          teal: '#5EE7D8',
-          purple: '#A855F7',
-          'purple-dark': '#7C3AED',
-          'teal-dark': '#2DD4BF',
-          border: '#1E293B',
-          text: {
-            primary: '#F8FAFC',
-            secondary: '#94A3B8',
-            muted: '#64748B'
-          }
-        }
+        // Solscan-inspired clean theme
+        primary: {
+          teal: '#14F195',
+          'teal-dark': '#0FD882',
+        },
+        bg: {
+          primary: '#FFFFFF',
+          secondary: '#F7F9FB',
+          tertiary: '#FAFBFC',
+        },
+        text: {
+          primary: '#1A1A1A',
+          secondary: '#6B7280',
+          tertiary: '#9CA3AF',
+        },
+        border: {
+          light: '#E5E7EB',
+          medium: '#D1D5DB',
+        },
+        success: '#10B981',
+        error: '#EF4444',
+        warning: '#F59E0B',
+        info: '#3B82F6',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
-        'glow-teal': '0 0 20px rgba(94, 231, 216, 0.3)',
-        'glow-purple': '0 0 20px rgba(168, 85, 247, 0.3)',
+        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05)',
+        'card-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
       },
       animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'fade-in': 'fadeIn 0.5s ease-in',
-        'slide-up': 'slideUp 0.5s ease-out',
+        'pulse-dot': 'pulseDot 2s ease-in-out infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        pulseDot: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.7', transform: 'scale(1.1)' },
         }
       }
     },
