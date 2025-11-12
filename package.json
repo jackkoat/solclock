@@ -2,9 +2,12 @@
   "name": "solclock-unified",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm install --frozen-lockfile=false && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -12,7 +15,6 @@
     "@supabase/supabase-js": "^2.81.1",
     "lucide-react": "^0.263.1",
     "next": "14.2.33",
-
     "react": "^18",
     "react-dom": "^18",
     "recharts": "^2.15.4"

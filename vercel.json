@@ -1,11 +1,6 @@
 {
-  "buildCommand": "pnpm install --frozen-lockfile=false && pnpm build",
+  "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "pnpm install --frozen-lockfile=false",
-  "framework": "nextjs",
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 30
-    }
-  }
+  "installCommand": "npm install",
+  "framework": "nextjs"
 }
