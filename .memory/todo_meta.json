@@ -3,9 +3,16 @@
     "Coordinator": {
       "1": {
         "id": "1",
-        "content": "Redesign SolClock UI with Solscan-inspired theme",
-        "details": "1. Create new design system (colors, typography, components)\n2. Update frontend with clean, professional blockchain explorer theme\n3. Rebuild PREVIEW.html with new design\n4. Update all React components with new styling",
-        "status": "completed",
+        "content": "Get Supabase credentials for full-stack Next.js deployment",
+        "details": "Request Supabase authentication credentials since we're moving from separate Express backend to consolidated Next.js with API routes and database operations",
+        "status": "pending",
+        "priority": "high"
+      },
+      "2": {
+        "id": "2",
+        "content": "Rebuild SolClock as full Next.js application with API routes",
+        "details": "Consolidate Express.js backend functionality into Next.js 14 App Router structure:\n1. Convert all Express routes to Next.js API routes (app/api/...)\n2. Migrate PostgreSQL database operations to Supabase\n3. Preserve all existing features: Network Pulse, Top Meme Coins, Alerts, Watchlist\n4. Maintain professional light theme design\n5. Keep TypeScript configuration and component structure\n6. Update data fetching to use internal API routes\n7. Configure proper error handling and caching",
+        "status": "pending",
         "priority": "high"
       }
     }
