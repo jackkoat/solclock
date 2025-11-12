@@ -77,6 +77,9 @@ export default function Home() {
                 <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Alerts
                 </a>
+                <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                  How It Works
+                </a>
               </nav>
             </div>
             <div className="flex items-center gap-4">
@@ -154,6 +157,188 @@ export default function Home() {
               <h2 className="text-lg font-bold">Live Alerts</h2>
             </div>
             <AlertPanel alerts={alerts} loading={loading} />
+          </div>
+        </div>
+
+        {/* How It Works Section */}
+        <div className="card">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-text-primary mb-3">How SolClock Works</h2>
+            <p className="text-lg text-text-secondary max-w-3xl mx-auto">SolClock solves the challenge of monitoring Solana's fast-moving meme coin ecosystem by providing real-time analytics, intelligent alerts, and automated tracking - all in one professional dashboard.</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {/* Problem Statement */}
+            <div>
+              <h3 className="text-xl font-bold text-text-primary mb-4">The Challenge</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-error/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-error text-sm">⚡</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-text-primary">Fast-Moving Market</div>
+                    <div className="text-sm text-text-secondary">Meme coins can pump or dump within minutes, making manual monitoring impossible</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-warning/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-warning text-sm">📊</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-text-primary">Information Overload</div>
+                    <div className="text-sm text-text-secondary">Thousands of tokens create noise; hard to identify genuine opportunities</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-info/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-info text-sm">🔍</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-text-primary">Lack of Intelligence</div>
+                    <div className="text-sm text-text-secondary">Basic price tracking misses whale activity, social sentiment, and liquidity metrics</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-error/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-error text-sm">⏰</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-text-primary">Time-Sensitive Decisions</div>
+                    <div className="text-sm text-text-secondary">Every second counts in crypto; delayed information means missed opportunities</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* SolClock Solution */}
+            <div>
+              <h3 className="text-xl font-bold text-text-primary mb-4">Our Solution</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-success text-sm">✅</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-text-primary">Real-Time Data Streams</div>
+                    <div className="text-sm text-text-secondary">Live Solana network metrics and DexScreener API integration for instant data</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-success text-sm">🧠</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-text-primary">Smart Scoring Algorithm</div>
+                    <div className="text-sm text-text-secondary">Weighted analysis of volume, liquidity, buyers, holders, and social signals</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-success text-sm">🚨</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-text-primary">Intelligent Alerts</div>
+                    <div className="text-sm text-text-secondary">Whale activity detection, price breakouts, and trend momentum notifications</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-success text-sm">⚙️</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-text-primary">Automated Updates</div>
+                    <div className="text-sm text-text-secondary">Hourly data refresh with Supabase cron jobs - zero maintenance required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Technical Architecture */}
+          <div className="border-t border-border-light pt-8">
+            <h3 className="text-xl font-bold text-text-primary mb-6 text-center">Technical Architecture</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary-teal/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-primary-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                  </svg>
+                </div>
+                <h4 className="font-bold text-text-primary mb-2">Data Sources</h4>
+                <p className="text-sm text-text-secondary">
+                  <strong>Solana RPC</strong> - Network performance metrics<br />
+                  <strong>DexScreener API</strong> - Real-time token data<br />
+                  <strong>Price Feeds</strong> - Market data aggregation
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-info/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <h4 className="font-bold text-text-primary mb-2">Processing</h4>
+                <p className="text-sm text-text-secondary">
+                  <strong>Supabase Edge Functions</strong> - Serverless processing<br />
+                  <strong>Smart Algorithms</strong> - Weighted scoring system<br />
+                  <strong>Automated Updates</strong> - Hourly cron jobs
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <h4 className="font-bold text-text-primary mb-2">Visualization</h4>
+                <p className="text-sm text-text-secondary">
+                  <strong>Next.js Frontend</strong> - Modern React app<br />
+                  <strong>Real-Time Charts</strong> - Interactive data visualization<br />
+                  <strong>Responsive Design</strong> - Works on all devices
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Key Benefits */}
+          <div className="border-t border-border-light pt-8 mt-8">
+            <h3 className="text-xl font-bold text-text-primary mb-6 text-center">Who Benefits from SolClock?</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-primary-teal/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                  <span className="text-xl">🚀</span>
+                </div>
+                <h4 className="font-bold text-text-primary mb-2">DeFi Traders</h4>
+                <p className="text-sm text-text-secondary">Spot trending tokens early and make informed trading decisions</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                  <span className="text-xl">💼</span>
+                </div>
+                <h4 className="font-bold text-text-primary mb-2">Hedge Funds</h4>
+                <p className="text-sm text-text-secondary">Comprehensive market intelligence for risk assessment</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                  <span className="text-xl">📊</span>
+                </div>
+                <h4 className="font-bold text-text-primary mb-2">Analysts</h4>
+                <p className="text-sm text-text-secondary">Deep insights into network activity and token performance</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                  <span className="text-xl">👥</span>
+                </div>
+                <h4 className="font-bold text-text-primary mb-2">Community</h4>
+                <p className="text-sm text-text-secondary">Stay informed about the Solana ecosystem and meme coin trends</p>
+              </div>
+            </div>
           </div>
         </div>
       </main>
