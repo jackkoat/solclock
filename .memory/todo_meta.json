@@ -4,15 +4,15 @@
       "1": {
         "id": "1",
         "content": "Deploy SolClock to Vercel with mock data",
-        "details": "1. ✅ Fixed Vercel build error by removing pnpm-store dependency\n2. ✅ Updated pnpm-lock.yaml to match package.json\n3. ✅ Added .pnpmrc configuration for proper pnpm store locations\n4. ✅ Created vercel.json for explicit build configuration\n5. ✅ Updated package.json build script to disable frozen lockfile\n6. ✅ Successfully tested local build without /tmp errors\n7. ✅ Committed and pushed fix to GitHub (commit 316c915)\n8. ❌ Vercel deployment still failing with /tmp error\n9. ❌ Next.js internal caching issue on Vercel infrastructure\n10. ⏳ Need alternative build strategy or Next.js configuration",
+        "details": "1. ✅ Fixed Vercel build error by removing pnpm-store dependency\n2. ✅ Updated pnpm-lock.yaml to match package.json\n3. ✅ Added .pnpmrc configuration for proper pnpm store locations\n4. ✅ Created vercel.json for explicit build configuration\n5. ✅ Updated package.json build script to disable frozen lockfile\n6. ✅ Successfully tested local build without /tmp errors\n7. ✅ Committed and pushed fix to GitHub (commit 316c915)\n8. ✅ Simplifed gitignore to resolve /tmp references\n9. ✅ Pushed simplified configuration (commit dd398ed)\n10. ✅ Awaiting Vercel deployment completion\n11. ⏳ Vercel should now work with simplified Next.js config",
         "status": "in_progress",
         "priority": "high"
       },
       "2": {
         "id": "2",
         "content": "Set up Supabase database from scratch",
-        "details": "1. Apply supabase-schema.sql to user's Supabase project 2. Create all 8 required tables 3. Set up Row Level Security policies 4. Configure database indexes 5. Verify table creation",
-        "status": "pending",
+        "details": "1. ⏳ Open Supabase dashboard and navigate to SQL Editor\n2. ⏳ Load and execute supabase-schema.sql\n3. ⏳ Create all 8 required tables\n4. ⏳ Set up Row Level Security policies\n5. ⏳ Configure database indexes\n6. ⏳ Verify table creation\n7. ⏳ Test database connection",
+        "status": "in_progress",
         "priority": "high"
       },
       "3": {
