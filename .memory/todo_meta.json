@@ -25,9 +25,16 @@
       "4": {
         "id": "4",
         "content": "Test and optimize the complete system",
-        "details": "1. Test all pages with real data 2. Verify performance and loading states 3. Add loading indicators where needed 4. Final deployment verification",
+        "details": "1. Test all pages with real data\n2. Verify performance and loading states\n3. Add loading indicators where needed\n4. Final deployment verification",
         "status": "pending",
         "priority": "medium"
+      },
+      "5": {
+        "id": "5",
+        "content": "Integrate Solscan API for real Solana blockchain data",
+        "details": "1. Replace mock data generator with Solscan API calls\n2. Implement real-time token price and volume data\n3. Set up whale transaction monitoring ($10k+)\n4. Connect network statistics to live blockchain data\n5. Add real-time price alerts and notifications\n6. Implement proper API rate limiting and caching\n7. Test and optimize the complete system\n8. Total timeline: 2-3 weeks",
+        "status": "pending",
+        "priority": "high"
       }
     }
   }
