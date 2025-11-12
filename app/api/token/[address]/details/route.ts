@@ -47,21 +47,20 @@ export async function GET(
     const avgLiquidity = stats.reduce((sum, s) => sum + Number(s.liquidity_usd), 0) / stats.length;
     const totalTransactions = stats.reduce((sum, s) => sum + Number(s.tx_count), 0);
 
-    // Simulate whale activity (mock data)
-    const whaleActivity = [
-      {
-        type: 'buy' as const,
-        amount_usd: Math.floor(Math.random() * 50000) + 10000,
-        timestamp: new Date(Date.now() - Math.random() * 3600000).toISOString(),
-        wallet: address.substring(0, 8) + '...' + address.substring(address.length - 4)
-      },
-      {
-        type: 'sell' as const,
-        amount_usd: Math.floor(Math.random() * 30000) + 5000,
-        timestamp: new Date(Date.now() - Math.random() * 7200000).toISOString(),
-        wallet: address.substring(0, 8) + '...' + address.substring(address.length - 4)
-      }
-    ];
+    // Get recent whale activity
+    const { data: whaleData } = await supabase
+      .from('whale_activity')
+      .select('activity_type, amount_usd, timestamp, wallet_address')
+      .eq('token_address', address)
+      .order('timestamp', { ascending: false })
+      .limit(10);
+
+    const whaleActivity = (whaleData || []).map(w => ({
+      type: w.activity_type,
+      amount_usd: Number(w.amount_usd),
+      timestamp: w.timestamp,
+      wallet: w.wallet_address.substring(0, 8) + '...' + w.wallet_address.substring(w.wallet_address.length - 4)
+    }));
 
     const response = {
       token: {

@@ -175,7 +175,101 @@ export class MockDataGenerator {
     await this.insertTokens();
     await this.generateNetworkStats(24);
     await this.generateTokenStats(24);
+    await this.generateWhaleActivity();
+    await this.updateTokenDetailsCache();
     console.log('Mock data generation complete!');
+  }
+
+  async generateWhaleActivity(): Promise<void> {
+    const supabase = getServiceRoleClient();
+    
+    const now = new Date();
+    const whaleActivities = [];
+    
+    // Generate whale activity for top 20 tokens
+    for (let i = 0; i < Math.min(20, this.tokens.length); i++) {
+      const token = this.tokens[i];
+      const activityCount = Math.floor(Math.random() * 5) + 3; // 3-7 whale activities per token
+      
+      for (let j = 0; j < activityCount; j++) {
+        const hourOffset = Math.floor(Math.random() * 24);
+        const timestamp = new Date(now.getTime() - (hourOffset * 60 * 60 * 1000));
+        
+        whaleActivities.push({
+          token_address: token.token_address,
+          activity_type: Math.random() > 0.5 ? 'buy' : 'sell',
+          amount_usd: Math.floor(Math.random() * 90000) + 10000, // $10k-$100k
+          wallet_address: this.generateRandomAddress(),
+          timestamp: timestamp.toISOString()
+        });
+      }
+    }
+    
+    await supabase
+      .from('whale_activity')
+      .upsert(whaleActivities, {
+        onConflict: 'id'
+      });
+    
+    console.log(`Generated ${whaleActivities.length} whale activity records`);
+  }
+
+  async updateTokenDetailsCache(): Promise<void> {
+    const supabase = getServiceRoleClient();
+    
+    const now = new Date();
+    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    
+    const cacheRecords = [];
+    
+    for (const token of this.tokens) {
+      // Get 24h stats for this token
+      const { data: stats } = await supabase
+        .from('token_hourly_stats')
+        .select('*')
+        .eq('token_address', token.token_address)
+        .gte('hour', oneDayAgo.toISOString());
+      
+      if (!stats || stats.length === 0) continue;
+      
+      const volume24h = stats.reduce((sum, s) => sum + Number(s.tx_volume_usd), 0);
+      const buyers24h = stats.reduce((sum, s) => sum + Number(s.unique_buyers), 0);
+      const totalTransactions = stats.reduce((sum, s) => sum + Number(s.tx_count), 0);
+      const currentHolders = Math.max(...stats.map(s => Number(s.holders)));
+      const avgLiquidity = stats.reduce((sum, s) => sum + Number(s.liquidity_usd), 0) / stats.length;
+      
+      // Calculate price change (simulated based on volume changes)
+      const firstHalfVolume = stats.slice(0, Math.floor(stats.length / 2))
+        .reduce((sum, s) => sum + Number(s.tx_volume_usd), 0);
+      const secondHalfVolume = stats.slice(Math.floor(stats.length / 2))
+        .reduce((sum, s) => sum + Number(s.tx_volume_usd), 0);
+      const priceChange = firstHalfVolume > 0 
+        ? ((secondHalfVolume - firstHalfVolume) / firstHalfVolume) * 100 
+        : 0;
+      
+      cacheRecords.push({
+        token_address: token.token_address,
+        volume_24h_usd: Math.round(volume24h),
+        unique_buyers_24h: buyers24h,
+        holders: currentHolders,
+        liquidity_usd: Math.round(avgLiquidity),
+        total_transactions_24h: totalTransactions,
+        price_change_24h: Number(priceChange.toFixed(2)),
+        last_updated: now.toISOString()
+      });
+    }
+    
+    // Insert in batches of 50
+    for (let i = 0; i < cacheRecords.length; i += 50) {
+      const batch = cacheRecords.slice(i, i + 50);
+      await supabase
+        .from('token_details_cache')
+        .upsert(batch, {
+          onConflict: 'token_address'
+        });
+    }
+    
+    console.log(`Updated token details cache for ${cacheRecords.length} tokens`);
   }
 }
 

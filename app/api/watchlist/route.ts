@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     const userId = searchParams.get('user_id') || 'demo-user';
 
     const { data, error } = await supabase
-      .from('watchlist')
+      .from('watchlists')
       .select('id, user_id, token_address, created_at')
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     }
 
     const { data, error } = await supabase
-      .from('watchlist')
+      .from('watchlists')
       .insert({ user_id, token_address })
       .select()
       .maybeSingle();
@@ -88,7 +88,7 @@ export async function DELETE(request: Request) {
     }
 
     const { error } = await supabase
-      .from('watchlist')
+      .from('watchlists')
       .delete()
       .eq('id', id)
       .eq('user_id', userId);
