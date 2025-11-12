@@ -1,47 +1,45 @@
 import { NextResponse } from 'next/server';
+import { getRealDataService } from '@/lib/realDataService';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function POST() {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
-      return NextResponse.json(
-        { success: false, error: 'Supabase configuration missing' },
-        { status: 500 }
-      );
+    console.log('Manual refresh triggered - fetching real Solana blockchain data...');
+    
+    // Check if Solscan API key is configured
+    const apiKey = process.env.SOLSCAN_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({
+        success: false,
+        error: 'Solscan API key not configured',
+        hint: 'Please set SOLSCAN_API_KEY environment variable to enable real-time data'
+      }, { status: 500 });
     }
 
-    // Call the fetch-solana-data edge function
-    const response = await fetch(`${supabaseUrl}/functions/v1/fetch-solana-data`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${supabaseKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    });
+    const realDataService = getRealDataService();
+    await realDataService.refreshAllData();
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Data refresh failed: ${errorText}`);
-    }
-
-    const result = await response.json();
+    // Get API usage stats
+    const stats = realDataService.getAPIStats();
 
     return NextResponse.json({
       success: true,
-      data: result,
+      message: 'Real Solana blockchain data refreshed successfully',
       timestamp: new Date().toISOString(),
+      dataSource: 'solscan-api',
+      stats: {
+        cacheSize: stats.solscan.cache.size,
+        rateLimit: stats.solscan.rateLimit
+      }
     });
   } catch (error) {
     console.error('Manual refresh error:', error);
-    return NextResponse.json(
-      { success: false, error: (error as Error).message },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to refresh data',
+      details: error instanceof Error ? error.message : String(error)
+    }, { status: 500 });
   }
 }
