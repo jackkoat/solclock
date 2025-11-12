@@ -4,8 +4,8 @@
       "1": {
         "id": "1",
         "content": "Deploy SolClock to Vercel with mock data",
-        "details": "1. Guide user through Vercel deployment process 2. Configure required environment variables 3. Test deployment with mock data 4. Verify app functionality on production",
-        "status": "pending",
+        "details": "1. Fix Vercel build error by removing pnpm-store configuration 2. Guide user through Vercel deployment process 3. Configure required environment variables 4. Test deployment with mock data 5. Verify app functionality on production",
+        "status": "in_progress",
         "priority": "high"
       },
       "2": {
