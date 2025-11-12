@@ -3,513 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolClock - Solana Network Pulse Dashboard</title>
+    <title>SolClock - Fixed Navigation Preview</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            teal: '#14F195',
-                            'teal-dark': '#0FD882',
-                        },
-                        bg: {
-                            primary: '#FFFFFF',
-                            secondary: '#F7F9FB',
-                            tertiary: '#FAFBFC',
-                        },
-                        text: {
-                            primary: '#1A1A1A',
-                            secondary: '#6B7280',
-                            tertiary: '#9CA3AF',
-                        },
-                        border: {
-                            light: '#E5E7EB',
-                            medium: '#D1D5DB',
-                        },
-                        success: '#10B981',
-                        error: '#EF4444',
-                        warning: '#F59E0B',
-                        info: '#3B82F6',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05)',
-                        'card-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
-                    },
-                    animation: {
-                        'pulse-dot': 'pulseDot 2s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        pulseDot: {
-                            '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-                            '50%': { opacity: '0.7', transform: 'scale(1.1)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
+        :root {
+            --primary-teal: #14F195;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1a202c;
+            --text-secondary: #718096;
+            --border-light: #e2e8f0;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .primary-teal { color: var(--primary-teal); }
+        .bg-primary-teal { background-color: var(--primary-teal); }
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .bg-bg-primary { background-color: var(--bg-primary); }
+        .bg-bg-secondary { background-color: var(--bg-secondary); }
+        .border-border-light { border-color: var(--border-light); }
+        .btn-primary {
+            background-color: var(--primary-teal);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover { background-color: #10e18a; }
         .card {
-            background: #FFFFFF;
-            border: 1px solid #E5E7EB;
+            background: white;
+            border: 1px solid var(--border-light);
             border-radius: 0.75rem;
             padding: 1.5rem;
-            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        
         .stat-card {
-            background: #FFFFFF;
-            border: 1px solid #E5E7EB;
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            transition: all 0.2s;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
         }
-        
-        .stat-card:hover {
-            border-color: #D1D5DB;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        
         .live-dot {
             width: 8px;
             height: 8px;
+            background-color: #ef4444;
             border-radius: 50%;
-            background: #10B981;
-            animation: pulseDot 2s ease-in-out infinite;
+            animation: pulse 2s infinite;
         }
-        
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.1); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
-        
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .data-table thead {
-            border-bottom: 1px solid #E5E7EB;
-        }
-        
-        .data-table th {
-            text-align: left;
-            padding: 12px 16px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .data-table tbody tr {
-            border-bottom: 1px solid #E5E7EB;
-            transition: background-color 0.15s;
-        }
-        
-        .data-table tbody tr:hover {
-            background: #FAFBFC;
-        }
-        
-        .data-table td {
-            padding: 16px 16px;
-            font-size: 14px;
-            color: #1A1A1A;
-        }
-        
-        .btn-primary {
-            background: #14F195;
-            color: white;
-            font-weight: 600;
-            padding: 10px 20px;
+        .nav-link {
+            padding: 0.5rem 1rem;
             border-radius: 0.5rem;
+            text-decoration: none;
             transition: all 0.2s;
-            border: none;
-            cursor: pointer;
         }
-        
-        .btn-primary:hover {
-            background: #0FD882;
-        }
-        
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 10px;
-            border-radius: 0.375rem;
-            font-size: 12px;
+        .nav-link.active {
+            background-color: rgba(20, 241, 149, 0.1);
+            color: var(--primary-teal);
             font-weight: 600;
+        }
+        .nav-link:not(.active) {
+            color: var(--text-secondary);
+        }
+        .nav-link:not(.active):hover {
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
         }
     </style>
 </head>
-<body class="bg-secondary font-sans antialiased">
+<body class="bg-bg-primary">
     <!-- Header -->
-    <header class="bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
+    <header class="bg-bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
         <div class="max-w-[1440px] mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-8">
-                    <h1 class="text-2xl font-bold text-primary-teal uppercase tracking-tight">
-                        SOLCLOCK
-                    </h1>
+                    <h1 class="text-2xl font-bold primary-teal uppercase tracking-tight">SOLCLOCK</h1>
                     <nav class="hidden md:flex items-center gap-2">
-                        <a href="#" class="px-4 py-2 text-sm font-medium text-text-primary bg-primary-teal/10 rounded-lg transition-colors">
-                            Dashboard
-                        </a>
-                        <a href="#" class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-tertiary rounded-lg transition-colors">
-                            Analytics
-                        </a>
-                        <a href="#" class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-tertiary rounded-lg transition-colors">
-                            Tokens
-                        </a>
-                        <a href="#" class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-tertiary rounded-lg transition-colors">
-                            Alerts
-                        </a>
-                        <a href="#how-it-works" class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-tertiary rounded-lg transition-colors">
-                            How It Works
-                        </a>
+                        <a href="#" class="nav-link" onclick="showPage('dashboard')">Dashboard</a>
+                        <a href="#" class="nav-link" onclick="showPage('analytics')">Analytics</a>
+                        <a href="#" class="nav-link" onclick="showPage('tokens')">Tokens</a>
+                        <a href="#" class="nav-link" onclick="showPage('alerts')">Alerts</a>
+                        <a href="#" class="nav-link" onclick="showPage('how-it-works')">How It Works</a>
                     </nav>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2">
                         <div class="live-dot"></div>
-                        <span class="text-sm text-text-secondary">Live</span>
+                        <span class="text-sm text-secondary">Live</span>
                     </div>
-                    <button class="md:hidden p-2 text-text-secondary hover:text-text-primary">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-[1440px] mx-auto px-6 py-8 pb-20">
+    <!-- Dashboard Page -->
+    <main id="dashboard-page" class="max-w-[1440px] mx-auto px-6 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold primary mb-2">SolClock Dashboard</h1>
+            <p class="text-secondary">Real-time Solana network analytics and meme coin tracking</p>
+        </div>
+
         <!-- Network Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div class="stat-card">
-                <div class="stat-label">Total TPS</div>
-                <div class="stat-value">2,847</div>
-                <div class="text-xs text-success mt-1">↗ +12.5%</div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold primary">847.2K</div>
+                    <div class="text-sm text-secondary">24h Transactions</div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Active Validators</div>
-                <div class="stat-value">1,892</div>
-                <div class="text-xs text-text-secondary mt-1">→ Stable</div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold primary">12.4K</div>
+                    <div class="text-sm text-secondary">TPS</div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Network Status</div>
-                <div class="stat-value text-success">Healthy</div>
-                <div class="text-xs text-success mt-1">✓ All systems operational</div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold primary">0.4s</div>
+                    <div class="text-sm text-secondary">Block Time</div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Avg Block Time</div>
-                <div class="stat-value">0.42s</div>
-                <div class="text-xs text-success mt-1">↗ +2.1%</div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold primary">1,950</div>
+                    <div class="text-sm text-secondary">Active Validators</div>
+                </div>
             </div>
         </div>
 
         <!-- Network Pulse Chart -->
         <div class="card mb-6">
             <div class="flex items-center gap-2 mb-5">
-                <svg class="w-5 h-5 text-primary-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
+                <span class="text-2xl">📊</span>
                 <h2 class="text-lg font-bold">Network Pulse - Last 24 Hours</h2>
             </div>
-            <div class="h-80">
-                <canvas id="networkChart"></canvas>
-            </div>
+            <canvas id="networkChart" height="80"></canvas>
         </div>
 
         <!-- Two Column Layout -->
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
             <!-- Top Meme Coins Table -->
             <div class="xl:col-span-2 card">
-                <div class="flex items-center justify-between mb-5">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-primary-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                        </svg>
-                        <h2 class="text-lg font-bold">Top 50 Meme Coins</h2>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <input type="text" placeholder="Search tokens..." class="px-3 py-2 border border-border-light rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-teal focus:border-transparent">
-                        <button class="btn-primary">Refresh</button>
-                    </div>
+                <div class="flex items-center gap-2 mb-5">
+                    <span class="text-2xl">🚀</span>
+                    <h2 class="text-lg font-bold">Top 50 Meme Coins</h2>
                 </div>
-                
                 <div class="overflow-x-auto">
-                    <table class="data-table">
+                    <table class="w-full">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Token</th>
-                                <th>Price</th>
-                                <th>24h Change</th>
-                                <th>Volume</th>
-                                <th>Market Cap</th>
-                                <th>Score</th>
+                            <tr class="border-b border-border-light">
+                                <th class="text-left py-3 px-4 font-medium text-secondary">Rank</th>
+                                <th class="text-left py-3 px-4 font-medium text-secondary">Token</th>
+                                <th class="text-right py-3 px-4 font-medium text-secondary">24h Change</th>
+                                <th class="text-right py-3 px-4 font-medium text-secondary">Volume</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>
+                            <tr class="border-b border-border-light">
+                                <td class="py-3 px-4"><span class="font-bold">#1</span></td>
+                                <td class="py-3 px-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-primary-teal/20 rounded-full flex items-center justify-center">
-                                            <span class="text-xs font-bold text-primary-teal">WIF</span>
+                                        <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
+                                            <span class="text-xs font-bold primary-teal">DOGE</span>
                                         </div>
                                         <div>
-                                            <div class="font-semibold">dogwifhat</div>
-                                            <div class="text-xs text-text-secondary">WIF</div>
+                                            <div class="font-medium primary">DOGE</div>
+                                            <div class="text-sm text-secondary">Dogecoin Clone</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>$2.34</td>
-                                <td><span class="badge bg-success/10 text-success">+24.5%</span></td>
-                                <td>$1.2M</td>
-                                <td>$234M</td>
-                                <td><span class="badge bg-success/10 text-success">95.2</span></td>
+                                <td class="py-3 px-4 text-right"><span class="text-green-500 font-medium">+15.6%</span></td>
+                                <td class="py-3 px-4 text-right font-medium">$2.4M</td>
+                            </tr>
+                            <tr class="border-b border-border-light">
+                                <td class="py-3 px-4"><span class="font-bold">#2</span></td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
+                                            <span class="text-xs font-bold primary-teal">PEPE</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium primary">PEPE</div>
+                                            <div class="text-sm text-secondary">Pepe Clone</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 text-right"><span class="text-red-500 font-medium">-3.2%</span></td>
+                                <td class="py-3 px-4 text-right font-medium">$1.8M</td>
                             </tr>
                             <tr>
-                                <td>2</td>
-                                <td>
+                                <td class="py-3 px-4"><span class="font-bold">#3</span></td>
+                                <td class="py-3 px-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-info/20 rounded-full flex items-center justify-center">
-                                            <span class="text-xs font-bold text-info">BONK</span>
+                                        <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
+                                            <span class="text-xs font-bold primary-teal">SHIB</span>
                                         </div>
                                         <div>
-                                            <div class="font-semibold">Bonk</div>
-                                            <div class="text-xs text-text-secondary">BONK</div>
+                                            <div class="font-medium primary">SHIB</div>
+                                            <div class="text-sm text-secondary">Shiba Inu</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>$0.000018</td>
-                                <td><span class="badge bg-success/10 text-success">+18.2%</span></td>
-                                <td>$890K</td>
-                                <td>$128M</td>
-                                <td><span class="badge bg-success/10 text-success">92.8</span></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-warning/20 rounded-full flex items-center justify-center">
-                                            <span class="text-xs font-bold text-warning">PEPE</span>
-                                        </div>
-                                        <div>
-                                            <div class="font-semibold">Pepe</div>
-                                            <div class="text-xs text-text-secondary">PEP</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>$0.001245</td>
-                                <td><span class="badge bg-error/10 text-error">-5.3%</span></td>
-                                <td>$1.1M</td>
-                                <td>$187M</td>
-                                <td><span class="badge bg-warning/10 text-warning">88.1</span></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
-                                            <span class="text-xs font-bold text-purple-600">SHIB</span>
-                                        </div>
-                                        <div>
-                                            <div class="font-semibold">Shiba Inu</div>
-                                            <div class="text-xs text-text-secondary">SHIB</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>$0.0000089</td>
-                                <td><span class="badge bg-success/10 text-success">+12.1%</span></td>
-                                <td>$654K</td>
-                                <td>$95M</td>
-                                <td><span class="badge bg-success/10 text-success">85.7</span></td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center">
-                                            <span class="text-xs font-bold text-pink-600">FLOKI</span>
-                                        </div>
-                                        <div>
-                                            <div class="font-semibold">Floki Inu</div>
-                                            <div class="text-xs text-text-secondary">FLOKI</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>$0.000234</td>
-                                <td><span class="badge bg-success/10 text-success">+8.7%</span></td>
-                                <td>$432K</td>
-                                <td>$76M</td>
-                                <td><span class="badge bg-warning/10 text-warning">83.2</span></td>
+                                <td class="py-3 px-4 text-right"><span class="text-green-500 font-medium">+8.7%</span></td>
+                                <td class="py-3 px-4 text-right font-medium">$1.2M</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Live Alerts Panel -->
+            <!-- Alerts Panel -->
             <div class="card">
                 <div class="flex items-center gap-2 mb-5">
-                    <svg class="w-5 h-5 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                    </svg>
+                    <span class="text-2xl">🚨</span>
                     <h2 class="text-lg font-bold">Live Alerts</h2>
                 </div>
-                
                 <div class="space-y-3">
-                    <div class="flex items-start gap-3 p-3 bg-success/5 rounded-lg border border-success/20">
-                        <div class="w-2 h-2 bg-success rounded-full mt-2"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-success">Whale Activity</div>
-                            <div class="text-xs text-text-secondary">Large BUY order detected: 2.5M WIF tokens</div>
-                            <div class="text-xs text-text-tertiary mt-1">2 minutes ago</div>
+                    <div class="p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-green-600 text-sm font-medium">DOGE Price Pump</span>
                         </div>
+                        <p class="text-sm text-green-700">+15.6% increase in 1 hour</p>
                     </div>
-                    
-                    <div class="flex items-start gap-3 p-3 bg-warning/5 rounded-lg border border-warning/20">
-                        <div class="w-2 h-2 bg-warning rounded-full mt-2"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-warning">Market Alert</div>
-                            <div class="text-xs text-text-secondary">BONK entering top 10 by volume</div>
-                            <div class="text-xs text-text-tertiary mt-1">8 minutes ago</div>
+                    <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-yellow-600 text-sm font-medium">Whale Activity</span>
                         </div>
+                        <p class="text-sm text-yellow-700">Large transaction detected: $125K</p>
                     </div>
-                    
-                    <div class="flex items-start gap-3 p-3 bg-info/5 rounded-lg border border-info/20">
-                        <div class="w-2 h-2 bg-info rounded-full mt-2"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-info">Network Update</div>
-                            <div class="text-xs text-text-secondary">Network load increased by 15%</div>
-                            <div class="text-xs text-text-tertiary mt-1">15 minutes ago</div>
+                    <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-blue-600 text-sm font-medium">Volume Spike</span>
                         </div>
+                        <p class="text-sm text-blue-700">PEPE volume up 5x normal</p>
                     </div>
-                    
-                    <div class="flex items-start gap-3 p-3 bg-success/5 rounded-lg border border-success/20">
-                        <div class="w-2 h-2 bg-success rounded-full mt-2"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-success">Token Trending</div>
-                            <div class="text-xs text-text-secondary">PEPE momentum building - watch closely</div>
-                            <div class="text-xs text-text-tertiary mt-1">22 minutes ago</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start gap-3 p-3 bg-error/5 rounded-lg border border-error/20">
-                        <div class="w-2 h-2 bg-error rounded-full mt-2"></div>
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-error">Price Alert</div>
-                            <div class="text-xs text-text-secondary">WIF breaking resistance at $2.30</div>
-                            <div class="text-xs text-text-tertiary mt-1">35 minutes ago</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Features Showcase -->
-        <div class="card">
-            <h2 class="text-lg font-bold mb-5">Key Features</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="text-center">
-                    <div class="w-12 h-12 bg-primary-teal/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-6 h-6 text-primary-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="font-semibold mb-2">Real-time Data</h3>
-                    <p class="text-sm text-text-secondary">Live Solana network metrics and meme coin tracking</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-6 h-6 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="font-semibold mb-2">Smart Alerts</h3>
-                    <p class="text-sm text-text-secondary">Intelligent notifications for whale activity and market changes</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-6 h-6 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="font-semibold mb-2">Analytics Engine</h3>
-                    <p class="text-sm text-text-secondary">Weighted scoring algorithm for token ranking</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="font-semibold mb-2">Watchlist</h3>
-                    <p class="text-sm text-text-secondary">Track your favorite tokens and get personalized insights</p>
                 </div>
             </div>
         </div>
 
         <!-- How It Works Section -->
-        <div id="how-it-works" class="card">
+        <div id="how-it-works-section" class="card">
             <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-text-primary mb-3">How SolClock Works</h2>
-                <p class="text-lg text-text-secondary max-w-3xl mx-auto">SolClock solves the challenge of monitoring Solana's fast-moving meme coin ecosystem by providing real-time analytics, intelligent alerts, and automated tracking - all in one professional dashboard.</p>
+                <h2 class="text-2xl font-bold primary mb-3">How SolClock Works</h2>
+                <p class="text-lg text-secondary max-w-3xl mx-auto">SolClock solves the challenge of monitoring Solana&apos;s fast-moving meme coin ecosystem by providing real-time analytics, intelligent alerts, and automated tracking - all in one professional dashboard.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <!-- Problem Statement -->
                 <div>
-                    <h3 class="text-xl font-bold text-text-primary mb-4">The Challenge</h3>
+                    <h3 class="text-xl font-bold primary mb-4">The Challenge</h3>
                     <div class="space-y-4">
                         <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 bg-error/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span class="text-error text-sm">⚡</span>
+                            <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-red-600 text-sm">⚡</span>
                             </div>
                             <div>
-                                <div class="font-semibold text-text-primary">Fast-Moving Market</div>
-                                <div class="text-sm text-text-secondary">Meme coins can pump or dump within minutes, making manual monitoring impossible</div>
+                                <div class="font-semibold primary">Fast-Moving Market</div>
+                                <div class="text-sm text-secondary">Meme coins can pump or dump within minutes, making manual monitoring impossible</div>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 bg-warning/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span class="text-warning text-sm">📊</span>
+                            <div class="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-yellow-600 text-sm">📊</span>
                             </div>
                             <div>
-                                <div class="font-semibold text-text-primary">Information Overload</div>
-                                <div class="text-sm text-text-secondary">Thousands of tokens create noise; hard to identify genuine opportunities</div>
+                                <div class="font-semibold primary">Information Overload</div>
+                                <div class="text-sm text-secondary">Thousands of tokens create noise; hard to identify genuine opportunities</div>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 bg-info/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span class="text-info text-sm">🔍</span>
+                            <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-blue-600 text-sm">🔍</span>
                             </div>
                             <div>
-                                <div class="font-semibold text-text-primary">Lack of Intelligence</div>
-                                <div class="text-sm text-text-secondary">Basic price tracking misses whale activity, social sentiment, and liquidity metrics</div>
+                                <div class="font-semibold primary">Lack of Intelligence</div>
+                                <div class="text-sm text-secondary">Basic price tracking misses whale activity, social sentiment, and liquidity metrics</div>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 bg-error/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span class="text-error text-sm">⏰</span>
+                            <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-red-600 text-sm">⏰</span>
                             </div>
                             <div>
-                                <div class="font-semibold text-text-primary">Time-Sensitive Decisions</div>
-                                <div class="text-sm text-text-secondary">Every second counts in crypto; delayed information means missed opportunities</div>
+                                <div class="font-semibold primary">Time-Sensitive Decisions</div>
+                                <div class="text-sm text-secondary">Every second counts in crypto; delayed information means missed opportunities</div>
                             </div>
                         </div>
                     </div>
@@ -517,90 +301,514 @@
 
                 <!-- SolClock Solution -->
                 <div>
-                    <h3 class="text-xl font-bold text-text-primary mb-4">Our Solution</h3>
+                    <h3 class="text-xl font-bold primary mb-4">Our Solution</h3>
                     <div class="space-y-4">
                         <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span class="text-success text-sm">✅</span>
+                            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-green-600 text-sm">✅</span>
                             </div>
                             <div>
-                                <div class="font-semibold text-text-primary">Real-Time Data Streams</div>
-                                <div class="text-sm text-text-secondary">Live Solana network metrics and DexScreener API integration for instant data</div>
+                                <div class="font-semibold primary">Real-Time Data Streams</div>
+                                <div class="text-sm text-secondary">Live Solana network metrics and DexScreener API integration for instant data</div>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span class="text-success text-sm">🧠</span>
+                            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-green-600 text-sm">🧠</span>
                             </div>
                             <div>
-                                <div class="font-semibold text-text-primary">Smart Scoring Algorithm</div>
-                                <div class="text-sm text-text-secondary">Weighted analysis of volume, liquidity, buyers, holders, and social signals</div>
+                                <div class="font-semibold primary">Smart Scoring Algorithm</div>
+                                <div class="text-sm text-secondary">Weighted analysis of volume, liquidity, buyers, holders, and social signals</div>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span class="text-success text-sm">🚨</span>
+                            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-green-600 text-sm">🚨</span>
                             </div>
                             <div>
-                                <div class="font-semibold text-text-primary">Intelligent Alerts</div>
-                                <div class="text-sm text-text-secondary">Whale activity detection, price breakouts, and trend momentum notifications</div>
+                                <div class="font-semibold primary">Intelligent Alerts</div>
+                                <div class="text-sm text-secondary">Whale activity detection, price breakouts, and trend momentum notifications</div>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span class="text-success text-sm">⚙️</span>
+                            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-green-600 text-sm">⚙️</span>
                             </div>
                             <div>
-                                <div class="font-semibold text-text-primary">Automated Updates</div>
-                                <div class="text-sm text-text-secondary">Hourly data refresh with Supabase cron jobs - zero maintenance required</div>
+                                <div class="font-semibold primary">Automated Updates</div>
+                                <div class="text-sm text-secondary">Hourly data refresh with Supabase cron jobs - zero maintenance required</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </main>
 
-            <!-- Technical Architecture -->
+    <!-- Analytics Page -->
+    <main id="analytics-page" class="max-w-[1440px] mx-auto px-6 py-8 hidden">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold primary mb-2">Advanced Analytics</h1>
+            <p class="text-secondary">Deep insights into Solana meme coin market performance and trends</p>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-secondary">Total 24h Volume</p>
+                        <p class="text-2xl font-bold primary">$45.2M</p>
+                    </div>
+                    <span class="text-4xl">💰</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-secondary">Total Market Cap</p>
+                        <p class="text-2xl font-bold primary">$128.7M</p>
+                    </div>
+                    <span class="text-4xl">📈</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-secondary">Avg. Liquidity</p>
+                        <p class="text-2xl font-bold primary">$850K</p>
+                    </div>
+                    <span class="text-4xl">📊</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-secondary">Total Holders</p>
+                        <p class="text-2xl font-bold primary">45.2K</p>
+                    </div>
+                    <span class="text-4xl">👥</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Analysis -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Top Performers -->
+            <div class="card">
+                <h2 class="text-lg font-bold mb-5 flex items-center gap-2">
+                    <span class="text-2xl">🏆</span> Top Performers (24h)
+                </h2>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-bg-secondary rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
+                                <span class="text-sm font-bold primary-teal">#1</span>
+                            </div>
+                            <div>
+                                <div class="font-medium primary">DOGE</div>
+                                <div class="text-sm text-secondary">Dogecoin Clone</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-green-500">+15.6%</div>
+                            <div class="text-sm text-secondary">$0.08234</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-bg-secondary rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
+                                <span class="text-sm font-bold primary-teal">#2</span>
+                            </div>
+                            <div>
+                                <div class="font-medium primary">SHIB</div>
+                                <div class="text-sm text-secondary">Shiba Inu</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-green-500">+8.7%</div>
+                            <div class="text-sm text-secondary">$0.0000234</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volume Distribution -->
+            <div class="card">
+                <h2 class="text-lg font-bold mb-5 flex items-center gap-2">
+                    <span class="text-2xl">📊</span> Volume Distribution
+                </h2>
+                <div class="space-y-4">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold primary-teal mb-2">$45.2M</div>
+                        <div class="text-secondary">Total 24h Volume</div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary">High Volume (&gt;$1M)</span>
+                            <span class="font-bold primary">12 tokens</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary">Medium Volume ($100K-$1M)</span>
+                            <span class="font-bold primary">28 tokens</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary">Low Volume (&lt;$100K)</span>
+                            <span class="font-bold primary">10 tokens</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Tokens Page -->
+    <main id="tokens-page" class="max-w-[1440px] mx-auto px-6 py-8 hidden">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold primary mb-2">Token Explorer</h1>
+            <p class="text-secondary">Discover and analyze the latest Solana meme coins</p>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="card mb-6">
+            <div class="flex flex-col lg:flex-row gap-4">
+                <div class="relative flex-1">
+                    <input
+                        type="text"
+                        placeholder="Search tokens by name, symbol, or address..."
+                        class="w-full pl-10 pr-4 py-2 bg-bg-secondary border border-border-light rounded-lg primary placeholder-secondary focus:border-primary-teal focus:ring-1 focus:ring-primary-teal transition-colors"
+                    />
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">🔍</span>
+                </div>
+                <select class="px-4 py-2 bg-bg-secondary border border-border-light rounded-lg primary focus:border-primary-teal focus:ring-1 focus:ring-primary-teal transition-colors">
+                    <option>Sort by Rank</option>
+                    <option>Sort by Volume</option>
+                    <option>Sort by 24h Change</option>
+                    <option>Sort by Liquidity</option>
+                </select>
+                <select class="px-4 py-2 bg-bg-secondary border border-border-light rounded-lg primary focus:border-primary-teal focus:ring-1 focus:ring-primary-teal transition-colors">
+                    <option>All Tokens</option>
+                    <option>24h Gainers</option>
+                    <option>24h Losers</option>
+                    <option>High Volume (&gt;$1M)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Token Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card text-center">
+                <div class="text-2xl font-bold primary">50</div>
+                <div class="text-sm text-secondary">Total Tokens</div>
+            </div>
+            <div class="stat-card text-center">
+                <div class="text-2xl font-bold text-green-500">28</div>
+                <div class="text-sm text-secondary">24h Gainers</div>
+            </div>
+            <div class="stat-card text-center">
+                <div class="text-2xl font-bold text-red-500">15</div>
+                <div class="text-sm text-secondary">24h Losers</div>
+            </div>
+            <div class="stat-card text-center">
+                <div class="text-2xl font-bold text-yellow-500">12</div>
+                <div class="text-sm text-secondary">High Volume</div>
+            </div>
+        </div>
+
+        <!-- Token Table -->
+        <div class="card">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-border-light">
+                            <th class="text-left py-3 px-4 font-medium secondary">Rank</th>
+                            <th class="text-left py-3 px-4 font-medium secondary">Token</th>
+                            <th class="text-right py-3 px-4 font-medium secondary">24h Change</th>
+                            <th class="text-right py-3 px-4 font-medium secondary">Volume</th>
+                            <th class="text-right py-3 px-4 font-medium secondary">Liquidity</th>
+                            <th class="text-center py-3 px-4 font-medium secondary">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-border-light hover:bg-bg-secondary transition-colors">
+                            <td class="py-3 px-4">
+                                <span class="font-bold primary">#1</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
+                                        <span class="text-xs font-bold primary-teal">DOGE</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium primary">DOGE</div>
+                                        <div class="text-sm text-secondary">Dogecoin Clone</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="flex items-center justify-end gap-1 text-green-500">
+                                    <span>📈</span>
+                                    <span class="font-medium">+15.6%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium primary">$2.4M</div>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium primary">$850K</div>
+                            </td>
+                            <td class="py-3 px-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <button class="p-1 text-secondary hover:text-primary-teal transition-colors">⭐</button>
+                                    <button class="p-1 text-secondary hover:text-primary-teal transition-colors">🔗</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-border-light hover:bg-bg-secondary transition-colors">
+                            <td class="py-3 px-4">
+                                <span class="font-bold primary">#2</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
+                                        <span class="text-xs font-bold primary-teal">PEPE</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium primary">PEPE</div>
+                                        <div class="text-sm text-secondary">Pepe Clone</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="flex items-center justify-end gap-1 text-red-500">
+                                    <span>📉</span>
+                                    <span class="font-medium">-3.2%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium primary">$1.8M</div>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium primary">$620K</div>
+                            </td>
+                            <td class="py-3 px-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <button class="p-1 text-secondary hover:text-primary-teal transition-colors">⭐</button>
+                                    <button class="p-1 text-secondary hover:text-primary-teal transition-colors">🔗</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alerts Page -->
+    <main id="alerts-page" class="max-w-[1440px] mx-auto px-6 py-8 hidden">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold primary mb-2">Smart Alerts</h1>
+            <p class="text-secondary">Monitor market movements and receive intelligent notifications</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex space-x-1 mb-6">
+            <button onclick="showAlertTab('recent')" id="recent-tab" class="px-4 py-2 rounded-lg font-medium bg-primary-teal text-white">Recent Alerts</button>
+            <button onclick="showAlertTab('watchlist')" id="watchlist-tab" class="px-4 py-2 rounded-lg font-medium text-secondary hover:text-primary hover:bg-bg-secondary">Watchlist Alerts</button>
+            <button onclick="showAlertTab('settings')" id="settings-tab" class="px-4 py-2 rounded-lg font-medium text-secondary hover:text-primary hover:bg-bg-secondary">Alert Settings</button>
+        </div>
+
+        <!-- Recent Alerts Tab -->
+        <div id="recent-alerts-tab">
+            <!-- Alert Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="stat-card text-center">
+                    <div class="text-2xl font-bold primary">8</div>
+                    <div class="text-sm text-secondary">Total Alerts</div>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-2xl font-bold text-green-500">3</div>
+                    <div class="text-sm text-secondary">Info Alerts</div>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-2xl font-bold text-red-500">2</div>
+                    <div class="text-sm text-secondary">Error Alerts</div>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-2xl font-bold text-yellow-500">3</div>
+                    <div class="text-sm text-secondary">Warning Alerts</div>
+                </div>
+            </div>
+
+            <!-- Alert List -->
+            <div class="card">
+                <div class="space-y-3">
+                    <div class="p-4 rounded-lg border border-green-200 bg-green-50">
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-600">📈</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between mb-1">
+                                    <h3 class="font-medium primary">DOGE Price Alert</h3>
+                                    <span class="text-sm text-secondary">2 min ago</span>
+                                </div>
+                                <p class="text-sm text-secondary">DOGE has increased by 15.6% in the last hour</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg border border-yellow-200 bg-yellow-50">
+                        <div class="flex items-start gap-3">
+                            <span class="text-yellow-600">🐋</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between mb-1">
+                                    <h3 class="font-medium primary">Whale Activity Detected</h3>
+                                    <span class="text-sm text-secondary">5 min ago</span>
+                                </div>
+                                <p class="text-sm text-secondary">Large transaction of $125,000 detected for PEPE token</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg border border-red-200 bg-red-50">
+                        <div class="flex items-start gap-3">
+                            <span class="text-red-600">📉</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between mb-1">
+                                    <h3 class="font-medium primary">SHIB Price Alert</h3>
+                                    <span class="text-sm text-secondary">8 min ago</span>
+                                </div>
+                                <p class="text-sm text-secondary">SHIB has decreased by 8.2% in the last hour</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Watchlist Tab -->
+        <div id="watchlist-alerts-tab" class="hidden">
+            <div class="card">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-bold primary">Your Watchlist</h2>
+                    <button class="flex items-center gap-2 px-4 py-2 bg-primary-teal text-white rounded-lg hover:bg-primary-teal/90 transition-colors">
+                        <span>➕</span> Add Token
+                    </button>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="p-4 bg-bg-secondary rounded-lg border border-border-light">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-primary-teal/10 rounded-full flex items-center justify-center">
+                                    <span class="text-sm font-bold primary-teal">DOGE</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium primary">DOGE</div>
+                                    <div class="text-sm text-secondary">DpL...xyz1</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-bold primary">$0.08234</div>
+                                <div class="text-sm text-green-500">+15.6%</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-border-light">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-secondary">Alert Price: $0.085</span>
+                                <button class="text-primary-teal hover:text-primary-teal/80 transition-colors">Edit Alert</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings-alerts-tab" class="hidden">
+            <div class="space-y-6">
+                <!-- Alert Types -->
+                <div class="card">
+                    <h2 class="text-lg font-bold primary mb-4">Alert Types</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-bg-secondary rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <span class="text-2xl">📈</span>
+                                <div>
+                                    <div class="font-medium primary">Price Pump Alerts</div>
+                                    <div class="text-sm text-secondary">Notify when tokens increase by 10%+ in 1h</div>
+                                </div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-teal/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-teal"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-bg-secondary rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <span class="text-2xl">📉</span>
+                                <div>
+                                    <div class="font-medium primary">Price Dump Alerts</div>
+                                    <div class="text-sm text-secondary">Notify when tokens decrease by 15%+ in 1h</div>
+                                </div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-teal/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-teal"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- How It Works Page -->
+    <main id="how-it-works-page" class="max-w-[1440px] mx-auto px-6 py-8 hidden">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold primary mb-2">How SolClock Works</h1>
+            <p class="text-secondary">Understanding our platform's architecture and capabilities</p>
+        </div>
+
+        <div class="card">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold primary mb-3">Complete Overview</h2>
+                <p class="text-lg text-secondary max-w-3xl mx-auto">SolClock is a comprehensive Solana network analytics platform designed specifically for tracking and analyzing meme coin performance with real-time data, intelligent alerts, and automated monitoring.</p>
+            </div>
+
+            <!-- Detailed Technical Architecture -->
             <div class="border-t border-border-light pt-8">
-                <h3 class="text-xl font-bold text-text-primary mb-6 text-center">Technical Architecture</h3>
+                <h3 class="text-xl font-bold primary mb-6 text-center">Technical Architecture</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="text-center">
                         <div class="w-16 h-16 bg-primary-teal/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-8 h-8 text-primary-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                            </svg>
+                            <span class="text-3xl">📡</span>
                         </div>
-                        <h4 class="font-bold text-text-primary mb-2">Data Sources</h4>
-                        <p class="text-sm text-text-secondary">
-                            <strong>Solana RPC</strong> - Network performance metrics<br>
-                            <strong>DexScreener API</strong> - Real-time token data<br>
+                        <h4 class="font-bold primary mb-2">Data Sources</h4>
+                        <p class="text-sm text-secondary">
+                            <strong>Solana RPC</strong> - Network performance metrics<br />
+                            <strong>DexScreener API</strong> - Real-time token data<br />
                             <strong>Price Feeds</strong> - Market data aggregation
                         </p>
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-16 h-16 bg-info/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-8 h-8 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl">⚙️</span>
                         </div>
-                        <h4 class="font-bold text-text-primary mb-2">Processing</h4>
-                        <p class="text-sm text-text-secondary">
-                            <strong>Supabase Edge Functions</strong> - Serverless processing<br>
-                            <strong>Smart Algorithms</strong> - Weighted scoring system<br>
+                        <h4 class="font-bold primary mb-2">Processing</h4>
+                        <p class="text-sm text-secondary">
+                            <strong>Supabase Edge Functions</strong> - Serverless processing<br />
+                            <strong>Smart Algorithms</strong> - Weighted scoring system<br />
                             <strong>Automated Updates</strong> - Hourly cron jobs
                         </p>
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl">📱</span>
                         </div>
-                        <h4 class="font-bold text-text-primary mb-2">Visualization</h4>
-                        <p class="text-sm text-text-secondary">
-                            <strong>Next.js Frontend</strong> - Modern React app<br>
-                            <strong>Real-Time Charts</strong> - Interactive data visualization<br>
+                        <h4 class="font-bold primary mb-2">Visualization</h4>
+                        <p class="text-sm text-secondary">
+                            <strong>Next.js Frontend</strong> - Modern React app<br />
+                            <strong>Real-Time Charts</strong> - Interactive data visualization<br />
                             <strong>Responsive Design</strong> - Works on all devices
                         </p>
                     </div>
@@ -609,38 +817,38 @@
 
             <!-- Key Benefits -->
             <div class="border-t border-border-light pt-8 mt-8">
-                <h3 class="text-xl font-bold text-text-primary mb-6 text-center">Who Benefits from SolClock?</h3>
+                <h3 class="text-xl font-bold primary mb-6 text-center">Who Benefits from SolClock?</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="text-center">
                         <div class="w-12 h-12 bg-primary-teal/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                             <span class="text-xl">🚀</span>
                         </div>
-                        <h4 class="font-bold text-text-primary mb-2">DeFi Traders</h4>
-                        <p class="text-sm text-text-secondary">Spot trending tokens early and make informed trading decisions</p>
+                        <h4 class="font-bold primary mb-2">DeFi Traders</h4>
+                        <p class="text-sm text-secondary">Spot trending tokens early and make informed trading decisions</p>
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                             <span class="text-xl">💼</span>
                         </div>
-                        <h4 class="font-bold text-text-primary mb-2">Hedge Funds</h4>
-                        <p class="text-sm text-text-secondary">Comprehensive market intelligence for risk assessment</p>
+                        <h4 class="font-bold primary mb-2">Hedge Funds</h4>
+                        <p class="text-sm text-secondary">Comprehensive market intelligence for risk assessment</p>
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                             <span class="text-xl">📊</span>
                         </div>
-                        <h4 class="font-bold text-text-primary mb-2">Analysts</h4>
-                        <p class="text-sm text-text-secondary">Deep insights into network activity and token performance</p>
+                        <h4 class="font-bold primary mb-2">Analysts</h4>
+                        <p class="text-sm text-secondary">Deep insights into network activity and token performance</p>
                     </div>
                     
                     <div class="text-center">
-                        <div class="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                             <span class="text-xl">👥</span>
                         </div>
-                        <h4 class="font-bold text-text-primary mb-2">Community</h4>
-                        <p class="text-sm text-text-secondary">Stay informed about the Solana ecosystem and meme coin trends</p>
+                        <h4 class="font-bold primary mb-2">Community</h4>
+                        <p class="text-sm text-secondary">Stay informed about the Solana ecosystem and meme coin trends</p>
                     </div>
                 </div>
             </div>
@@ -648,33 +856,31 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-primary border-t border-border-light mt-12 py-6">
-        <div class="max-w-[1440px] mx-auto px-6 text-center text-text-secondary text-sm">
-            <p>SolClock © 2025 | Solana Network Analytics Dashboard</p>
-            <p class="mt-2">Powered by Solana Blockchain & DexScreener API</p>
+    <footer class="bg-bg-primary border-t border-border-light mt-12 py-6">
+        <div class="max-w-[1440px] mx-auto px-6 text-center text-secondary text-sm">
+            <p>SolClock © 2025 | Navigation Fixed - All Pages Now Working!</p>
+            <p class="mt-2">Powered by Solana Blockchain</p>
         </div>
     </footer>
 
     <script>
-        // Network Pulse Chart
+        // Initialize network chart
         const ctx = document.getElementById('networkChart').getContext('2d');
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
                 datasets: [{
-                    label: 'Transactions per Second',
-                    data: [1200, 800, 2100, 3400, 2800, 2500, 3100],
+                    label: 'Transactions',
+                    data: [12000, 19000, 15000, 25000, 22000, 30000],
                     borderColor: '#14F195',
                     backgroundColor: 'rgba(20, 241, 149, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
+                    tension: 0.4,
+                    fill: true
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -683,24 +889,59 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: {
-                            color: '#E5E7EB'
-                        },
                         ticks: {
-                            color: '#6B7280'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            color: '#E5E7EB'
-                        },
-                        ticks: {
-                            color: '#6B7280'
+                            callback: function(value) {
+                                return (value / 1000) + 'K';
+                            }
                         }
                     }
                 }
             }
         });
+
+        // Navigation functions
+        function showPage(pageName) {
+            // Hide all pages
+            const pages = ['dashboard', 'analytics', 'tokens', 'alerts', 'how-it-works'];
+            pages.forEach(page => {
+                document.getElementById(page + '-page').classList.add('hidden');
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(link => link.classList.remove('active'));
+            });
+
+            // Show selected page
+            const targetPage = document.getElementById(pageName + '-page');
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            }
+
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.textContent.toLowerCase().includes(pageName) || 
+                    (pageName === 'how-it-works' && link.textContent.includes('How It Works'))) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function showAlertTab(tabName) {
+            // Hide all alert tabs
+            const tabs = ['recent', 'watchlist', 'settings'];
+            tabs.forEach(tab => {
+                document.getElementById(tab + '-alerts-tab').classList.add('hidden');
+                document.getElementById(tab + '-tab').classList.remove('bg-primary-teal', 'text-white');
+                document.getElementById(tab + '-tab').classList.add('text-secondary', 'hover:text-primary', 'hover:bg-bg-secondary');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-alerts-tab').classList.remove('hidden');
+            document.getElementById(tabName + '-tab').classList.add('bg-primary-teal', 'text-white');
+            document.getElementById(tabName + '-tab').classList.remove('text-secondary', 'hover:text-primary', 'hover:bg-bg-secondary');
+        }
+
+        // Show dashboard by default
+        showPage('dashboard');
     </script>
 </body>
 </html>

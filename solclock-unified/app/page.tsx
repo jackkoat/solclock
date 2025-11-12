@@ -65,19 +65,19 @@ export default function Home() {
                 SOLCLOCK
               </h1>
               <nav className="hidden md:flex items-center gap-2">
-                <a href="#" className="px-4 py-2 text-sm font-medium text-text-primary bg-primary-teal/10 rounded-lg transition-colors">
+                <a href="/" className="px-4 py-2 text-sm font-medium text-text-primary bg-primary-teal/10 rounded-lg transition-colors">
                   Dashboard
                 </a>
-                <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Analytics
                 </a>
-                <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                <a href="/tokens" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Tokens
                 </a>
-                <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                <a href="/alerts" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Alerts
                 </a>
-                <a href="#" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                <a href="#how-it-works" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   How It Works
                 </a>
               </nav>
@@ -161,10 +161,10 @@ export default function Home() {
         </div>
 
         {/* How It Works Section */}
-        <div className="card">
+        <div id="how-it-works" className="card">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-text-primary mb-3">How SolClock Works</h2>
-            <p className="text-lg text-text-secondary max-w-3xl mx-auto">SolClock solves the challenge of monitoring Solana's fast-moving meme coin ecosystem by providing real-time analytics, intelligent alerts, and automated tracking - all in one professional dashboard.</p>
+            <p className="text-lg text-text-secondary max-w-3xl mx-auto">SolClock solves the challenge of monitoring Solana&apos;s fast-moving meme coin ecosystem by providing real-time analytics, intelligent alerts, and automated tracking - all in one professional dashboard.</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
