@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SolClock - Solana Network Analytics",
-  description: "Real-time Solana network analytics and meme coin dashboard",
+  title: "SolPulse - Solana Network Analytics",
+  description: "Real-time Solana network analytics and meme coin dashboard with smart pulse monitoring",
 };
 
 export default function RootLayout({

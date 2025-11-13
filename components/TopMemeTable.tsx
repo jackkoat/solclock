@@ -110,32 +110,32 @@ export default function TopMemeTable({ tokens }: Props) {
           <thead>
             <tr>
               <th 
-                className="cursor-pointer hover:text-primary-teal transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors"
                 onClick={() => handleSort('rank')}
               >
                 # <SortIcon columnKey="rank" />
               </th>
               <th>Token</th>
               <th 
-                className="cursor-pointer hover:text-primary-teal transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors"
                 onClick={() => handleSort('volume')}
               >
                 24h Volume <SortIcon columnKey="volume" />
               </th>
               <th 
-                className="cursor-pointer hover:text-primary-teal transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors"
                 onClick={() => handleSort('buyers')}
               >
                 Buyers <SortIcon columnKey="buyers" />
               </th>
               <th 
-                className="cursor-pointer hover:text-primary-teal transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors"
                 onClick={() => handleSort('holders')}
               >
                 Holders <SortIcon columnKey="holders" />
               </th>
               <th 
-                className="cursor-pointer hover:text-primary-teal transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors"
                 onClick={() => handleSort('score')}
               >
                 Score <SortIcon columnKey="score" />
@@ -159,7 +159,7 @@ export default function TopMemeTable({ tokens }: Props) {
                     <img
                       src={token.logo_url}
                       alt={token.symbol}
-                      className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-teal to-info"
+                      className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-blue to-primary-purple"
                       onError={(e) => {
                         e.currentTarget.src = 'https://via.placeholder.com/32?text=' + token.symbol.charAt(0);
                       }}
@@ -167,7 +167,7 @@ export default function TopMemeTable({ tokens }: Props) {
                     <span className="font-semibold">{token.symbol}</span>
                   </div>
                 </td>
-                <td className="font-semibold text-primary-teal">
+                <td className="font-semibold text-primary-blue">
                   {formatNumber(token.volume_24h_usd)}
                 </td>
                 <td className="text-text-primary">

@@ -1,5 +1,6 @@
 'use client';
 
+import SolPulseLogo from '@/components/SolPulseLogo';
 import { useEffect, useState } from 'react';
 import { Bell, TrendingUp, TrendingDown, AlertCircle, Clock, Plus } from 'lucide-react';
 import { apiClient } from '@/lib/api';
@@ -68,9 +69,7 @@ export default function Alerts() {
         <div className="max-w-[1440px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <h1 className="text-2xl font-bold text-primary-teal uppercase tracking-tight">
-                SOLCLOCK
-              </h1>
+              <SolPulseLogo className="" />
               <nav className="hidden md:flex items-center gap-2">
                 <a href="/" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Dashboard
@@ -81,7 +80,7 @@ export default function Alerts() {
                 <a href="/tokens" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Tokens
                 </a>
-                <a href="/alerts" className="px-4 py-2 text-sm font-medium text-text-primary bg-primary-teal/10 rounded-lg transition-colors">
+                <a href="/alerts" className="px-4 py-2 text-sm font-medium text-text-primary bg-gradient-to-r from-primary-blue/10 to-primary-purple/10 rounded-lg transition-colors border border-primary-blue/20">
                   Alerts
                 </a>
                 <a href="/how-it-works" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
@@ -111,7 +110,7 @@ export default function Alerts() {
             onClick={() => setActiveTab('recent')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               activeTab === 'recent'
-                ? 'bg-primary-teal text-white'
+                ? 'bg-gradient-to-r from-primary-blue to-primary-purple text-white'
                 : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
             }`}
           >
@@ -121,7 +120,7 @@ export default function Alerts() {
             onClick={() => setActiveTab('watchlist')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               activeTab === 'watchlist'
-                ? 'bg-primary-teal text-white'
+                ? 'bg-gradient-to-r from-primary-blue to-primary-purple text-white'
                 : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
             }`}
           >
@@ -131,7 +130,7 @@ export default function Alerts() {
             onClick={() => setActiveTab('settings')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               activeTab === 'settings'
-                ? 'bg-primary-teal text-white'
+                ? 'bg-gradient-to-r from-primary-blue to-primary-purple text-white'
                 : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
             }`}
           >
@@ -181,7 +180,7 @@ export default function Alerts() {
               <div className="space-y-3">
                 {loading ? (
                   <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-teal border-t-transparent mx-auto"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-blue border-t-transparent mx-auto"></div>
                   </div>
                 ) : alerts.length === 0 ? (
                   <div className="text-center py-8">
@@ -223,7 +222,7 @@ export default function Alerts() {
           <div className="card">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-text-primary">Your Watchlist</h2>
-              <button className="flex items-center gap-2 px-4 py-2 bg-primary-teal text-white rounded-lg hover:bg-primary-teal/90 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-blue to-primary-purple text-white rounded-lg hover:from-primary-blue-dark hover:to-primary-purple-dark transition-colors">
                 <Plus className="w-4 h-4" />
                 Add Token
               </button>
@@ -234,8 +233,8 @@ export default function Alerts() {
                 <div key={index} className="p-4 bg-bg-secondary rounded-lg border border-border-light">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-teal/10 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-bold text-primary-teal">
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary-blue/10 to-primary-purple/10 rounded-full flex items-center justify-center">
+                        <span className="text-sm font-bold text-primary-blue">
                           {item.symbol.slice(0, 2).toUpperCase()}
                         </span>
                       </div>
@@ -254,7 +253,7 @@ export default function Alerts() {
                   <div className="mt-3 pt-3 border-t border-border-light">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-text-secondary">Alert Price: ${item.alertPrice.toFixed(6)}</span>
-                      <button className="text-primary-teal hover:text-primary-teal/80 transition-colors">
+                      <button className="text-primary-blue hover:text-primary-blue/80 transition-colors">
                         Edit Alert
                       </button>
                     </div>
@@ -282,7 +281,7 @@ export default function Alerts() {
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" defaultChecked />
-                    <div className="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-teal/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-teal"></div>
+                    <div className="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-blue/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-blue"></div>
                   </label>
                 </div>
 
@@ -296,7 +295,7 @@ export default function Alerts() {
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" defaultChecked />
-                    <div className="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-teal/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-teal"></div>
+                    <div className="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-blue/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-blue"></div>
                   </label>
                 </div>
 
@@ -310,7 +309,7 @@ export default function Alerts() {
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" defaultChecked />
-                    <div className="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-teal/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-teal"></div>
+                    <div className="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-blue/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-blue"></div>
                   </label>
                 </div>
 
@@ -324,7 +323,7 @@ export default function Alerts() {
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" />
-                    <div className="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-teal/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-teal"></div>
+                    <div className="w-11 h-6 bg-bg-secondary peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-blue/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-blue"></div>
                   </label>
                 </div>
               </div>
@@ -361,7 +360,7 @@ export default function Alerts() {
       {/* Footer */}
       <footer className="bg-bg-primary border-t border-border-light mt-12 py-6">
         <div className="max-w-[1440px] mx-auto px-6 text-center text-text-secondary text-sm">
-          <p>SolClock © 2025 | Smart Alerts System</p>
+            <p>SolPulse © 2025 | Smart Alerts System</p>
         </div>
       </footer>
     </>

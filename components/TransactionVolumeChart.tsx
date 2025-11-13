@@ -71,7 +71,7 @@ export default function TransactionVolumeChart({
             <p className="text-text-secondary text-sm">{error}</p>
             <button 
               onClick={fetchTransactionVolumeData}
-              className="mt-4 px-4 py-2 bg-primary-teal text-white rounded-lg hover:bg-primary-teal/90 transition-colors"
+              className="mt-4 px-4 py-2 bg-gradient-to-r from-primary-blue to-primary-purple text-white rounded-lg hover:from-primary-blue-dark hover:to-primary-purple-dark transition-colors"
             >
               Retry
             </button>
@@ -115,8 +115,8 @@ export default function TransactionVolumeChart({
       {
         label: metric.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()),
         data: values,
-        backgroundColor: 'rgba(99, 102, 241, 0.8)', // Indigo color
-        borderColor: 'rgba(99, 102, 241, 1)',
+        backgroundColor: 'rgba(138, 43, 226, 0.8)', // Purple color
+        borderColor: 'rgba(138, 43, 226, 1)',
         borderWidth: 1,
       },
     ],

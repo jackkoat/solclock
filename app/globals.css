@@ -31,7 +31,7 @@
   }
   
   .btn-primary {
-    @apply bg-primary-teal text-white font-semibold px-5 py-2.5 rounded-lg transition-all duration-200 hover:bg-primary-teal-dark;
+    @apply bg-gradient-to-r from-primary-blue to-primary-purple text-white font-semibold px-5 py-2.5 rounded-lg transition-all duration-200 hover:from-primary-blue-dark hover:to-primary-purple-dark shadow-lg;
   }
   
   .data-table {
@@ -59,6 +59,6 @@
   }
   
   .live-dot {
-    @apply w-2 h-2 rounded-full bg-success animate-pulse-dot;
+    @apply w-2 h-2 rounded-full bg-gradient-to-r from-primary-blue to-primary-purple animate-pulse-dot;
   }
 }

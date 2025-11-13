@@ -53,7 +53,7 @@ export default function AlertPanel({ alerts, loading }: Props) {
   if (loading) {
     return (
       <div className="h-96 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-4 border-primary-teal border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-4 border-primary-blue border-t-transparent"></div>
       </div>
     );
   }

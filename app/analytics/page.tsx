@@ -1,5 +1,6 @@
 'use client';
 
+import SolPulseLogo from '@/components/SolPulseLogo';
 import { useEffect, useState } from 'react';
 import { Activity, TrendingUp, DollarSign, Users, BarChart3 } from 'lucide-react';
 import { apiClient } from '@/lib/api';
@@ -42,14 +43,12 @@ export default function Analytics() {
         <div className="max-w-[1440px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <h1 className="text-2xl font-bold text-primary-teal uppercase tracking-tight">
-                SOLCLOCK
-              </h1>
+              <SolPulseLogo className="" />
               <nav className="hidden md:flex items-center gap-2">
                 <a href="/" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Dashboard
                 </a>
-                <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-primary bg-primary-teal/10 rounded-lg transition-colors">
+                <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-primary bg-gradient-to-r from-primary-blue/10 to-primary-purple/10 rounded-lg transition-colors border border-primary-blue/20">
                   Analytics
                 </a>
                 <a href="/tokens" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
@@ -89,7 +88,7 @@ export default function Analytics() {
                   ${(totalVolume / 1000000).toFixed(1)}M
                 </p>
               </div>
-              <DollarSign className="w-8 h-8 text-primary-teal" />
+              <DollarSign className="w-8 h-8 text-primary-blue" />
             </div>
           </div>
 
@@ -142,8 +141,8 @@ export default function Analytics() {
               {topTokens.slice(0, 5).map((token, index) => (
                 <div key={token.token_address} className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-bold text-primary-teal">#{index + 1}</span>
+                    <div className="w-8 h-8 bg-gradient-to-br from-primary-blue/10 to-primary-purple/10 rounded-full flex items-center justify-center">
+                      <span className="text-sm font-bold text-primary-blue">#{index + 1}</span>
                     </div>
                     <div>
                       <div className="font-medium text-text-primary">{token.symbol}</div>
@@ -162,12 +161,12 @@ export default function Analytics() {
           {/* Volume Distribution */}
           <div className="card">
             <div className="flex items-center gap-2 mb-5">
-              <BarChart3 className="w-5 h-5 text-primary-teal" />
+              <BarChart3 className="w-5 h-5 text-primary-blue" />
               <h2 className="text-lg font-bold">Volume Distribution</h2>
             </div>
             <div className="space-y-4">
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary-teal mb-2">
+                <div className="text-3xl font-bold text-primary-blue mb-2">
                   ${(totalVolume / 1000000).toFixed(1)}M
                 </div>
                 <div className="text-text-secondary">Total 24h Volume</div>
@@ -199,7 +198,7 @@ export default function Analytics() {
         {/* Network Health */}
         <div className="card">
           <div className="flex items-center gap-2 mb-5">
-            <Activity className="w-5 h-5 text-primary-teal" />
+            <Activity className="w-5 h-5 text-primary-blue" />
             <h2 className="text-lg font-bold">Network Health Metrics</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -209,7 +208,7 @@ export default function Analytics() {
               </div>
               <div className="text-text-secondary">Transactions per Second</div>
               <div className="mt-2 h-2 bg-bg-secondary rounded-full">
-                <div className="h-2 bg-primary-teal rounded-full" style={{ width: '78%' }}></div>
+                <div className="h-2 bg-primary-blue rounded-full" style={{ width: '78%' }}></div>
               </div>
             </div>
             <div className="text-center">
@@ -237,7 +236,7 @@ export default function Analytics() {
       {/* Footer */}
       <footer className="bg-bg-primary border-t border-border-light mt-12 py-6">
         <div className="max-w-[1440px] mx-auto px-6 text-center text-text-secondary text-sm">
-          <p>SolClock © 2025 | Advanced Analytics Dashboard</p>
+          <p>SolPulse © 2025 | Advanced Analytics Dashboard</p>
         </div>
       </footer>
     </>

@@ -1,5 +1,6 @@
 'use client';
 
+import SolPulseLogo from '@/components/SolPulseLogo';
 import { useEffect, useState } from 'react';
 import { Search, TrendingUp, TrendingDown, Star, ExternalLink } from 'lucide-react';
 import { apiClient } from '@/lib/api';
@@ -77,9 +78,7 @@ export default function Tokens() {
         <div className="max-w-[1440px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <h1 className="text-2xl font-bold text-primary-teal uppercase tracking-tight">
-                SOLCLOCK
-              </h1>
+              <SolPulseLogo className="" />
               <nav className="hidden md:flex items-center gap-2">
                 <a href="/" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Dashboard
@@ -87,7 +86,7 @@ export default function Tokens() {
                 <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Analytics
                 </a>
-                <a href="/tokens" className="px-4 py-2 text-sm font-medium text-text-primary bg-primary-teal/10 rounded-lg transition-colors">
+                <a href="/tokens" className="px-4 py-2 text-sm font-medium text-text-primary bg-gradient-to-r from-primary-blue/10 to-primary-purple/10 rounded-lg transition-colors border border-primary-blue/20">
                   Tokens
                 </a>
                 <a href="/alerts" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
@@ -125,7 +124,7 @@ export default function Tokens() {
                 placeholder="Search tokens by name, symbol, or address..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-bg-secondary border border-border-light rounded-lg text-text-primary placeholder-text-secondary focus:border-primary-teal focus:ring-1 focus:ring-primary-teal transition-colors"
+                className="w-full pl-10 pr-4 py-2 bg-bg-secondary border border-border-light rounded-lg text-text-primary placeholder-text-secondary focus:border-primary-blue focus:ring-1 focus:ring-primary-blue transition-colors"
               />
             </div>
 
@@ -133,7 +132,7 @@ export default function Tokens() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="px-4 py-2 bg-bg-secondary border border-border-light rounded-lg text-text-primary focus:border-primary-teal focus:ring-1 focus:ring-primary-teal transition-colors"
+              className="px-4 py-2 bg-bg-secondary border border-border-light rounded-lg text-text-primary focus:border-primary-blue focus:ring-1 focus:ring-primary-blue transition-colors"
             >
               <option value="rank">Sort by Rank</option>
               <option value="volume">Sort by Volume</option>
@@ -145,7 +144,7 @@ export default function Tokens() {
             <select
               value={filterBy}
               onChange={(e) => setFilterBy(e.target.value as typeof filterBy)}
-              className="px-4 py-2 bg-bg-secondary border border-border-light rounded-lg text-text-primary focus:border-primary-teal focus:ring-1 focus:ring-primary-teal transition-colors"
+              className="px-4 py-2 bg-bg-secondary border border-border-light rounded-lg text-text-primary focus:border-primary-blue focus:ring-1 focus:ring-primary-blue transition-colors"
             >
               <option value="all">All Tokens</option>
               <option value="gainers">24h Gainers</option>
@@ -209,7 +208,7 @@ export default function Tokens() {
                 {loading ? (
                   <tr>
                     <td colSpan={8} className="text-center py-8">
-                      <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-teal border-t-transparent mx-auto"></div>
+                      <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-blue border-t-transparent mx-auto"></div>
                     </td>
                   </tr>
                 ) : filteredAndSortedTokens.length === 0 ? (
@@ -228,8 +227,8 @@ export default function Tokens() {
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center">
-                            <span className="text-xs font-bold text-primary-teal">
+                          <div className="w-8 h-8 bg-gradient-to-br from-primary-blue/10 to-primary-purple/10 rounded-full flex items-center justify-center">
+                            <span className="text-xs font-bold text-primary-blue">
                               {token.symbol.slice(0, 2).toUpperCase()}
                             </span>
                           </div>
@@ -268,13 +267,13 @@ export default function Tokens() {
                       <td className="py-3 px-4 text-center">
                         <div className="flex items-center justify-center gap-2">
                           <button
-                            className="p-1 text-text-secondary hover:text-primary-teal transition-colors"
+                            className="p-1 text-text-secondary hover:text-primary-blue transition-colors"
                             title="Add to Watchlist"
                           >
                             <Star className="w-4 h-4" />
                           </button>
                           <button
-                            className="p-1 text-text-secondary hover:text-primary-teal transition-colors"
+                            className="p-1 text-text-secondary hover:text-primary-blue transition-colors"
                             title="View on Explorer"
                           >
                             <ExternalLink className="w-4 h-4" />
@@ -293,7 +292,7 @@ export default function Tokens() {
       {/* Footer */}
       <footer className="bg-bg-primary border-t border-border-light mt-12 py-6">
         <div className="max-w-[1440px] mx-auto px-6 text-center text-text-secondary text-sm">
-          <p>SolClock © 2025 | Token Explorer</p>
+          <p>SolPulse © 2025 | Token Explorer</p>
         </div>
       </footer>
     </>

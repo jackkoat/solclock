@@ -226,7 +226,7 @@ export default function DataModeIndicator({ className = '' }: DataModeIndicatorP
             {dataMode.action && (
               <button
                 onClick={dataMode.action.onClick}
-                className="w-full px-3 py-2 text-xs font-medium rounded-md transition-colors bg-primary-teal text-white hover:bg-primary-teal/90"
+                className="w-full px-3 py-2 text-xs font-medium rounded-md transition-colors bg-gradient-to-r from-primary-blue to-primary-purple text-white hover:from-primary-blue-dark hover:to-primary-purple-dark"
               >
                 {dataMode.action.text}
               </button>

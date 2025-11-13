@@ -9,10 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Solscan-inspired clean theme
+        // SolPulse blue purple theme
         primary: {
-          teal: '#14F195',
-          'teal-dark': '#0FD882',
+          blue: '#13C9E1',  // Cyan blue
+          purple: '#8A2BE2', // Purple
+          'blue-dark': '#0FA5CC',
+          'purple-dark': '#7A1FD9',
         },
         bg: {
           primary: '#FFFFFF',
@@ -24,6 +26,9 @@ const config: Config = {
           secondary: '#6B7280',
           tertiary: '#9CA3AF',
         },
+        // Enhanced SolPulse color palette
+        'pulse-blue': '#13C9E1',
+        'pulse-purple': '#8A2BE2',
         border: {
           light: '#E5E7EB',
           medium: '#D1D5DB',

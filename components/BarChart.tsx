@@ -149,7 +149,7 @@ export function BarChartSkeleton({ height = 300, title = 'Loading...' }: { heigh
     <div className="bg-bg-secondary rounded-lg p-4" style={{ height: `${height + 80}px` }}>
       <h3 className="text-lg font-semibold mb-4 text-text-primary">{title}</h3>
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin rounded-full h-8 w-8 border-4 border-primary-teal border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-4 border-primary-blue border-t-transparent"></div>
       </div>
     </div>
   );

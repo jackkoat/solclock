@@ -68,7 +68,7 @@ export default function NetworkActivityChart({
             <p className="text-text-secondary text-sm">{error}</p>
             <button 
               onClick={fetchNetworkActivityData}
-              className="mt-4 px-4 py-2 bg-primary-teal text-white rounded-lg hover:bg-primary-teal/90 transition-colors"
+              className="mt-4 px-4 py-2 bg-gradient-to-r from-primary-blue to-primary-purple text-white rounded-lg hover:from-primary-blue-dark hover:to-primary-purple-dark transition-colors"
             >
               Retry
             </button>
@@ -112,8 +112,8 @@ export default function NetworkActivityChart({
       {
         label: `Network ${metric.replace('_', ' ').toUpperCase()}`,
         data: values,
-        backgroundColor: 'rgba(20, 241, 149, 0.8)',
-        borderColor: 'rgba(20, 241, 149, 1)',
+        backgroundColor: 'rgba(19, 201, 225, 0.8)',
+        borderColor: 'rgba(19, 201, 225, 1)',
         borderWidth: 1,
       },
     ],

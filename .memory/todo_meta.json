@@ -3,45 +3,59 @@
     "Coordinator": {
       "1": {
         "id": "1",
-        "content": "Create missing transaction_charts database table",
-        "details": "Create the missing Supabase table for transaction volume charts to fix the /api/charts/transaction-volume/ endpoint",
-        "status": "pending",
+        "content": "Update package.json and basic project configuration",
+        "details": "Change project name from solclock-unified to solpulse-dashboard, update any references",
+        "status": "completed",
         "priority": "high"
       },
       "2": {
         "id": "2",
-        "content": "Implement multi-API strategy with DexScreener and CoinGecko",
-        "details": "Replace premium Solscan endpoints with free APIs: DexScreener for real-time prices, CoinGecko for metadata, Solana RPC for blockchain data",
+        "content": "Update color scheme in Tailwind config",
+        "details": "Replace teal colors with blue purple theme using #13C9E1 (cyan) and #8A2BE2 (purple)",
         "status": "completed",
         "priority": "high"
       },
       "3": {
         "id": "3",
-        "content": "Fix transaction-volume chart with real-time data",
-        "details": "Implement the missing transaction-volume chart using the new database table and API endpoints",
+        "content": "Update layout.tsx and metadata",
+        "details": "Change title, description, and any branding from SolClock to SolPulse",
         "status": "completed",
         "priority": "high"
       },
       "4": {
         "id": "4",
-        "content": "Implement comprehensive caching system",
-        "details": "Add caching layers for API responses, database queries, and static data to improve performance",
+        "content": "Create SolPulse Logo component",
+        "details": "Create a React component that uses the new logo image with proper sizing",
         "status": "completed",
-        "priority": "medium"
+        "priority": "high"
       },
       "5": {
         "id": "5",
-        "content": "Clean up verbose documentation files",
-        "details": "Remove unnecessary .md files and consolidate documentation to keep only essential files",
+        "content": "Update main dashboard (page.tsx)",
+        "details": "Replace all SolClock references with SolPulse, update header logo, update all text content",
         "status": "completed",
-        "priority": "low"
+        "priority": "high"
       },
       "6": {
         "id": "6",
-        "content": "Test all endpoints and deploy optimization",
-        "details": "Test all API endpoints, verify barchart functionality (24h and 3h intervals), and deploy to production",
+        "content": "Update all other pages and components",
+        "details": "Update analytics, tokens, alerts pages and any other components that reference SolClock",
         "status": "completed",
-        "priority": "high"
+        "priority": "medium"
+      },
+      "7": {
+        "id": "7",
+        "content": "Generate and update favicon files",
+        "details": "Convert the favicon image to proper ICO/PNG formats for web use",
+        "status": "completed",
+        "priority": "medium"
+      },
+      "8": {
+        "id": "8",
+        "content": "Test and validate the rebrand",
+        "details": "Ensure all references are updated, colors work correctly, and no broken links",
+        "status": "completed",
+        "priority": "medium"
       }
     }
   }
