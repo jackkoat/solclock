@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { multiAPIService } from '@/lib/multiAPIService';
+import { getRealDataService } from '@/lib/realDataService';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     }
     
     // Get real-time network statistics from multi-API service
-    const currentStats = await multiAPIService.getNetworkStats();
+    const currentStats = await getRealDataService().fetchNetworkStats();
     
     // Generate historical data points for the chart
     const chartPoints = [];
@@ -60,7 +60,7 @@ export async function GET(request: Request) {
       max_tps: Math.max(...tpsValues),
       min_tps: Math.min(...tpsValues),
       total_blocks_24h: Math.round(blockValues.reduce((sum, b) => sum + b, 0)),
-      data_source: currentStats.isFallback ? 'fallback (solana-rpc)' : 'real-time (solana-rpc)'
+      data_source: (currentStats as any).isFallback ? 'fallback (solana-rpc)' : 'real-time (solana-rpc)'
     };
     
     return NextResponse.json({

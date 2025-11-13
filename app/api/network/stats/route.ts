@@ -1,18 +1,18 @@
 import { NextResponse } from 'next/server';
-import { multiAPIService } from '@/lib/multiAPIService';
+import { getRealDataService } from '@/lib/realDataService';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
     // Get fresh network data from multi-API service (Solana RPC)
-    const networkStats = await multiAPIService.getNetworkStats();
+    const networkStats = await getRealDataService().fetchNetworkStats();
 
     return NextResponse.json({
       success: true,
       data: {
         ...networkStats,
-        dataSource: networkStats.isFallback ? 'fallback (real-time unavailable)' : 'real-time (solana-rpc)'
+        dataSource: (networkStats as any).isFallback ? 'fallback (real-time unavailable)' : 'real-time (solana-rpc)'
       }
     });
   } catch (error) {

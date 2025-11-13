@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { multiAPIService } from '@/lib/multiAPIService';
+import { getRealDataService } from '@/lib/realDataService';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
     const startTime = new Date(now.getTime() - hoursBack * 60 * 60 * 1000);
     
     // Get current network stats from multi-API service
-    const networkStats = await multiAPIService.getNetworkStats();
+    const networkStats = await getRealDataService().fetchNetworkStats();
     
     // Generate realistic chart data based on current network activity
     const chartPoints = [];
@@ -65,7 +65,7 @@ export async function GET(request: Request) {
           avg_per_interval: Math.round(chartPoints.reduce((sum, p) => sum + p.total_transactions, 0) / chartPoints.length),
           estimated_tps: Math.round(chartPoints.reduce((sum, p) => sum + p.total_transactions, 0) / (hoursBack * 3600))
         },
-        dataSource: networkStats.isFallback ? 'fallback-generated' : 'multi-api-generated',
+        dataSource: (networkStats as any).isFallback ? 'fallback-generated' : 'multi-api-generated',
         generated_at: new Date().toISOString(),
         network_stats: {
           estimated_tps: networkStats.estimated_tps,
