@@ -1,0 +1,192 @@
+📄 Extracted from page: Solscan Pro API Docs
+URL: https://pro-api.solscan.io/pro-api-docs/v2.0/reference/v2-token-list
+
+Extracted content:
+```json
+{
+  "title": "Solscan Pro API Docs",
+  "url": "https://pro-api.solscan.io/pro-api-docs/v2.0/reference/v2-token-list",
+  "summary": "This page documents the `v2-token-list` endpoint of the Solscan Pro API, which allows users to retrieve a paginated list of tokens. It provides details on query parameters for sorting and pagination, the structure of successful and error responses, and notes an overall query limit of up to 50,000 items. Authentication is implied for accessing this Pro API endpoint.",
+  "key_points": [
+    {
+      "endpoint_name": "token list",
+      "method": "GET",
+      "path": "/v2.0/token/list",
+      "description": "Get the list of tokens. This endpoint supports up to 50,000 items per query.",
+      "parameters": [
+        {
+          "name": "sort_by",
+          "type": "string",
+          "description": "The parameter allows you to specify the field by which the returned list of tokens will be sorted.",
+          "allowed_values": [
+            "holder",
+            "market_cap",
+            "created_time"
+          ],
+          "required": false
+        },
+        {
+          "name": "sort_order",
+          "type": "string",
+          "description": "The parameter allows you to specify the sort order.",
+          "allowed_values": [
+            "asc",
+            "desc"
+          ],
+          "required": false
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "description": "Page number for pagination.",
+          "required": false
+        },
+        {
+          "name": "page_size",
+          "type": "number",
+          "description": "Number of items per page.",
+          "allowed_values": [
+            10,
+            20,
+            30,
+            40,
+            60,
+            100
+          ],
+          "required": false
+        }
+      ],
+      "response_formats": {
+        "200_OK": {
+          "description": "Successful response with token data.",
+          "schema": {
+            "success": {
+              "type": "boolean",
+              "description": "Status of Api"
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "description": "Address of token"
+                  },
+                  "decimals": {
+                    "type": "number",
+                    "description": "Decimals of token"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of token"
+                  },
+                  "symbol": {
+                    "type": "string",
+                    "description": "Symbol of token"
+                  },
+                  "market_cap": {
+                    "type": "number",
+                    "description": "Current market cap of token"
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "Current price of token"
+                  },
+                  "price_24h_change": {
+                    "type": "number",
+                    "description": "The number shows the percentage change in token price over the last 24 hours"
+                  },
+                  "holder": {
+                    "type": "number",
+                    "description": "The number of holders of the token"
+                  },
+                  "created_time": {
+                    "type": "number",
+                    "description": "The Unix epoch time that token was created"
+                  }
+                }
+              }
+            }
+          },
+          "example": {
+            "success": true,
+            "data": [
+              {
+                "address": "So11111111111111111111111111111111111111112",
+                "decimals": 9,
+                "name": "Wrapped SOL",
+                "symbol": "SOL",
+                "market_cap": 120740500232,
+                "price": 254.31,
+                "price_24h_change": -0.49324,
+                "holder": 1263348,
+                "created_time": 1713016188
+              }
+            ]
+          }
+        },
+        "400_Bad_Request": {
+          "description": "Request validation failed.",
+          "schema": {
+            "success": {
+              "type": "boolean",
+              "description": "Status of Api"
+            },
+            "errors": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "number",
+                  "description": "Error Code for API"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Message to describe error"
+                }
+              }
+            }
+          },
+          "example": {
+            "success": false,
+            "errors": {
+              "code": 1100,
+              "message": "Validation Error: \"sort_order\" must be one of [asc, desc]"
+            }
+          }
+        },
+        "401_Authentication_failed": {
+          "description": "Authentication required or invalid credentials."
+        },
+        "429_Too_Many_Requests": {
+          "description": "Rate limit exceeded."
+        },
+        "500_Internal_Server_Error": {
+          "description": "An unexpected server error occurred."
+        }
+      },
+      "rate_limits": "Implied by '429 Too Many Requests' status code, but specific limits (e.g., requests per second/minute) are not explicitly stated on this page.",
+      "access_requirements": "This is part of the 'Pro API Docs', suggesting it requires API key authentication or a subscription. The JavaScript example includes 'const requestOptions = { method: \"get\" }' but does not explicitly show an Authorization header, though it's implied for a 'Pro API'.",
+      "limitations_restrictions": [
+        "The endpoint supports retrieving up to 50,000 items per query (via pagination).",
+        "Pagination options include `page` and `page_size` (limited to 10, 20, 30, 40, 60, 100 items per page)."
+      ]
+    }
+  ],
+  "relevant_links": [
+    "/pro-api-docs/v2.0/reference/v2-token-transfer",
+    "/pro-api-docs/v2.0/reference/v2-token-defi-activities",
+    "/pro-api-docs/v2.0/reference/v2-token-markets",
+    "/pro-api-docs/v2.0/reference/v2-token-meta",
+    "/pro-api-docs/v2.0/reference/v2-token-meta-multi",
+    "/pro-api-docs/v2.0/reference/v2-token-price",
+    "/pro-api-docs/v2.0/reference/v2-token-price-multi",
+    "/pro-api-docs/v2.0/reference/v2-token-holders",
+    "/pro-api-docs/v2.0/reference/v2-token-top",
+    "/pro-api-docs/v2.0/reference/v2-token-trending",
+    "/pro-api-docs/v2.0/reference/v2-token-latest",
+    "/pro-api-docs/v2.0/reference/v2-token-defi-activities-export"
+  ],
+  "file_name": "v2_token_list_endpoint.json"
+}
+```

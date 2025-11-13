@@ -1,0 +1,56 @@
+{
+  "_source_id": 7,
+  "sources": {
+    "Solscan API Tier Analysis": {
+      "https://solscan.io/apis": {
+        "id": 1,
+        "publisher": "Solscan",
+        "url": "https://solscan.io/apis",
+        "title": "Solscan API Plans - Official Pricing",
+        "info": "Comprehensive pricing structure: Free API with 10M C.U/month and 1,000 requests/60s; Pro Level 2: $199/month (150M C.U); Pro Level 3: $399/month (500M C.U); Pro Level 4: $1,099/month (1.5B C.U). Free tier requires attribution."
+      },
+      "https://docs.solscan.io/api-access/pro-api-endpoints": {
+        "id": 2,
+        "publisher": "Solscan",
+        "url": "https://docs.solscan.io/api-access/pro-api-endpoints",
+        "title": "Pro API Endpoints Documentation",
+        "info": "Complete list of 20+ Pro API endpoints organized by categories (Account, Token, NFT, Transaction, Block, Monitoring). All endpoints use 100 C.U per request. Migration from V1.0 to V2.0 starting December 1st."
+      },
+      "https://docs.solscan.io/api-access/solscan-pro-api-faq": {
+        "id": 3,
+        "publisher": "Solscan",
+        "url": "https://docs.solscan.io/api-access/solscan-pro-api-faq",
+        "title": "Pro API FAQ",
+        "info": "Important limitations: Token price/MarketCap has 3-minute delay; Token list limited to top 2,000 tokens by market cap; No testnet support; No refunds policy; Subscription-based model."
+      },
+      "https://pro-api.solscan.io/pro-api-docs/v2.0/reference/v2-transaction-detail": {
+        "id": 4,
+        "publisher": "Solscan",
+        "url": "https://pro-api.solscan.io/pro-api-docs/v2.0/reference/v2-transaction-detail",
+        "title": "Transaction Detail Endpoint",
+        "info": "Complete transaction parsing with SOL/token balance changes, parsed instructions, program details, compute units consumed, priority fees. Returns 401 without Pro API key, 429 for rate limits."
+      },
+      "https://solana.com/docs/references/clusters": {
+        "id": 5,
+        "publisher": "Solana",
+        "url": "https://solana.com/docs/references/clusters",
+        "title": "Solana Clusters and Public RPC",
+        "info": "Official Solana public RPC endpoints for mainnet, devnet, and testnet. Free alternatives to commercial APIs for basic blockchain queries and transaction data."
+      },
+      "https://www.reddit.com/r/solana/comments/1hmw5oy/looking_for_a_reliable_free_rpc_provider/": {
+        "id": 6,
+        "publisher": "Reddit Community",
+        "url": "https://www.reddit.com/r/solana/comments/1hmw5oy/looking_for_a_reliable_free_rpc_provider/",
+        "title": "Free Solana RPC Alternatives",
+        "info": "Community recommendations for free RPC providers including dRPC, PublicNode, and other alternatives with high rate limits for developers building without commercial API access."
+      },
+      "https://pro-api.solscan.io/pro-api-docs/v2.0/reference/v2-token-list": {
+        "id": 7,
+        "publisher": "Solscan",
+        "url": "https://pro-api.solscan.io/pro-api-docs/v2.0/reference/v2-token-list",
+        "title": "Token List Endpoint Analysis",
+        "info": "Pro API only endpoint supporting 50,000 items per query, 6 pagination options (10-100), 3 sort fields (holder, market_cap, created_time). Requires subscription and returns 401 without authentication."
+      }
+    }
+  }
+}

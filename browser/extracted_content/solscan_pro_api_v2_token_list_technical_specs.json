@@ -1,0 +1,108 @@
+📄 Extracted from page: Solscan Pro API Docs
+URL: https://pro-api.solscan.io/pro-api-docs/v2.0/reference/v2-token-list
+
+Extracted content:
+```json
+{
+  "title": "Solscan Pro API Docs",
+  "url": "https://pro-api.solscan.io/pro-api-docs/v2.0/reference/v2-token-list",
+  "summary": "This page documents the Solscan Pro API v2 'token list' endpoint. It provides details on how to retrieve a list of tokens, including available query parameters for sorting and pagination, and the structure of successful and error responses. It also outlines several HTTP status codes for various outcomes, including authentication failures and rate limiting.",
+  "key_points": [
+    {
+      "type": "Rate Limits",
+      "details": "The API indicates rate limiting by returning a `429 Too Many Requests` error. No specific numerical limits (e.g., requests per minute) are provided on this page."
+    },
+    {
+      "type": "Error Codes",
+      "codes": [
+        {
+          "code": 200,
+          "message": "OK",
+          "description": "Indicates a successful API request and response."
+        },
+        {
+          "code": 400,
+          "message": "Bad Request",
+          "description": "Signifies an invalid request, often due to validation errors in parameters. An example shows error code `1100` for validation issues like incorrect `sort_order` enum values."
+        },
+        {
+          "code": 401,
+          "message": "Authentication failed",
+          "description": "Indicates that the request could not be authenticated, implying that an Authorization mechanism is required for API access."
+        },
+        {
+          "code": 429,
+          "message": "Too Many Requests",
+          "description": "Indicates that the user has sent too many requests in a given amount of time, implying rate limiting is in effect."
+        },
+        {
+          "code": 500,
+          "message": "Internal Server Error",
+          "description": "A generic error message, indicating an unexpected condition was encountered by the API server."
+        }
+      ]
+    },
+    {
+      "type": "Authentication Details",
+      "details": "The presence of a `401 Authentication failed` response and an 'Authorization' heading above the code examples suggests that API requests require proper authorization, likely via an API key or token in an Authorization header, although the specific header format is not detailed in the provided content."
+    },
+    {
+      "type": "Other Technical Specifications",
+      "endpoint": "GET https://pro-api.solscan.io/v2.0/token/list",
+      "description": "Get the list of tokens. Supports up to 50,000 items per query.",
+      "query_parameters": [
+        {
+          "name": "sort_by",
+          "type": "string",
+          "description": "Field by which to sort the token list.",
+          "enum": ["holder", "market_cap", "created_time"]
+        },
+        {
+          "name": "sort_order",
+          "type": "string",
+          "description": "Sort order.",
+          "enum": ["asc", "desc"]
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "description": "Page number for pagination."
+        },
+        {
+          "name": "page_size",
+          "type": "number",
+          "description": "Number of items per page.",
+          "enum": [10, 20, 30, 40, 60, 100]
+        }
+      ],
+      "response_structure_200_ok": {
+        "success": "boolean",
+        "data": "array of objects",
+        "data_object_fields": [
+          "address (string)",
+          "decimals (number)",
+          "name (string)",
+          "symbol (string)",
+          "market_cap (number)",
+          "price (number)",
+          "price_24h_change (number)",
+          "holder (number)",
+          "created_time (number, Unix epoch time)"
+        ]
+      },
+      "response_structure_error": {
+        "success": "boolean",
+        "errors": {
+          "code": "number (Error Code for API)",
+          "message": "string (Message to describe error)"
+        }
+      }
+    }
+  ],
+  "relevant_links": [
+    "/pro-api-docs/v2.0/reference/v2-token-holders",
+    "/pro-api-docs/v2.0/reference/v2-token-top"
+  ],
+  "file_name": "solscan_pro_api_v2_token_list_technical_specs.json"
+}
+```
