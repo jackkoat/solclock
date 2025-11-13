@@ -1,0 +1,26 @@
+📄 Extracted from page: 
+URL: https://solclock-omega.vercel.app/api/top-meme/?limit=3
+
+Extracted content:
+```json
+{
+  "title": "",
+  "url": "https://solclock-omega.vercel.app/api/top-meme/?limit=3",
+  "summary": "This API endpoint provides a ranking of the top meme tokens, limited to the top 3 as per the request, including detailed metrics for each token such as their rank, token address, symbol, name, logo URL, 24-hour trading volume in USD, unique buyers in 24 hours, total holders, holder growth percentage, liquidity in USD, and a calculated score. The response also indicates the success status and the timestamp of the last update.",
+  "key_points": [
+    "The API call was successful, indicated by `\"success\": true`.",
+    "The response contains a `data` object with a `rankings` array and a `last_updated` timestamp.",
+    "The `rankings` array lists meme tokens, limited to 3 entries in this specific response.",
+    "Each token entry in the `rankings` array includes: `rank`, `token_address`, `symbol`, `name`, `logo_url`, `volume_24h_usd`, `unique_buyers_24h`, `holders`, `holders_growth`, `liquidity_usd`, and `score`.",
+    "Example token data includes 'CHILLGUY' (rank 1), 'GOAT' (rank 2), and 'BONK' (rank 3), each with their respective metrics.",
+    "The `last_updated` field indicates the data was last updated on '2025-11-13T19:32:25.028Z'.",
+    "Logo URLs are provided, pointing to IPFS or Arweave for image hosting."
+  ],
+  "relevant_links": [
+    "https://bafkreih4i6kftb5anyv5d6ysn5pc5olzrqmv66cysq36x5b2dzdyqmqr2e.ipfs.nftstorage.link",
+    "https://bafkreia7fy2sqpyikf3mtnscyqvxjzxfxm7zxzxfxm7zxzxfxm7zxzxfxm.ipfs.nftstorage.link",
+    "https://arweave.net/hQiPZOsRZXGXBJd_82PhVdlM_hACsT_q6wqwf5cSY7I"
+  ],
+  "file_name": "solclock_top_meme_api_response.json"
+}
+```

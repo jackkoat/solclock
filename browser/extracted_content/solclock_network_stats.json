@@ -1,0 +1,24 @@
+📄 Extracted from page: 
+URL: https://solclock-omega.vercel.app/api/network/stats/
+
+Extracted content:
+```json
+{
+  "title": "Network Stats API Endpoint",
+  "url": "https://solclock-omega.vercel.app/api/network/stats/",
+  "summary": "This API endpoint provides real-time network statistics for a blockchain, likely Solana, including transaction volume, block production, estimated throughput, compute unit usage, and unique wallet activity over the last hour. It indicates the data source and if a fallback mechanism is being used.",
+  "key_points": [
+    "The API call was successful, indicated by `\"success\": true`.",
+    "Data was last updated at `2025-11-13T19:32:48.580Z`.",
+    "A total of `2,729,596` transactions occurred in the last hour.",
+    "`7,229` blocks were produced in the last hour.",
+    "The estimated transactions per second (TPS) is `706`.",
+    "The average compute units (CU) per block is `51,824`.",
+    "`454,274` unique wallets were active within the last hour.",
+    "The `isFallback` flag is `true`, suggesting that the data might be from a secondary or backup source.",
+    "The data source is specified as `real-time (solscan)`."
+  ],
+  "relevant_links": [],
+  "file_name": "solclock_network_stats.json"
+}
+```

@@ -1,0 +1,20 @@
+📄 Extracted from page: 
+URL: https://solclock-omega.vercel.app/api/charts/transaction-volume/?period=24h&interval=3h
+
+Extracted content:
+```json
+{
+  "title": "",
+  "url": "https://solclock-omega.vercel.app/api/charts/transaction-volume/?period=24h&interval=3h",
+  "summary": "The API endpoint for transaction volume charts returned an error response, indicating that it failed to fetch chart data. The detailed error message points to a database issue, specifically that the table 'public.transaction_charts' could not be found in the schema cache. Consequently, no transaction volume data, timestamps, or chart data points were returned.",
+  "key_points": [
+    "The API call was unsuccessful, indicated by `\"success\": false`.",
+    "The primary error message is `\"error\": \"Failed to fetch chart data\"`.",
+    "The detailed error explanation is `\"details\": \"Could not find the table 'public.transaction_charts' in the schema cache\"`, suggesting a backend database configuration or availability issue.",
+    "No chart data points, timestamps, or transaction volumes were extracted because the response is an error, not a data payload.",
+    "The overall structure of the error response includes `success`, `error`, and `details` fields."
+  ],
+  "relevant_links": [],
+  "file_name": "transaction_volume_chart_error.json"
+}
+```
