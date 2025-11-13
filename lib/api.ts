@@ -38,6 +38,23 @@ class ApiClient {
     return this.request<any>('/api/network/stats');
   }
 
+  // Chart endpoints
+  async getNetworkActivity(params: { period?: string; metric?: string }) {
+    const query = new URLSearchParams({
+      period: params.period || '24h',
+      metric: params.metric || 'tps'
+    }).toString();
+    return this.request<any>(`/api/charts/network-activity?${query}`);
+  }
+
+  async getTransactionVolume(params: { period?: string; interval?: string }) {
+    const query = new URLSearchParams({
+      period: params.period || '24h',
+      interval: params.interval || '3h'
+    }).toString();
+    return this.request<any>(`/api/charts/transaction-volume?${query}`);
+  }
+
   // Token endpoints
   async getTopMemeCoins(limit: number = 50) {
     return this.request<any>(`/api/top-meme?limit=${limit}`);

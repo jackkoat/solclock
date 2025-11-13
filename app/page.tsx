@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Activity, TrendingUp, AlertCircle, Menu } from 'lucide-react';
+import { Activity, TrendingUp, AlertCircle, Menu, BarChart3 } from 'lucide-react';
 import NetworkPulseChart from '@/components/NetworkPulseChart';
+import NetworkActivityChart from '@/components/NetworkActivityChart';
+import TransactionVolumeChart from '@/components/TransactionVolumeChart';
 import TopMemeTable from '@/components/TopMemeTable';
 import AlertPanel from '@/components/AlertPanel';
 import NetworkStatsCard from '@/components/NetworkStatsCard';
+import DataModeIndicator from '@/components/DataModeIndicator';
 import { apiClient } from '@/lib/api';
 import type { NetworkPulseData, MemeToken, Alert } from '@/types';
 
@@ -56,6 +59,9 @@ export default function Home() {
 
   return (
     <>
+      {/* Data Mode Indicator */}
+      <DataModeIndicator />
+      
       {/* Header */}
       <header className="bg-bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
         <div className="max-w-[1440px] mx-auto px-6 py-4">
@@ -111,12 +117,25 @@ export default function Home() {
           </div>
         )}
 
-        {/* Network Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <NetworkStatsCard />
+        {/* NEW: Network Stats Barchart Section */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+          {/* Network Activity Barchart */}
+          <NetworkActivityChart 
+            period="24h" 
+            metric="tps" 
+            height={350}
+          />
+          
+          {/* Transaction Volume Barchart */}
+          <TransactionVolumeChart 
+            period="24h" 
+            interval="3h"
+            metric="total_transactions" 
+            height={350}
+          />
         </div>
 
-        {/* Network Pulse Chart */}
+        {/* Network Pulse Chart (Original) */}
         <div className="card mb-6">
           <div className="flex items-center gap-2 mb-5">
             <Activity className="w-5 h-5 text-primary-teal" />
@@ -139,6 +158,10 @@ export default function Home() {
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-primary-teal" />
                 <h2 className="text-lg font-bold">Top 50 Meme Coins</h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-text-secondary" />
+                <span className="text-sm text-text-secondary">Live Rankings</span>
               </div>
             </div>
             {loading ? (
