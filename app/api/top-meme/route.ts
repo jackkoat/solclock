@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { scoringService } from '@/lib/scoringService';
+import { multiAPIService } from '@/lib/multiAPIService';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100);
 
-    const rankings = await scoringService.calculateTop50();
+    const rankings = await multiAPIService.getTrendingTokens(limit);
     const limitedRankings = rankings.slice(0, limit);
 
     return NextResponse.json({

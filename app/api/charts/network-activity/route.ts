@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getRealDataService } from '@/lib/realDataService';
+import { multiAPIService } from '@/lib/multiAPIService';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,19 +20,8 @@ export async function GET(request: Request) {
       default: hoursBack = 24; break;
     }
     
-    // Get real-time network statistics
-    const apiKey = process.env.SOLSCAN_API_KEY;
-    
-    if (!apiKey) {
-      return NextResponse.json({
-        success: false,
-        error: 'Solscan API key not configured',
-        hint: 'Set SOLSCAN_API_KEY environment variable to enable real-time network data'
-      }, { status: 500 });
-    }
-    
-    const realDataService = getRealDataService();
-    const currentStats = await realDataService.fetchNetworkStats();
+    // Get real-time network statistics from multi-API service
+    const currentStats = await multiAPIService.getNetworkStats();
     
     // Generate historical data points for the chart
     const chartPoints = [];
@@ -71,7 +60,7 @@ export async function GET(request: Request) {
       max_tps: Math.max(...tpsValues),
       min_tps: Math.min(...tpsValues),
       total_blocks_24h: Math.round(blockValues.reduce((sum, b) => sum + b, 0)),
-      data_source: 'real-time (solscan)'
+      data_source: currentStats.isFallback ? 'fallback (solana-rpc)' : 'real-time (solana-rpc)'
     };
     
     return NextResponse.json({

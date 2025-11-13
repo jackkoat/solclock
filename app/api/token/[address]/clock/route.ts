@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { multiAPIService } from '@/lib/multiAPIService';
+import type { ChartDataPoint } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,45 +10,36 @@ export async function GET(
 ) {
   try {
     const address = params.address;
-    const now = new Date();
-    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const { searchParams } = new URL(request.url);
+    const interval = (searchParams.get('interval') as '3h' | '24h') || '24h';
 
-    // Get 24-hour hourly data
-    const { data, error } = await supabase
-      .from('token_hourly_stats')
-      .select('hour, tx_count, tx_volume_usd, unique_buyers')
-      .eq('token_address', address)
-      .gte('hour', oneDayAgo.toISOString())
-      .order('hour', { ascending: true });
+    // Get chart data from multi-API service
+    const chartData = await multiAPIService.getTokenChartData(address, interval);
 
-    if (error || !data || data.length === 0) {
-      return NextResponse.json({
-        success: false,
-        error: 'Token not found or no data available'
-      }, { status: 404 });
-    }
-
-    // Build hourly histogram
-    const hourlyData = data.map(row => ({
-      hour: row.hour,
-      hour_label: new Date(row.hour).getUTCHours() + ':00',
-      tx_count: Number(row.tx_count),
-      tx_volume_usd: Number(row.tx_volume_usd),
-      unique_buyers: Number(row.unique_buyers)
+    // Process chart data for the response
+    const hourlyData = chartData.map((item: ChartDataPoint) => ({
+      hour: item.timestamp,
+      hour_label: new Date(item.timestamp).getUTCHours() + ':00',
+      tx_count: item.tx_count,
+      tx_volume_usd: item.volume,
+      unique_buyers: item.unique_buyers
     }));
 
     // Find peak hour
-    const peakHour = hourlyData.reduce((max, current) =>
+    const peakHour = hourlyData.reduce((max: any, current: any) =>
       current.tx_volume_usd > max.tx_volume_usd ? current : max
     );
 
     const response = {
       token_address: address,
+      interval: interval,
       hourly_data: hourlyData,
       peak_hour: peakHour.hour_label,
-      total_volume_24h: hourlyData.reduce((sum, h) => sum + h.tx_volume_usd, 0),
-      total_transactions_24h: hourlyData.reduce((sum, h) => sum + h.tx_count, 0),
-      total_unique_buyers_24h: hourlyData.reduce((sum, h) => sum + h.unique_buyers, 0)
+      total_volume_24h: hourlyData.reduce((sum: number, h: any) => sum + h.tx_volume_usd, 0),
+      total_transactions_24h: hourlyData.reduce((sum: number, h: any) => sum + h.tx_count, 0),
+      total_unique_buyers_24h: hourlyData.reduce((sum: number, h: any) => sum + h.unique_buyers, 0),
+      data_source: 'multi-api (dexscreener + calculated)',
+      is_fallback: hourlyData.length > 0 && hourlyData[0].tx_count === 0
     };
 
     return NextResponse.json({

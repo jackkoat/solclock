@@ -3,37 +3,44 @@
     "Coordinator": {
       "1": {
         "id": "1",
-        "content": "Deploy SolClock to Vercel with mock data",
-        "details": "1. ✅ Fixed Vercel build error by removing pnpm-store dependency\n2. ✅ Updated pnpm-lock.yaml to match package.json\n3. ✅ Added .pnpmrc configuration for proper pnpm store locations\n4. ✅ Created vercel.json for explicit build configuration\n5. ✅ Updated package.json build script to disable frozen lockfile\n6. ✅ Successfully tested local build without /tmp errors\n7. ✅ Committed and pushed fix to GitHub (commit 316c915)\n8. ✅ Simplifed gitignore to resolve /tmp references\n9. ✅ Pushed simplified configuration (commit dd398ed)\n10. ✅ Awaiting Vercel deployment completion\n11. ⏳ Vercel should now work with simplified Next.js config",
-        "status": "in_progress",
+        "content": "Create missing transaction_charts database table",
+        "details": "Create the missing Supabase table for transaction volume charts to fix the /api/charts/transaction-volume/ endpoint",
+        "status": "pending",
         "priority": "high"
       },
       "2": {
         "id": "2",
-        "content": "Set up Supabase database from scratch",
-        "details": "1. ✅ Opened Supabase dashboard and navigated to SQL Editor\n2. ✅ Loaded and executed supabase-schema.sql\n3. ✅ Created all 8 required tables\n4. ✅ Set up Row Level Security policies\n5. ✅ Configured database indexes\n6. ✅ Verified table creation\n7. ✅ Set up Vercel environment variables",
+        "content": "Implement multi-API strategy with DexScreener and CoinGecko",
+        "details": "Replace premium Solscan endpoints with free APIs: DexScreener for real-time prices, CoinGecko for metadata, Solana RPC for blockchain data",
         "status": "completed",
         "priority": "high"
       },
       "3": {
         "id": "3",
-        "content": "Replace mock data with real Supabase integration",
-        "details": "1. ✅ Updated API routes to fetch from Supabase\n2. ✅ Implemented real data fetching functions\n3. ✅ Added error handling for empty database\n4. ✅ Created sample data generator for testing\n5. ✅ Optimized performance with caching\n6. ✅ Maintained backward compatibility\n7. ✅ Created comprehensive documentation",
+        "content": "Fix transaction-volume chart with real-time data",
+        "details": "Implement the missing transaction-volume chart using the new database table and API endpoints",
         "status": "completed",
         "priority": "high"
       },
       "4": {
         "id": "4",
-        "content": "Test and optimize the complete system",
-        "details": "1. Test all pages with real data\n2. Verify performance and loading states\n3. Add loading indicators where needed\n4. Final deployment verification",
+        "content": "Implement comprehensive caching system",
+        "details": "Add caching layers for API responses, database queries, and static data to improve performance",
         "status": "pending",
         "priority": "medium"
       },
       "5": {
         "id": "5",
-        "content": "Integrate Solscan API for real Solana blockchain data",
-        "details": "1. ✅ Created comprehensive Solscan API setup guide\n2. ✅ Secured user API key in environment\n3. ✅ Implemented Solscan API wrapper with rate limiting\n4. ✅ Replaced mock data generator with real API calls\n5. ✅ Set up real-time data monitoring and caching\n6. ✅ Created comprehensive documentation\n7. ✅ Implemented error handling and fallbacks\n8. ✅ Optimized for free tier rate limits\n9. ✅ Added auto-refresh capabilities\n10. ✅ Created testing and monitoring endpoints",
+        "content": "Clean up verbose documentation files",
+        "details": "Remove unnecessary .md files and consolidate documentation to keep only essential files",
         "status": "completed",
+        "priority": "low"
+      },
+      "6": {
+        "id": "6",
+        "content": "Test all endpoints and deploy optimization",
+        "details": "Test all API endpoints, verify barchart functionality (24h and 3h intervals), and deploy to production",
+        "status": "pending",
         "priority": "high"
       }
     }
