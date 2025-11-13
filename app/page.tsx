@@ -38,33 +38,36 @@ export default function Home() {
       </div>
 
       {/* Navigation */}
-      <nav className="relative z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/10 sticky top-0">
+      <nav className="relative z-50 bg-bg-secondary/95 backdrop-blur-sm border-b border-border-light sticky top-0">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <SolPulseLogo className="" />
+              <Activity className="w-8 h-8 text-primary-blue animate-pulse-dot" />
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-blue to-primary-purple bg-clip-text text-transparent">
+                SOLPULSE
+              </h1>
               <nav className="hidden md:flex items-center gap-6">
                 <button
                   onClick={() => scrollToSection('features')}
-                  className="text-white/80 hover:text-white transition-colors font-medium"
+                  className="nav-link"
                 >
                   Features
                 </button>
                 <button
                   onClick={() => scrollToSection('how-it-works')}
-                  className="text-white/80 hover:text-white transition-colors font-medium"
+                  className="nav-link"
                 >
                   How It Works
                 </button>
                 <button
                   onClick={() => scrollToSection('analytics')}
-                  className="text-white/80 hover:text-white transition-colors font-medium"
+                  className="nav-link"
                 >
                   Analytics
                 </button>
                 <button
                   onClick={() => scrollToSection('contact')}
-                  className="text-white/80 hover:text-white transition-colors font-medium"
+                  className="nav-link"
                 >
                   Contact
                 </button>
@@ -75,16 +78,15 @@ export default function Home() {
             <div className="hidden md:flex items-center gap-4">
               <button
                 onClick={() => router.push('/dashboard')}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-blue-500/25 hover:scale-105 flex items-center gap-2"
+                className="btn-primary glow-on-hover"
               >
                 Launch Dashboard
-                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 text-white/80 hover:text-white"
+              className="md:hidden p-2 text-text-secondary hover:text-primary-blue"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -93,29 +95,29 @@ export default function Home() {
 
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
+            <div className="md:hidden mt-4 pb-4 border-t border-border-light pt-4">
               <div className="flex flex-col gap-4">
                 <button
                   onClick={() => scrollToSection('features')}
-                  className="text-left text-white/80 hover:text-white transition-colors font-medium"
+                  className="text-left text-text-secondary hover:text-primary-blue transition-colors"
                 >
                   Features
                 </button>
                 <button
                   onClick={() => scrollToSection('how-it-works')}
-                  className="text-left text-white/80 hover:text-white transition-colors font-medium"
+                  className="text-left text-text-secondary hover:text-primary-blue transition-colors"
                 >
                   How It Works
                 </button>
                 <button
                   onClick={() => scrollToSection('analytics')}
-                  className="text-left text-white/80 hover:text-white transition-colors font-medium"
+                  className="text-left text-text-secondary hover:text-primary-blue transition-colors"
                 >
                   Analytics
                 </button>
                 <button
                   onClick={() => router.push('/dashboard')}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-all text-center w-full"
+                  className="btn-primary w-full text-center"
                 >
                   Launch Dashboard
                 </button>
@@ -130,26 +132,26 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center">
             {/* Hero Badge */}
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-white px-6 py-3 rounded-full text-sm font-semibold mb-8 border border-white/10">
-              <Zap className="w-4 h-4 text-cyan-400" />
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-blue/20 to-primary-purple/20 text-text-primary px-6 py-3 rounded-full text-sm font-semibold mb-8 border border-border-light">
+              <Zap className="w-4 h-4 text-accent-cyan" />
               Real-Time Solana Analytics
             </div>
 
             {/* Main Heading */}
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
-              <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-text-primary via-primary-blue to-text-primary bg-clip-text text-transparent">
                 Monitor Solana&apos;s
               </span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-accent-cyan via-primary-blue to-primary-purple bg-clip-text text-transparent">
                 Pulse
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-text-secondary mb-12 max-w-4xl mx-auto leading-relaxed">
               Real-time analytics, intelligent alerts, and automated tracking for the fastest-moving 
-              <span className="text-cyan-300 font-semibold"> Solana ecosystem</span>. 
+              <span className="text-accent-cyan font-semibold"> Solana ecosystem</span>. 
               Stay ahead of the curve with professional-grade tools.
             </p>
 
@@ -157,14 +159,14 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
               <button
                 onClick={() => router.push('/dashboard')}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-lg px-10 py-5 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-blue-500/25 hover:scale-105 flex items-center gap-3 group"
+                className="btn-primary glow-on-hover flex items-center gap-3 group"
               >
                 Launch Dashboard
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
                 onClick={() => scrollToSection('features')}
-                className="text-white/90 hover:text-white text-lg font-semibold transition-colors border border-white/20 hover:border-white/40 px-10 py-5 rounded-lg backdrop-blur-sm"
+                className="text-text-secondary hover:text-text-primary text-lg font-semibold transition-colors border border-border-light hover:border-primary-blue px-10 py-5 rounded-lg backdrop-blur-sm"
               >
                 Explore Features ↓
               </button>
@@ -172,26 +174,26 @@ export default function Home() {
 
             {/* Live Stats Preview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+              <div className="bg-bg-card backdrop-blur-sm rounded-xl p-6 border border-border-light">
                 <div className="flex items-center gap-3 mb-3">
-                  <TrendingUp className="w-6 h-6 text-green-400" />
-                  <span className="text-white/70 font-medium">Active Tokens</span>
+                  <TrendingUp className="w-6 h-6 text-accent-green" />
+                  <span className="text-text-secondary font-medium">Active Tokens</span>
                 </div>
-                <div className="text-3xl font-bold text-white">50+</div>
+                <div className="text-3xl font-bold text-text-primary">50+</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+              <div className="bg-bg-card backdrop-blur-sm rounded-xl p-6 border border-border-light">
                 <div className="flex items-center gap-3 mb-3">
-                  <Activity className="w-6 h-6 text-blue-400" />
-                  <span className="text-white/70 font-medium">Network TPS</span>
+                  <Activity className="w-6 h-6 text-primary-blue" />
+                  <span className="text-text-secondary font-medium">Network TPS</span>
                 </div>
-                <div className="text-3xl font-bold text-white">3,000+</div>
+                <div className="text-3xl font-bold text-text-primary">3,000+</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+              <div className="bg-bg-card backdrop-blur-sm rounded-xl p-6 border border-border-light">
                 <div className="flex items-center gap-3 mb-3">
-                  <BarChart3 className="w-6 h-6 text-purple-400" />
-                  <span className="text-white/70 font-medium">24h Volume</span>
+                  <BarChart3 className="w-6 h-6 text-primary-purple" />
+                  <span className="text-text-secondary font-medium">24h Volume</span>
                 </div>
-                <div className="text-3xl font-bold text-white">$2.5M+</div>
+                <div className="text-3xl font-bold text-text-primary">$2.5M+</div>
               </div>
             </div>
           </div>
@@ -202,73 +204,73 @@ export default function Home() {
       <section id="features" className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-6">
               Powerful Features for 
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent"> Serious Traders</span>
+              <span className="bg-gradient-to-r from-accent-cyan to-primary-blue bg-clip-text text-transparent"> Serious Traders</span>
             </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+            <p className="text-xl text-text-secondary max-w-3xl mx-auto">
               Everything you need to stay ahead in the fast-moving Solana ecosystem
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Feature Cards */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-blue-500/30 transition-all duration-300 group hover:bg-white/10">
-              <div className="w-14 h-14 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <TrendingUp className="w-7 h-7 text-blue-400" />
+            <div className="bg-bg-card backdrop-blur-sm rounded-xl p-8 border border-border-light hover:border-primary-blue/30 transition-all duration-300 group hover:bg-bg-card-hover">
+              <div className="w-14 h-14 bg-gradient-to-r from-primary-blue/20 to-primary-purple/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <TrendingUp className="w-7 h-7 text-primary-blue" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Real-Time Rankings</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary mb-4">Real-Time Rankings</h3>
+              <p className="text-text-secondary leading-relaxed">
                 Live rankings of top 50 meme coins with intelligent scoring based on volume, liquidity, and social signals.
               </p>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-purple-500/30 transition-all duration-300 group hover:bg-white/10">
-              <div className="w-14 h-14 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Activity className="w-7 h-7 text-purple-400" />
+            <div className="bg-bg-card backdrop-blur-sm rounded-xl p-8 border border-border-light hover:border-primary-purple/30 transition-all duration-300 group hover:bg-bg-card-hover">
+              <div className="w-14 h-14 bg-gradient-to-r from-primary-purple/20 to-accent-pink/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Activity className="w-7 h-7 text-primary-purple" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Network Analytics</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary mb-4">Network Analytics</h3>
+              <p className="text-text-secondary leading-relaxed">
                 Monitor Solana network performance with TPS charts, transaction volumes, and activity patterns.
               </p>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-cyan-500/30 transition-all duration-300 group hover:bg-white/10">
-              <div className="w-14 h-14 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Zap className="w-7 h-7 text-cyan-400" />
+            <div className="bg-bg-card backdrop-blur-sm rounded-xl p-8 border border-border-light hover:border-accent-cyan/30 transition-all duration-300 group hover:bg-bg-card-hover">
+              <div className="w-14 h-14 bg-gradient-to-r from-accent-cyan/20 to-primary-blue/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Zap className="w-7 h-7 text-accent-cyan" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Smart Alerts</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary mb-4">Smart Alerts</h3>
+              <p className="text-text-secondary leading-relaxed">
                 Get notified about whale activity, price breakouts, and trending tokens before the crowd.
               </p>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-green-500/30 transition-all duration-300 group hover:bg-white/10">
-              <div className="w-14 h-14 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Shield className="w-7 h-7 text-green-400" />
+            <div className="bg-bg-card backdrop-blur-sm rounded-xl p-8 border border-border-light hover:border-accent-green/30 transition-all duration-300 group hover:bg-bg-card-hover">
+              <div className="w-14 h-14 bg-gradient-to-r from-accent-green/20 to-accent-emerald/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Shield className="w-7 h-7 text-accent-green" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Risk Assessment</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary mb-4">Risk Assessment</h3>
+              <p className="text-text-secondary leading-relaxed">
                 Advanced scoring algorithms help identify genuine opportunities from pump-and-dump schemes.
               </p>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-orange-500/30 transition-all duration-300 group hover:bg-white/10">
-              <div className="w-14 h-14 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <BarChart3 className="w-7 h-7 text-orange-400" />
+            <div className="bg-bg-card backdrop-blur-sm rounded-xl p-8 border border-border-light hover:border-accent-orange/30 transition-all duration-300 group hover:bg-bg-card-hover">
+              <div className="w-14 h-14 bg-gradient-to-r from-accent-orange/20 to-accent-red/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <BarChart3 className="w-7 h-7 text-accent-orange" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Historical Data</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary mb-4">Historical Data</h3>
+              <p className="text-text-secondary leading-relaxed">
                 Access 24-hour historical data with interactive charts and detailed token performance metrics.
               </p>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-pink-500/30 transition-all duration-300 group hover:bg-white/10">
-              <div className="w-14 h-14 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Users className="w-7 h-7 text-pink-400" />
+            <div className="bg-bg-card backdrop-blur-sm rounded-xl p-8 border border-border-light hover:border-accent-pink/30 transition-all duration-300 group hover:bg-bg-card-hover">
+              <div className="w-14 h-14 bg-gradient-to-r from-accent-pink/20 to-primary-purple/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Users className="w-7 h-7 text-accent-pink" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Community Insights</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary mb-4">Community Insights</h3>
+              <p className="text-text-secondary leading-relaxed">
                 Stay connected with the Solana community and get insights from fellow traders and analysts.
               </p>
             </div>
@@ -280,43 +282,43 @@ export default function Home() {
       <section id="how-it-works" className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              How <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">SolPulse</span> Works
+            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-6">
+              How <span className="bg-gradient-to-r from-accent-cyan to-primary-purple bg-clip-text text-transparent">SolPulse</span> Works
             </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+            <p className="text-xl text-text-secondary max-w-3xl mx-auto">
               From data collection to actionable insights in real-time
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-8">
+              <div className="w-20 h-20 bg-gradient-to-r from-primary-blue/20 to-primary-purple/20 rounded-full flex items-center justify-center mx-auto mb-8">
                 <span className="text-3xl">📡</span>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Data Collection</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-2xl font-bold text-text-primary mb-4">Data Collection</h3>
+              <p className="text-text-secondary leading-relaxed">
                 We continuously monitor Solana blockchain and DexScreener API for real-time token data,
                 network metrics, and trading activity.
               </p>
             </div>
 
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+              <div className="w-20 h-20 bg-gradient-to-r from-primary-purple/20 to-accent-pink/20 rounded-full flex items-center justify-center mx-auto mb-8">
                 <span className="text-3xl">🧠</span>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Smart Processing</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-2xl font-bold text-text-primary mb-4">Smart Processing</h3>
+              <p className="text-text-secondary leading-relaxed">
                 Our algorithms analyze volume patterns, holder growth, liquidity changes, and social signals
                 to score tokens intelligently.
               </p>
             </div>
 
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+              <div className="w-20 h-20 bg-gradient-to-r from-accent-cyan/20 to-primary-blue/20 rounded-full flex items-center justify-center mx-auto mb-8">
                 <span className="text-3xl">⚡</span>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Real-Time Insights</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="text-2xl font-bold text-text-primary mb-4">Real-Time Insights</h3>
+              <p className="text-text-secondary leading-relaxed">
                 Get instant access to rankings, charts, and alerts through our professional dashboard,
                 updated every 5 minutes.
               </p>

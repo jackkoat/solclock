@@ -43,9 +43,12 @@ export default function Analytics() {
         <div className="max-w-[1440px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <SolPulseLogo className="" />
+              <Activity className="w-8 h-8 text-primary-blue animate-pulse-dot" />
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-blue to-primary-purple bg-clip-text text-transparent">
+                SOLPULSE
+              </h1>
               <nav className="hidden md:flex items-center gap-2">
-                <a href="/" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                <a href="/dashboard" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Dashboard
                 </a>
                 <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-primary bg-gradient-to-r from-primary-blue/10 to-primary-purple/10 rounded-lg transition-colors border border-primary-blue/20">
@@ -56,9 +59,6 @@ export default function Analytics() {
                 </a>
                 <a href="/alerts" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Alerts
-                </a>
-                <a href="/how-it-works" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
-                  How It Works
                 </a>
               </nav>
             </div>
