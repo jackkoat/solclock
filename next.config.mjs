@@ -3,7 +3,9 @@ const nextConfig = {
   trailingSlash: true,
   images: {
     unoptimized: true
-  }
+  },
+  output: 'export',
+  distDir: 'dist'
 };
 
 export default nextConfig;
