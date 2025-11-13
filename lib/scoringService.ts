@@ -142,6 +142,7 @@ class ScoringService {
         volume_24h_usd: volume24h,
         unique_buyers_24h: buyers24h,
         holders: currentHolders,
+        holders_growth: holdersGrowth,
         liquidity_usd: avgLiquidity,
         score: 0
       });

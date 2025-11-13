@@ -21,11 +21,11 @@ export class RealDataService {
       
       const response = await this.solscan.getTrendingTokens(limit, 'volume');
       
-      if (!response || !response.data) {
+      if (!response || !Array.isArray(response)) {
         throw new Error('No trending tokens data received');
       }
 
-      const tokens = response.data;
+      const tokens = response;
       const tokensToInsert: Token[] = [];
 
       for (const token of tokens) {
