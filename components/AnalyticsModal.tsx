@@ -174,7 +174,7 @@ export default function AnalyticsModal({ isOpen, onClose, token }: AnalyticsModa
                     )}
                   </div>
                   <p className="text-text-primary font-bold text-lg italic leading-relaxed">
-                    "{analytics.analysis.summary}"
+                    &quot;{analytics.analysis.summary}&quot;
                   </p>
                 </div>
 
