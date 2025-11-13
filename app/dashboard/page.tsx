@@ -2,16 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import { Activity, TrendingUp, AlertCircle, Menu, BarChart3 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import NetworkPulseChart from '@/components/NetworkPulseChart';
 import NetworkActivityChart from '@/components/NetworkActivityChart';
 import TransactionVolumeChart from '@/components/TransactionVolumeChart';
 import TopMemeTable from '@/components/TopMemeTable';
 import AlertPanel from '@/components/AlertPanel';
 import NetworkStatsCard from '@/components/NetworkStatsCard';
+import SolPulseLogo from '@/components/SolPulseLogo';
 import { apiClient } from '@/lib/api';
 import type { NetworkPulseData, MemeToken, Alert } from '@/types';
 
 export default function Dashboard() {
+  const router = useRouter();
   const [networkData, setNetworkData] = useState<NetworkPulseData | null>(null);
   const [topMemeCoins, setTopMemeCoins] = useState<MemeToken[]>([]);
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -57,17 +60,29 @@ export default function Dashboard() {
   };
 
   return (
-    <>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Animated Pulse Background */}
+      <div className="absolute inset-0">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900/20 to-purple-900/30" />
+        
+        {/* Animated Pulse Rings */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-gradient-to-r from-cyan-500/8 to-blue-500/8 rounded-full blur-3xl animate-pulse delay-2000" />
+      </div>
+
       {/* Header */}
-      <header className="bg-bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
+      <header className="relative z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/10 sticky top-0 shadow-sm">
         <div className="max-w-[1440px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <h1 className="text-2xl font-bold text-primary-teal uppercase tracking-tight">
-                SOLCLOCK
-              </h1>
+              <SolPulseLogo className="" />
               <nav className="hidden md:flex items-center gap-2">
-                <a href="/dashboard" className="px-4 py-2 text-sm font-medium text-text-primary bg-primary-teal/10 rounded-lg transition-colors">
+                <a href="/" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                  Home
+                </a>
+                <a href="/dashboard" className="px-4 py-2 text-sm font-medium text-text-primary bg-gradient-to-r from-primary-blue/10 to-primary-purple/10 rounded-lg transition-colors border border-primary-blue/20">
                   Dashboard
                 </a>
                 <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
@@ -97,7 +112,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <main className="max-w-[1440px] mx-auto px-6 py-8 pb-20">
+      <main className="relative z-10 max-w-[1440px] mx-auto px-6 py-8 pb-20">
         {/* Initialize Data Button (only show if no data) */}
         {!loading && topMemeCoins.length === 0 && (
           <div className="card mb-6 text-center py-12">
@@ -363,12 +378,12 @@ export default function Dashboard() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-bg-primary border-t border-border-light mt-12 py-6">
-        <div className="max-w-[1440px] mx-auto px-6 text-center text-text-secondary text-sm">
-          <p>SolClock © 2025 | Solana Network Analytics Dashboard</p>
+      <footer className="relative z-10 bg-slate-900/80 backdrop-blur-md border-t border-white/10 mt-12 py-6">
+        <div className="max-w-[1440px] mx-auto px-6 text-center text-white/60 text-sm">
+          <p>SolPulse © 2025 | Solana Network Analytics Dashboard</p>
           <p className="mt-2">Powered by Solana Blockchain</p>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

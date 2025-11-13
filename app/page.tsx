@@ -1,377 +1,366 @@
 'use client';
 
 import SolPulseLogo from '@/components/SolPulseLogo';
-import { useEffect, useState } from 'react';
-import { Activity, TrendingUp, AlertCircle, Menu, BarChart3 } from 'lucide-react';
-import NetworkPulseChart from '@/components/NetworkPulseChart';
-import NetworkActivityChart from '@/components/NetworkActivityChart';
-import TransactionVolumeChart from '@/components/TransactionVolumeChart';
-import TopMemeTable from '@/components/TopMemeTable';
-import AlertPanel from '@/components/AlertPanel';
-import NetworkStatsCard from '@/components/NetworkStatsCard';
-import DataModeIndicator from '@/components/DataModeIndicator';
-import { apiClient } from '@/lib/api';
-import type { NetworkPulseData, MemeToken, Alert } from '@/types';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Activity, TrendingUp, Zap, Shield, Users, ArrowRight, Menu, X, BarChart3, AlertCircle } from 'lucide-react';
 
 export default function Home() {
-  const [networkData, setNetworkData] = useState<NetworkPulseData | null>(null);
-  const [topMemeCoins, setTopMemeCoins] = useState<MemeToken[]>([]);
-  const [alerts, setAlerts] = useState<Alert[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [initializing, setInitializing] = useState(false);
+  const router = useRouter();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    loadData();
-    
-    // Refresh data every 5 minutes
-    const interval = setInterval(loadData, 5 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const loadData = async () => {
-    try {
-      const [networkRes, topMemeRes, alertsRes] = await Promise.all([
-        apiClient.getNetworkPulse(),
-        apiClient.getTopMemeCoins(50),
-        apiClient.getRecentActivity()
-      ]);
-
-      setNetworkData(networkRes.data);
-      setTopMemeCoins(topMemeRes.data.rankings);
-      setAlerts(alertsRes.data.alerts);
-    } catch (error) {
-      console.error('Failed to load data:', error);
-    } finally {
-      setLoading(false);
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
-  };
-
-  const initializeData = async () => {
-    setInitializing(true);
-    try {
-      await fetch('/api/init', { method: 'POST' });
-      await loadData();
-    } catch (error) {
-      console.error('Failed to initialize data:', error);
-    } finally {
-      setInitializing(false);
-    }
+    setMobileMenuOpen(false);
   };
 
   return (
-    <>
-      {/* Data Mode Indicator */}
-      <DataModeIndicator />
-      
-      {/* Header */}
-      <header className="bg-bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
-        <div className="max-w-[1440px] mx-auto px-6 py-4">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Animated Pulse Background */}
+      <div className="absolute inset-0">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900/20 to-purple-900/30" />
+        
+        {/* Animated Pulse Rings */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-500/15 to-blue-500/15 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl animate-pulse delay-2000" />
+        
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23374151' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }} />
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="relative z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/10 sticky top-0">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
               <SolPulseLogo className="" />
-              <nav className="hidden md:flex items-center gap-2">
-                <a href="/" className="px-4 py-2 text-sm font-medium text-text-primary bg-gradient-to-r from-primary-blue/10 to-primary-purple/10 rounded-lg transition-colors border border-primary-blue/20">
-                  Dashboard
-                </a>
-                <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
-                  Analytics
-                </a>
-                <a href="/tokens" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
-                  Tokens
-                </a>
-                <a href="/alerts" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
-                  Alerts
-                </a>
-                <a href="#how-it-works" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+              <nav className="hidden md:flex items-center gap-6">
+                <button
+                  onClick={() => scrollToSection('features')}
+                  className="text-white/80 hover:text-white transition-colors font-medium"
+                >
+                  Features
+                </button>
+                <button
+                  onClick={() => scrollToSection('how-it-works')}
+                  className="text-white/80 hover:text-white transition-colors font-medium"
+                >
                   How It Works
-                </a>
+                </button>
+                <button
+                  onClick={() => scrollToSection('analytics')}
+                  className="text-white/80 hover:text-white transition-colors font-medium"
+                >
+                  Analytics
+                </button>
+                <button
+                  onClick={() => scrollToSection('contact')}
+                  className="text-white/80 hover:text-white transition-colors font-medium"
+                >
+                  Contact
+                </button>
               </nav>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <div className="live-dot"></div>
-                <span className="text-sm text-text-secondary">Live</span>
-              </div>
-              <button className="md:hidden p-2 text-text-secondary hover:text-text-primary">
-                <Menu className="w-5 h-5" />
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-4">
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-blue-500/25 hover:scale-105 flex items-center gap-2"
+              >
+                Launch Dashboard
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-          </div>
-        </div>
-      </header>
 
-      <main className="max-w-[1440px] mx-auto px-6 py-8 pb-20">
-        {/* Initialize Data Button (only show if no data) */}
-        {!loading && topMemeCoins.length === 0 && (
-          <div className="card mb-6 text-center py-12">
-            <h3 className="text-lg font-bold mb-4">Initialize Mock Data</h3>
-            <p className="text-text-secondary mb-6">No data found. Click below to generate mock data for the dashboard.</p>
-            <button 
-              onClick={initializeData}
-              disabled={initializing}
-              className="btn-primary"
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden p-2 text-white/80 hover:text-white"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              {initializing ? 'Generating Data...' : 'Initialize Data'}
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
-        )}
 
-        {/* NEW: Network Stats Barchart Section */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
-          {/* Network Activity Barchart */}
-          <NetworkActivityChart 
-            period="24h" 
-            metric="tps" 
-            height={350}
-          />
-          
-          {/* Transaction Volume Barchart */}
-          <TransactionVolumeChart 
-            period="24h" 
-            interval="3h"
-            metric="total_transactions" 
-            height={350}
-          />
-        </div>
-
-        {/* Network Pulse Chart (Original) */}
-        <div className="card mb-6">
-          <div className="flex items-center gap-2 mb-5">
-            <Activity className="w-5 h-5 text-primary-blue" />
-            <h2 className="text-lg font-bold">Network Pulse - Last 24 Hours</h2>
-          </div>
-          {loading ? (
-            <div className="h-80 flex items-center justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-blue border-t-transparent"></div>
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
+              <div className="flex flex-col gap-4">
+                <button
+                  onClick={() => scrollToSection('features')}
+                  className="text-left text-white/80 hover:text-white transition-colors font-medium"
+                >
+                  Features
+                </button>
+                <button
+                  onClick={() => scrollToSection('how-it-works')}
+                  className="text-left text-white/80 hover:text-white transition-colors font-medium"
+                >
+                  How It Works
+                </button>
+                <button
+                  onClick={() => scrollToSection('analytics')}
+                  className="text-left text-white/80 hover:text-white transition-colors font-medium"
+                >
+                  Analytics
+                </button>
+                <button
+                  onClick={() => router.push('/dashboard')}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-all text-center w-full"
+                >
+                  Launch Dashboard
+                </button>
+              </div>
             </div>
-          ) : (
-            <NetworkPulseChart data={networkData} />
           )}
         </div>
+      </nav>
 
-        {/* Two Column Layout */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-          {/* Top Meme Coins Table */}
-          <div className="xl:col-span-2 card">
-            <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-primary-blue" />
-                <h2 className="text-lg font-bold">Top 50 Meme Coins</h2>
-              </div>
-              <div className="flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-text-secondary" />
-                <span className="text-sm text-text-secondary">Live Rankings</span>
-              </div>
-            </div>
-            {loading ? (
-              <div className="h-96 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-blue border-t-transparent"></div>
-              </div>
-            ) : (
-              <TopMemeTable tokens={topMemeCoins} />
-            )}
-          </div>
-
-          {/* Alerts Panel */}
-          <div className="card">
-            <div className="flex items-center gap-2 mb-5">
-              <AlertCircle className="w-5 h-5 text-error" />
-              <h2 className="text-lg font-bold">Live Alerts</h2>
-            </div>
-            <AlertPanel alerts={alerts} loading={loading} />
-          </div>
-        </div>
-
-        {/* How It Works Section */}
-        <div id="how-it-works" className="card">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-text-primary mb-3">How SolPulse Works</h2>
-            <p className="text-lg text-text-secondary max-w-3xl mx-auto">SolPulse solves the challenge of monitoring Solana&apos;s fast-moving meme coin ecosystem by providing real-time analytics, intelligent alerts, and automated tracking - all in one professional dashboard with smart pulse monitoring.</p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Problem Statement */}
-            <div>
-              <h3 className="text-xl font-bold text-text-primary mb-4">The Challenge</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-error/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-error text-sm">⚡</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text-primary">Fast-Moving Market</div>
-                    <div className="text-sm text-text-secondary">Meme coins can pump or dump within minutes, making manual monitoring impossible</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-warning/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-warning text-sm">📊</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text-primary">Information Overload</div>
-                    <div className="text-sm text-text-secondary">Thousands of tokens create noise; hard to identify genuine opportunities</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-info/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-info text-sm">🔍</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text-primary">Lack of Intelligence</div>
-                    <div className="text-sm text-text-secondary">Basic price tracking misses whale activity, social sentiment, and liquidity metrics</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-error/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-error text-sm">⏰</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text-primary">Time-Sensitive Decisions</div>
-                    <div className="text-sm text-text-secondary">Every second counts in crypto; delayed information means missed opportunities</div>
-                  </div>
-                </div>
-              </div>
+      {/* Hero Section */}
+      <section className="relative z-10 pt-20 pb-32">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center">
+            {/* Hero Badge */}
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-white px-6 py-3 rounded-full text-sm font-semibold mb-8 border border-white/10">
+              <Zap className="w-4 h-4 text-cyan-400" />
+              Real-Time Solana Analytics
             </div>
 
-            {/* SolPulse Solution */}
-            <div>
-              <h3 className="text-xl font-bold text-text-primary mb-4">Our Solution</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-success text-sm">✅</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text-primary">Real-Time Data Streams</div>
-                    <div className="text-sm text-text-secondary">Live Solana network metrics and DexScreener API integration for instant data</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-success text-sm">🧠</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text-primary">Smart Scoring Algorithm</div>
-                    <div className="text-sm text-text-secondary">Weighted analysis of volume, liquidity, buyers, holders, and social signals</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-success text-sm">🚨</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text-primary">Intelligent Alerts</div>
-                    <div className="text-sm text-text-secondary">Whale activity detection, price breakouts, and trend momentum notifications</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-success text-sm">⚙️</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text-primary">Automated Updates</div>
-                    <div className="text-sm text-text-secondary">Hourly data refresh with Supabase cron jobs - zero maintenance required</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            {/* Main Heading */}
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
+              <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
+                Monitor Solana&apos;s
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Pulse
+              </span>
+            </h1>
 
-          {/* Technical Architecture */}
-          <div className="border-t border-border-light pt-8">
-            <h3 className="text-xl font-bold text-text-primary mb-6 text-center">Technical Architecture</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-blue/10 to-primary-purple/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                  </svg>
-                </div>
-                <h4 className="font-bold text-text-primary mb-2">Data Sources</h4>
-                <p className="text-sm text-text-secondary">
-                  <strong>Solana RPC</strong> - Network performance metrics<br />
-                  <strong>DexScreener API</strong> - Real-time token data<br />
-                  <strong>Price Feeds</strong> - Market data aggregation
-                </p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 bg-info/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </div>
-                <h4 className="font-bold text-text-primary mb-2">Processing</h4>
-                <p className="text-sm text-text-secondary">
-                  <strong>Supabase Edge Functions</strong> - Serverless processing<br />
-                  <strong>Smart Algorithms</strong> - Weighted scoring system<br />
-                  <strong>Automated Updates</strong> - Hourly cron jobs
-                </p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                  </svg>
-                </div>
-                <h4 className="font-bold text-text-primary mb-2">Visualization</h4>
-                <p className="text-sm text-text-secondary">
-                  <strong>Next.js Frontend</strong> - Modern React app<br />
-                  <strong>Real-Time Charts</strong> - Interactive data visualization<br />
-                  <strong>Responsive Design</strong> - Works on all devices
-                </p>
-              </div>
-            </div>
-          </div>
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-4xl mx-auto leading-relaxed">
+              Real-time analytics, intelligent alerts, and automated tracking for the fastest-moving 
+              <span className="text-cyan-300 font-semibold"> Solana ecosystem</span>. 
+              Stay ahead of the curve with professional-grade tools.
+            </p>
 
-          {/* Key Benefits */}
-          <div className="border-t border-border-light pt-8 mt-8">
-            <h3 className="text-xl font-bold text-text-primary mb-6 text-center">Who Benefits from SolPulse?</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-blue/10 to-primary-purple/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <span className="text-xl">🚀</span>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-lg px-10 py-5 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-blue-500/25 hover:scale-105 flex items-center gap-3 group"
+              >
+                Launch Dashboard
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button
+                onClick={() => scrollToSection('features')}
+                className="text-white/90 hover:text-white text-lg font-semibold transition-colors border border-white/20 hover:border-white/40 px-10 py-5 rounded-lg backdrop-blur-sm"
+              >
+                Explore Features ↓
+              </button>
+            </div>
+
+            {/* Live Stats Preview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="flex items-center gap-3 mb-3">
+                  <TrendingUp className="w-6 h-6 text-green-400" />
+                  <span className="text-white/70 font-medium">Active Tokens</span>
                 </div>
-                <h4 className="font-bold text-text-primary mb-2">DeFi Traders</h4>
-                <p className="text-sm text-text-secondary">Spot trending tokens early and make informed trading decisions</p>
+                <div className="text-3xl font-bold text-white">50+</div>
               </div>
-              
-              <div className="text-center">
-                <div className="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <span className="text-xl">💼</span>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="flex items-center gap-3 mb-3">
+                  <Activity className="w-6 h-6 text-blue-400" />
+                  <span className="text-white/70 font-medium">Network TPS</span>
                 </div>
-                <h4 className="font-bold text-text-primary mb-2">Hedge Funds</h4>
-                <p className="text-sm text-text-secondary">Comprehensive market intelligence for risk assessment</p>
+                <div className="text-3xl font-bold text-white">3,000+</div>
               </div>
-              
-              <div className="text-center">
-                <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <span className="text-xl">📊</span>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="flex items-center gap-3 mb-3">
+                  <BarChart3 className="w-6 h-6 text-purple-400" />
+                  <span className="text-white/70 font-medium">24h Volume</span>
                 </div>
-                <h4 className="font-bold text-text-primary mb-2">Analysts</h4>
-                <p className="text-sm text-text-secondary">Deep insights into network activity and token performance</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <span className="text-xl">👥</span>
-                </div>
-                <h4 className="font-bold text-text-primary mb-2">Community</h4>
-                <p className="text-sm text-text-secondary">Stay informed about the Solana ecosystem and meme coin trends</p>
+                <div className="text-3xl font-bold text-white">$2.5M+</div>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="relative z-10 py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Powerful Features for 
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent"> Serious Traders</span>
+            </h2>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+              Everything you need to stay ahead in the fast-moving Solana ecosystem
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Feature Cards */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-blue-500/30 transition-all duration-300 group hover:bg-white/10">
+              <div className="w-14 h-14 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <TrendingUp className="w-7 h-7 text-blue-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Real-Time Rankings</h3>
+              <p className="text-white/70 leading-relaxed">
+                Live rankings of top 50 meme coins with intelligent scoring based on volume, liquidity, and social signals.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-purple-500/30 transition-all duration-300 group hover:bg-white/10">
+              <div className="w-14 h-14 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Activity className="w-7 h-7 text-purple-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Network Analytics</h3>
+              <p className="text-white/70 leading-relaxed">
+                Monitor Solana network performance with TPS charts, transaction volumes, and activity patterns.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-cyan-500/30 transition-all duration-300 group hover:bg-white/10">
+              <div className="w-14 h-14 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Zap className="w-7 h-7 text-cyan-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Smart Alerts</h3>
+              <p className="text-white/70 leading-relaxed">
+                Get notified about whale activity, price breakouts, and trending tokens before the crowd.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-green-500/30 transition-all duration-300 group hover:bg-white/10">
+              <div className="w-14 h-14 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Shield className="w-7 h-7 text-green-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Risk Assessment</h3>
+              <p className="text-white/70 leading-relaxed">
+                Advanced scoring algorithms help identify genuine opportunities from pump-and-dump schemes.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-orange-500/30 transition-all duration-300 group hover:bg-white/10">
+              <div className="w-14 h-14 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <BarChart3 className="w-7 h-7 text-orange-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Historical Data</h3>
+              <p className="text-white/70 leading-relaxed">
+                Access 24-hour historical data with interactive charts and detailed token performance metrics.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-pink-500/30 transition-all duration-300 group hover:bg-white/10">
+              <div className="w-14 h-14 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Users className="w-7 h-7 text-pink-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Community Insights</h3>
+              <p className="text-white/70 leading-relaxed">
+                Stay connected with the Solana community and get insights from fellow traders and analysts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how-it-works" className="relative z-10 py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              How <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">SolPulse</span> Works
+            </h2>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+              From data collection to actionable insights in real-time
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-8">
+                <span className="text-3xl">📡</span>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">Data Collection</h3>
+              <p className="text-white/70 leading-relaxed">
+                We continuously monitor Solana blockchain and DexScreener API for real-time token data,
+                network metrics, and trading activity.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+                <span className="text-3xl">🧠</span>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">Smart Processing</h3>
+              <p className="text-white/70 leading-relaxed">
+                Our algorithms analyze volume patterns, holder growth, liquidity changes, and social signals
+                to score tokens intelligently.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+                <span className="text-3xl">⚡</span>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">Real-Time Insights</h3>
+              <p className="text-white/70 leading-relaxed">
+                Get instant access to rankings, charts, and alerts through our professional dashboard,
+                updated every 5 minutes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative z-10 py-20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="bg-gradient-to-r from-blue-500/10 to-purple-600/10 rounded-2xl p-12 border border-white/10 backdrop-blur-sm">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Ready to Master the 
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent"> Solana Market?</span>
+            </h2>
+            <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">
+              Join thousands of traders who trust SolPulse for their Solana analytics needs.
+            </p>
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-lg px-10 py-5 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-blue-500/25 hover:scale-105 flex items-center gap-3 mx-auto group"
+            >
+              Launch Dashboard
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-bg-primary border-t border-border-light mt-12 py-6">
-        <div className="max-w-[1440px] mx-auto px-6 text-center text-text-secondary text-sm">
-          <p>SolPulse © 2025 | Solana Network Analytics Dashboard</p>
-          <p className="mt-2">Powered by Solana Blockchain</p>
+      <footer id="contact" className="relative z-10 py-12 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-3">
+              <SolPulseLogo className="h-8" />
+            </div>
+            <div className="text-center md:text-right text-white/60 text-sm">
+              <p>SolPulse © 2025 | Solana Network Analytics</p>
+              <p className="mt-1">Powered by Solana Blockchain</p>
+            </div>
+          </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
