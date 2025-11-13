@@ -113,58 +113,58 @@ export default function TopMemeTable({ tokens }: Props) {
       </div>
 
       {/* Table */}
-      <div className="table-container">
-        <table className="data-table">
+      <div className="table-container overflow-x-auto scrollbar-thin scrollbar-thumb-primary-blue/20 scrollbar-track-bg-secondary">
+        <table className="data-table min-w-full md:min-w-0">
           <thead>
             <tr>
               <th 
-                className="cursor-pointer hover:text-primary-blue transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors whitespace-nowrap"
                 onClick={() => handleSort('rank')}
               >
                 # <SortIcon columnKey="rank" />
               </th>
-              <th>Token</th>
+              <th className="whitespace-nowrap">Token</th>
               <th 
-                className="cursor-pointer hover:text-primary-blue transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors whitespace-nowrap"
                 onClick={() => handleSort('volume')}
               >
                 24h Volume <SortIcon columnKey="volume" />
               </th>
               <th 
-                className="cursor-pointer hover:text-primary-blue transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors whitespace-nowrap"
                 onClick={() => handleSort('buyers')}
               >
                 Buyers <SortIcon columnKey="buyers" />
               </th>
               <th 
-                className="cursor-pointer hover:text-primary-blue transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors whitespace-nowrap"
                 onClick={() => handleSort('holders')}
               >
                 Holders <SortIcon columnKey="holders" />
               </th>
               <th 
-                className="cursor-pointer hover:text-primary-blue transition-colors"
+                className="cursor-pointer hover:text-primary-blue transition-colors whitespace-nowrap"
                 onClick={() => handleSort('score')}
               >
                 Score <SortIcon columnKey="score" />
               </th>
-              <th>Actions</th>
+              <th className="whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody>
             {sortedAndFilteredTokens.map((token) => (
               <tr key={token.token_address}>
-                <td>
+                <td className="whitespace-nowrap">
                   <div className={`rank-badge ${token.rank <= 3 ? 'top-3' : ''}`}>
                     {token.rank}
                   </div>
                 </td>
-                <td>
+                <td className="whitespace-nowrap">
                   <div className="flex items-center gap-3">
                     <img
                       src={token.logo_url}
                       alt={token.symbol}
-                      className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-blue to-primary-purple"
+                      className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-blue to-primary-purple flex-shrink-0"
                       onError={(e) => {
                         e.currentTarget.src = 'https://via.placeholder.com/32?text=' + token.symbol.charAt(0);
                       }}
@@ -172,31 +172,31 @@ export default function TopMemeTable({ tokens }: Props) {
                     <span className="font-semibold">{token.symbol}</span>
                   </div>
                 </td>
-                <td className="font-semibold text-primary-blue">
+                <td className="font-semibold text-primary-blue whitespace-nowrap">
                   {formatNumber(token.volume_24h_usd)}
                 </td>
-                <td className="text-text-primary">
+                <td className="text-text-primary whitespace-nowrap">
                   {formatCount(token.unique_buyers_24h)}
                 </td>
-                <td className="text-text-primary">
+                <td className="text-text-primary whitespace-nowrap">
                   {formatCount(token.holders)}
                 </td>
-                <td>
+                <td className="whitespace-nowrap">
                   <div className="flex items-center gap-2">
-                    <div className="progress-bar w-20">
+                    <div className="progress-bar w-20 flex-shrink-0">
                       <div className="progress-fill" style={{ width: `${token.score}%` }}></div>
                     </div>
                     <span className="text-sm font-semibold">{token.score}</span>
                   </div>
                 </td>
-                <td>
+                <td className="whitespace-nowrap">
                   <button
                     onClick={() => handleAnalytics(token)}
-                    className="flex items-center gap-2 px-3 py-1 bg-primary-blue/10 hover:bg-primary-blue/20 text-primary-blue rounded-lg transition-colors text-sm font-medium"
+                    className="flex items-center gap-2 px-3 py-1 bg-primary-blue/10 hover:bg-primary-blue/20 text-primary-blue rounded-lg transition-colors text-sm font-medium flex-shrink-0"
                     title="Get AI Analytics"
                   >
                     <Brain className="w-4 h-4" />
-                    Analyze
+                    <span className="hidden sm:inline">Analyze</span>
                   </button>
                 </td>
               </tr>
