@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowUp, ArrowDown } from 'lucide-react';
+import { ArrowUp, ArrowDown, Brain } from 'lucide-react';
 import type { MemeToken } from '@/types';
+import AnalyticsModal from './AnalyticsModal';
 
 interface Props {
   tokens: MemeToken[];
@@ -17,6 +18,8 @@ export default function TopMemeTable({ tokens }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>('rank');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedToken, setSelectedToken] = useState<MemeToken | null>(null);
+  const [analyticsModalOpen, setAnalyticsModalOpen] = useState(false);
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -25,6 +28,11 @@ export default function TopMemeTable({ tokens }: Props) {
       setSortKey(key);
       setSortOrder('desc');
     }
+  };
+
+  const handleAnalytics = (token: MemeToken) => {
+    setSelectedToken(token);
+    setAnalyticsModalOpen(true);
   };
 
   const sortedAndFilteredTokens = useMemo(() => {
@@ -140,15 +148,12 @@ export default function TopMemeTable({ tokens }: Props) {
               >
                 Score <SortIcon columnKey="score" />
               </th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {sortedAndFilteredTokens.map((token) => (
-              <tr
-                key={token.token_address}
-                className="cursor-pointer"
-                onClick={() => router.push(`#`)}
-              >
+              <tr key={token.token_address}>
                 <td>
                   <div className={`rank-badge ${token.rank <= 3 ? 'top-3' : ''}`}>
                     {token.rank}
@@ -184,6 +189,16 @@ export default function TopMemeTable({ tokens }: Props) {
                     <span className="text-sm font-semibold">{token.score}</span>
                   </div>
                 </td>
+                <td>
+                  <button
+                    onClick={() => handleAnalytics(token)}
+                    className="flex items-center gap-2 px-3 py-1 bg-primary-blue/10 hover:bg-primary-blue/20 text-primary-blue rounded-lg transition-colors text-sm font-medium"
+                    title="Get AI Analytics"
+                  >
+                    <Brain className="w-4 h-4" />
+                    Analyze
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -195,6 +210,12 @@ export default function TopMemeTable({ tokens }: Props) {
           No tokens found matching your search
         </div>
       )}
+
+      <AnalyticsModal
+        isOpen={analyticsModalOpen}
+        onClose={() => setAnalyticsModalOpen(false)}
+        token={selectedToken}
+      />
     </div>
   );
 }
