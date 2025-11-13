@@ -4,7 +4,55 @@
  * Replaces mockDataGenerator.ts with actual blockchain data
  */
 
-import { getSolscanAPI } from './solscanAPI';
+import { getSolscanAPI, SolscanAPI } from './solscanAPI';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+
+interface TokenMetaResponse {
+  success?: boolean;
+  data?: {
+    address: string;
+    decimals: number;
+    name: string;
+    symbol: string;
+    icon: string;
+    supply: string;
+    price: number;
+    market_cap: number;
+    volume_24h: number;
+    price_change_24h: number;
+    created_time: number;
+  };
+}
+
+interface BlocksResponse {
+  success?: boolean;
+  data?: any[];
+}
+
+interface TransactionsResponse {
+  success?: boolean;
+  data?: any[];
+}
+
+interface TokenTransfersResponse {
+  success?: boolean;
+  data?: any[];
+}
+
+interface TokenHoldersResponse {
+  success?: boolean;
+  data?: {
+    total: number;
+  };
+}
+
+interface TokenPriceResponse {
+  success?: boolean;
+  data?: {
+    price: number;
+    price_change_24h?: number;
+  };
+}
 import { getServiceRoleClient } from './supabase';
 import type { Token } from '../types';
 
@@ -31,7 +79,7 @@ export class RealDataService {
       for (const token of tokens) {
         // Get token metadata for additional info
         try {
-          const meta = await this.solscan.getTokenMeta(token.address);
+          const meta = await this.solscan.getTokenMeta(token.address) as TokenMetaResponse;
           
           tokensToInsert.push({
             token_address: token.address,
@@ -81,7 +129,7 @@ export class RealDataService {
         limit: 100,
         sort_by: 'block_time',
         sort_order: 'desc',
-      });
+      }) as BlocksResponse;
 
       if (!blocksResponse || !blocksResponse.data) {
         throw new Error('No blocks data received');
@@ -90,7 +138,7 @@ export class RealDataService {
       const blocks = blocksResponse.data;
       
       // Get recent transactions
-      const txResponse = await this.solscan.getLastTransactions(100);
+      const txResponse = await this.solscan.getLastTransactions(100) as TransactionsResponse;
       const transactions = txResponse?.data || [];
 
       // Calculate hourly statistics
@@ -159,7 +207,7 @@ export class RealDataService {
           const transfers = await this.solscan.getTokenTransfers({
             address: tokenAddress,
             limit: 1000, // Max reasonable limit
-          });
+          }) as TokenTransfersResponse;
 
           if (!transfers || !transfers.data) continue;
 
@@ -182,13 +230,13 @@ export class RealDataService {
           ).size;
 
           // Get current holders count
-          const holdersResponse = await this.solscan.getTokenHolders(tokenAddress, 1);
+          const holdersResponse = await this.solscan.getTokenHolders(tokenAddress, 1) as TokenHoldersResponse;
           const holders = holdersResponse?.data?.total || 0;
 
           // Get current price to calculate USD volume
           let volumeUSD = 0;
           try {
-            const priceResponse = await this.solscan.getTokenPrice(tokenAddress);
+            const priceResponse = await this.solscan.getTokenPrice(tokenAddress) as TokenPriceResponse;
             const price = priceResponse?.data?.price || 0;
             volumeUSD = txVolume * price;
           } catch (error) {
@@ -234,7 +282,7 @@ export class RealDataService {
       console.log(`Monitoring whale activity (threshold: $${thresholdUSD})...`);
 
       // Get recent transactions
-      const txResponse = await this.solscan.getLastTransactions(200);
+      const txResponse = await this.solscan.getLastTransactions(200) as TransactionsResponse;
       
       if (!txResponse || !txResponse.data) {
         throw new Error('No transactions data received');
@@ -257,7 +305,7 @@ export class RealDataService {
 
               // Get token price to calculate USD value
               try {
-                const priceResponse = await this.solscan.getTokenPrice(tokenAddress);
+                const priceResponse = await this.solscan.getTokenPrice(tokenAddress) as TokenPriceResponse;
                 const price = priceResponse?.data?.price || 0;
                 const amountUSD = amount * price;
 
@@ -346,7 +394,7 @@ export class RealDataService {
           // Calculate price change using real price data
           let priceChange = 0;
           try {
-            const priceResponse = await this.solscan.getTokenPrice(token.token_address);
+            const priceResponse = await this.solscan.getTokenPrice(token.token_address) as TokenPriceResponse;
             priceChange = priceResponse?.data?.price_change_24h || 0;
           } catch (error) {
             // Use volume-based estimate if price data unavailable
@@ -438,7 +486,7 @@ export class RealDataService {
         limit: 100,
         sort_by: 'block_time',
         sort_order: 'desc',
-      });
+      }) as BlocksResponse;
 
       if (!blocksResponse || !blocksResponse.data) {
         throw new Error('No blocks data received');
@@ -447,24 +495,24 @@ export class RealDataService {
       const blocks = blocksResponse.data;
       
       // Get recent transactions
-      const txResponse = await this.solscan.getLastTransactions(100);
+      const txResponse = await this.solscan.getLastTransactions(100) as TransactionsResponse;
       const transactions = txResponse?.data || [];
 
       // Calculate current statistics
       const now = new Date();
       const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 
-      const recentBlocks = blocks.filter(block => 
+      const recentBlocks = blocks.filter((block: any) => 
         new Date(block.block_time) > oneHourAgo
       );
       
-      const recentTransactions = transactions.filter(tx => 
+      const recentTransactions = transactions.filter((tx: any) => 
         new Date(tx.block_time) > oneHourAgo
       );
 
       const totalTransactions = recentTransactions.length;
       const totalBlocks = recentBlocks.length;
-      const avgCUPerBlock = recentBlocks.reduce((sum, block) => {
+      const avgCUPerBlock = recentBlocks.reduce((sum: number, block: any) => {
         const cuConsumed = block.meta?.compute_units_consumed || 0;
         return sum + cuConsumed;
       }, 0) / Math.max(totalBlocks, 1);
@@ -476,7 +524,7 @@ export class RealDataService {
         estimated_tps: Math.round(totalTransactions / 3600),
         avg_cu_per_block: Math.round(avgCUPerBlock),
         unique_wallets: new Set([
-          ...recentTransactions.flatMap(tx => [
+          ...recentTransactions.flatMap((tx: any) => [
             ...tx.meta.pre_balances.map(() => 'sender'),
             ...tx.meta.post_balances.map(() => 'receiver')
           ])

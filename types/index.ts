@@ -50,6 +50,7 @@ export interface MemeToken {
   volume_24h_usd: number;
   unique_buyers_24h: number;
   holders: number;
+  holders_growth: number;
   liquidity_usd: number;
   score: number;
   price_change_24h?: number;
