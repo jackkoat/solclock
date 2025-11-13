@@ -8,7 +8,6 @@ import TransactionVolumeChart from '@/components/TransactionVolumeChart';
 import TopMemeTable from '@/components/TopMemeTable';
 import AlertPanel from '@/components/AlertPanel';
 import NetworkStatsCard from '@/components/NetworkStatsCard';
-import DataModeIndicator from '@/components/DataModeIndicator';
 import { apiClient } from '@/lib/api';
 import type { NetworkPulseData, MemeToken, Alert } from '@/types';
 
@@ -59,9 +58,6 @@ export default function Home() {
 
   return (
     <>
-      {/* Data Mode Indicator */}
-      <DataModeIndicator />
-      
       {/* Header */}
       <header className="bg-bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
         <div className="max-w-[1440px] mx-auto px-6 py-4">
