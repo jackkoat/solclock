@@ -52,6 +52,7 @@ class ScoringService {
           volume_24h_usd: Number(item.volume_24h_usd),
           unique_buyers_24h: Number(item.unique_buyers_24h),
           holders: Number(item.holders),
+          holders_growth: 0, // Not available in cache
           liquidity_usd: Number(item.liquidity_usd),
           score: 0,
           price_change_24h: Number(item.price_change_24h)
