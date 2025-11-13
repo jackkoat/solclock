@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Activity, TrendingUp, AlertCircle, Menu, BarChart3 } from 'lucide-react';
+import { Activity, TrendingUp, AlertCircle, Menu, BarChart3, Twitter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import NetworkPulseChart from '@/components/NetworkPulseChart';
 import NetworkActivityChart from '@/components/NetworkActivityChart';
@@ -102,6 +102,15 @@ export default function Dashboard() {
               </nav>
             </div>
             <div className="flex items-center gap-4">
+              <a
+                href="https://x.com/solpulsesite"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-text-secondary hover:text-primary-blue transition-colors"
+                title="Follow us on X"
+              >
+                <Twitter className="w-5 h-5" />
+              </a>
               <div className="flex items-center gap-2">
                 <div className="live-dot"></div>
                 <span className="text-sm text-text-secondary">Live</span>

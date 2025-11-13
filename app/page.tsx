@@ -3,7 +3,7 @@
 import SolPulseLogo from '@/components/SolPulseLogo';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Activity, TrendingUp, Zap, Shield, Users, ArrowRight, Menu, X, BarChart3, AlertCircle } from 'lucide-react';
+import { Activity, TrendingUp, Zap, Shield, Users, ArrowRight, Menu, X, BarChart3, AlertCircle, Twitter } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
@@ -76,6 +76,15 @@ export default function Home() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-4">
+              <a
+                href="https://x.com/solpulsesite"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-text-secondary hover:text-primary-blue transition-colors rounded-lg hover:bg-bg-card"
+                title="Follow us on X (Twitter)"
+              >
+                <Twitter className="w-5 h-5" />
+              </a>
               <button
                 onClick={() => router.push('/dashboard')}
                 className="btn-primary glow-on-hover"
@@ -115,6 +124,16 @@ export default function Home() {
                 >
                   Analytics
                 </button>
+                <a
+                  href="https://x.com/solpulsesite"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-left text-text-secondary hover:text-primary-blue transition-colors"
+                  title="Follow us on X (Twitter)"
+                >
+                  <Twitter className="w-4 h-4" />
+                  Follow on X
+                </a>
                 <button
                   onClick={() => router.push('/dashboard')}
                   className="btn-primary w-full text-center"

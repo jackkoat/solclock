@@ -65,7 +65,7 @@ export default function HowItWorks() {
         {/* How It Works Section */}
         <div className="card">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-text-primary mb-3">How SolClock Works</h1>
+            <h1 className="text-3xl font-bold text-text-primary mb-3">How SolPulse Works</h1>
             <p className="text-lg text-text-secondary max-w-3xl mx-auto">SolClock solves the challenge of monitoring Solana&apos;s fast-moving meme coin ecosystem by providing real-time analytics, intelligent alerts, and automated tracking - all in one professional dashboard.</p>
           </div>
 
