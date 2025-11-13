@@ -147,7 +147,7 @@ export default function TopMemeTable({ tokens }: Props) {
               <tr
                 key={token.token_address}
                 className="cursor-pointer"
-                onClick={() => router.push(`/token/${token.token_address}`)}
+                onClick={() => router.push(`#`)}
               >
                 <td>
                   <div className={`rank-badge ${token.rank <= 3 ? 'top-3' : ''}`}>

@@ -2,7 +2,7 @@
 
 import SolPulseLogo from '@/components/SolPulseLogo';
 import { useEffect, useState } from 'react';
-import { Bell, TrendingUp, TrendingDown, AlertCircle, Clock, Plus, Activity } from 'lucide-react';
+import { Bell, TrendingUp, TrendingDown, AlertCircle, Clock, Plus, Activity, Menu } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import type { Alert } from '@/types';
 
@@ -65,7 +65,7 @@ export default function Alerts() {
   return (
     <>
       {/* Header */}
-      <header className="bg-bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
+      <header className="relative z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/10 sticky top-0 shadow-sm">
         <div className="max-w-[1440px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
@@ -76,6 +76,9 @@ export default function Alerts() {
               <nav className="hidden md:flex items-center gap-2">
                 <a href="/dashboard" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Dashboard
+                </a>
+                <a href="/how-it-works" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                  How It Works
                 </a>
                 <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Analytics
@@ -93,6 +96,9 @@ export default function Alerts() {
                 <div className="live-dot"></div>
                 <span className="text-sm text-text-secondary">Live</span>
               </div>
+              <button className="md:hidden p-2 text-text-secondary hover:text-text-primary">
+                <Menu className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>

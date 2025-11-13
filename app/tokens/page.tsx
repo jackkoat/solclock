@@ -2,7 +2,7 @@
 
 import SolPulseLogo from '@/components/SolPulseLogo';
 import { useEffect, useState } from 'react';
-import { Search, TrendingUp, TrendingDown, Star, ExternalLink, Activity } from 'lucide-react';
+import { Search, TrendingUp, TrendingDown, Star, ExternalLink, Activity, Menu } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import type { MemeToken } from '@/types';
 
@@ -74,7 +74,7 @@ export default function Tokens() {
   return (
     <>
       {/* Header */}
-      <header className="bg-bg-primary border-b border-border-light sticky top-0 z-50 shadow-sm">
+      <header className="relative z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/10 sticky top-0 shadow-sm">
         <div className="max-w-[1440px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
@@ -85,6 +85,9 @@ export default function Tokens() {
               <nav className="hidden md:flex items-center gap-2">
                 <a href="/dashboard" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Dashboard
+                </a>
+                <a href="/how-it-works" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
+                  How It Works
                 </a>
                 <a href="/analytics" className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary rounded-lg transition-colors">
                   Analytics
@@ -102,6 +105,9 @@ export default function Tokens() {
                 <div className="live-dot"></div>
                 <span className="text-sm text-text-secondary">Live</span>
               </div>
+              <button className="md:hidden p-2 text-text-secondary hover:text-text-primary">
+                <Menu className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>

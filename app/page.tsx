@@ -221,7 +221,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold text-text-primary mb-4">Real-Time Rankings</h3>
               <p className="text-text-secondary leading-relaxed">
-                Live rankings of top 50 meme coins with intelligent scoring based on volume, liquidity, and social signals.
+                Live rankings of top 10 meme coins with intelligent scoring based on volume, liquidity, and social signals.
               </p>
             </div>
 
